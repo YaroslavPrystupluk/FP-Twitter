@@ -19,8 +19,7 @@ export class UserService {
     });
 
     if (existUser) throw new BadRequestException('This email already exists');
-    // const saltOrRounds = Number(process.env.SALT_ROUNDS);
-
+  
     const user = await this.userRepository.save({
       email: createUserDto.email,
       password: bcrypt.hashSync(
