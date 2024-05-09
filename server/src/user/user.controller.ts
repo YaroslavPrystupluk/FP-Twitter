@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('user')
+@Controller('registration')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -29,8 +29,8 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOne(@Param('id') email: string) {
+    return this.userService.findOne(email);
   }
 
   @Patch(':id')
