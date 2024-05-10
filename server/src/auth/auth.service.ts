@@ -7,18 +7,19 @@ import { IUser } from 'src/types/types';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UserService,
+    private readonly usersService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findOne(email);
+    console.log(user);
+
     const passwordIsMatch = bcrypt.compareSync(password, user.password);
 
     if (user && passwordIsMatch) {
       return user;
     }
-
     throw new UnauthorizedException('Wrong email or password');
   }
 

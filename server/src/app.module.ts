@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeormModule } from './typeorm/typeorm.module';
+import { MailModule } from './mailer/mail.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TypeormModule } from './typeorm/typeorm.module';
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeormModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
