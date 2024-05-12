@@ -35,7 +35,9 @@ export class AuthService {
   }
 
   async login(user: IUser) {
-    const { id, email } = user;
+    const { id, email, isActivated } = user;
+
+    if (!isActivated) throw new UnauthorizedException('Activate your account');
 
     const accessToken =
       'Bearer ' +
