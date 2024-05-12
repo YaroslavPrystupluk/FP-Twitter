@@ -3,6 +3,8 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/types/types';
+import { v4 as uuidv4 } from 'uuid';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,23 +15,54 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findOne(email);
-    console.log(user);
+
+    if (!user || !bcrypt.compareSync(password, user.password))
+      throw new UnauthorizedException('Wrong password or email');
 
     const passwordIsMatch = bcrypt.compareSync(password, user.password);
 
     if (user && passwordIsMatch) {
       return user;
     }
-    throw new UnauthorizedException('Wrong email or password');
+  }
+
+  async register(registerUserDto: RegisterUserDto) {
+    return this.usersService.create(registerUserDto);
+  }
+
+  async activate(activateLink: string) {
+    await this.usersService.activate(activateLink);
   }
 
   async login(user: IUser) {
     const { id, email } = user;
 
+    const accessToken =
+      'Bearer ' +
+      this.jwtService.sign({
+        id: user.id,
+        email: user.email,
+      });
+
+    const refreshToken = await this.getRefreshToken(user);
+
     return {
       id,
       email,
-      access_token: this.jwtService.sign({ id: user.id, email: user.email }),
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  private async getRefreshToken(user: IUser) {
+    const { id } = user;
+
+    return {
+      id,
+      refresh_token: this.jwtService.sign(
+        { id: user.id, uuidv4: uuidv4() },
+        { expiresIn: '30d' },
+      ),
     };
   }
 }

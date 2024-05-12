@@ -12,6 +12,12 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: false })
+  isActivated: boolean;
+
+  @Column({ nullable: true })
+  activateLink: string;
+
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'CASCADE' })
   posts: Post[];
 }

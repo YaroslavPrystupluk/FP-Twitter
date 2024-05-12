@@ -1,7 +1,7 @@
 import { IsEmail, IsString, MinLength, Validate } from 'class-validator';
 import { IsPasswordMatchConstraint } from 'src/validators/isPasswordMatch.decorator';
 
-export class CreateUserDto {
+export class RegisterUserDto {
   @IsEmail()
   email: string;
 
