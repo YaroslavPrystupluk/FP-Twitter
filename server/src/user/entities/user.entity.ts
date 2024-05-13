@@ -11,7 +11,7 @@ import { Token } from 'src/auth/entities/token.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn({ name: 'user_id' })
-  id: number;
+  id: string;
 
   @Column()
   email: string;
@@ -28,4 +28,6 @@ export class User {
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'CASCADE' })
   posts: Post[];
 
+  @OneToOne(() => Token, (token) => token.user, { onDelete: 'CASCADE' })
+  token: Token;
 }

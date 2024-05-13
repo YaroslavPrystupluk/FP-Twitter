@@ -1,14 +1,22 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/types/types';
 import { v4 as uuidv4 } from 'uuid';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
   ) {}
@@ -31,7 +39,15 @@ export class AuthService {
   }
 
   async activate(activateLink: string) {
-    await this.usersService.activate(activateLink);
+    const user = await this.userRepository.findOne({
+      where: {
+        activateLink,
+      },
+    });
+    if (!user) throw new NotFoundException('Activate Usrer not found');
+    user.isActivated = true;
+    await this.userRepository.save(user);
+    return { message: 'User successfully activated' };
   }
 
   async login(user: IUser) {

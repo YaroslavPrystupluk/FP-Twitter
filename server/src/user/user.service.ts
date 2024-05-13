@@ -48,10 +48,10 @@ export class UserService {
 
     return { user };
   }
-  async findOne(email: string) {
+  async findOne(idOrEmail: string) {
     return await this.userRepository.findOne({
       where: {
-        email,
+        [idOrEmail.includes('@') ? 'email' : 'id']: idOrEmail,
       },
     });
   }
@@ -60,7 +60,7 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.findOne({
       where: {
         id,
@@ -78,7 +78,7 @@ export class UserService {
     return { user };
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.userRepository.findOne({
       where: {
         id,
@@ -89,17 +89,5 @@ export class UserService {
     await this.userRepository.remove(user);
 
     return { message: 'User successfully deleted' };
-  }
-
-  async activate(activateLink: string) {
-    const user = await this.userRepository.findOne({
-      where: {
-        activateLink,
-      },
-    });
-    if (!user) throw new NotFoundException('Activate Usrer not found');
-    user.isActivated = true;
-    await this.userRepository.save(user);
-    return { message: 'User successfully activated' };
   }
 }
