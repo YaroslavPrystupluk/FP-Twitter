@@ -34,7 +34,7 @@ export class AuthController {
   }
 
   @Get('activate/:activateLink')
-  @Redirect('https://www.google.com.ua/?hl=uk', HttpStatus.OK)
+  @Redirect('https://www.google.com.ua/?hl=uk')
   async activate(
     @Param('activateLink')
     activateLink: string,

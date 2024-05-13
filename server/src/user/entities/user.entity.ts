@@ -1,5 +1,12 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
+import { Token } from 'src/auth/entities/token.entity';
 
 @Entity()
 export class User {
@@ -20,4 +27,5 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user, { onDelete: 'CASCADE' })
   posts: Post[];
+
 }
