@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { options } from './config/jet-modul-async-options';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
+import { Token } from './entities/token.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { User } from 'src/user/entities/user.entity';
     PassportModule,
     JwtModule.registerAsync(options()),
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Token]),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],

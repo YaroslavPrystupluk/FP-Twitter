@@ -33,7 +33,7 @@ export class UserService {
     this.mailerService.sendEmail({
       recipients: createUserDto.email,
       subject: 'Activate your account',
-      html: `<a href="http://localhost:3001/api/auth/activate/${activateLink}">${activateLink}</a>`,
+      html: `<a href="http://localhost:3001/api/auth/activate/${activateLink}">Activate your account : ${activateLink}</a>`,
     });
 
     const user = await this.userRepository.save({

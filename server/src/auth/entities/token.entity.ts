@@ -10,12 +10,15 @@ import {
 @Entity()
 export class Token {
   @PrimaryGeneratedColumn({ name: 'token_id' })
-  id: number;
+  id: string;
 
   @Column()
   refreshToken: string;
 
-  @OneToOne(() => User)
+  @Column()
+  exp: Date;
+
+  @OneToOne(() => User, (user) => user.token)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

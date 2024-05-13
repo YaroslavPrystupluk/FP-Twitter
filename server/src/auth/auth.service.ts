@@ -12,10 +12,14 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Token } from './entities/token.entity';
+import { add } from 'date-fns';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(Token)
+    private readonly tokenRepository: Repository<Token>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
@@ -72,15 +76,13 @@ export class AuthService {
     };
   }
 
-  private async getRefreshToken(user: IUser) {
+  private async getRefreshToken(user: IUser): Promise<Token> {
     const { id } = user;
 
-    return {
-      id,
-      refresh_token: this.jwtService.sign(
-        { id: user.id, uuidv4: uuidv4() },
-        { expiresIn: '30d' },
-      ),
-    };
+    return await this.tokenRepository.save({
+      user: user.id,
+      refreshToken: uuidv4() + id,
+      exp: add(new Date(), { months: 1 }),
+    });
   }
 }
