@@ -1,16 +1,31 @@
-JWT_ACCESS_TOKEN_SECRET=salt
+JWT_ACCESS_TOKEN_SECRET='SEcretDevelopKeYAccess'
+JWT_REFRESH_TOKEN_SECRET='SEcretDevelopKeYRefresh'
 SALT_ROUNDS=5
-# NODE_ENV=production
 
-DB_HOST=localhost
+DB_HOST='localhost'
 DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=rootroot
-DB_NAME=clonetwitter
+DB_USERNAME='postgres'
+DB_PASSWORD='rootroot'
+DB_NAME='clonetwitter'
 
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=tyucha9@gmail.com
-MAIL_PASSWORD=bbpl hcru kyav btcj
+MAILER_USER='tyucha9@gmail.com'
+MAIL_HOST='smtp.gmail.com'
+MAILER_PASSWORD='bbpl hcru kyav btcj'
+
+MAILER_USER_UKR='tyucha_05@ukr.net'
+MAILER_PASSWORD_UKR='7i1m5oReTdLCw6fb'
+IMAP_UKR='imap.ukr.net'
+PORT_UKR=993
 
 API_URL=http//localhost:3001/api
+
+# NODE_ENV=production
+
+
+
+
+
+
+
+
+
