@@ -14,6 +14,8 @@ import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Token } from './entities/token.entity';
 import { add } from 'date-fns';
+import { LoginUserDto } from './dto/login-user.dto';
+import { IToken } from 'src/types/token';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +27,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string) {
+  async validateUser(email: string, password: string): Promise<IUser> {
     const user = await this.usersService.findOne(email);
 
     if (!user || !bcrypt.compareSync(password, user.password))
@@ -42,7 +44,7 @@ export class AuthService {
     return this.usersService.create(registerUserDto);
   }
 
-  async activate(activateLink: string) {
+  async activate(activateLink: string): Promise<{ message: string }> {
     const user = await this.userRepository.findOne({
       where: {
         activateLink,
@@ -54,11 +56,17 @@ export class AuthService {
     return { message: 'User successfully activated' };
   }
 
-  async login(user: IUser) {
-    const { id, email, isActivated } = user;
+  async login(loginUserDto: LoginUserDto): Promise<IToken> {
+    const user = await this.usersService.findOne(loginUserDto.email);
+
+    const isActivated = user.isActivated;
 
     if (!isActivated) throw new UnauthorizedException('Activate your account');
 
+    return this.generateTokens(user);
+  }
+
+  private async generateTokens(user: IUser): Promise<IToken> {
     const accessToken =
       'Bearer ' +
       this.jwtService.sign({
@@ -69,19 +77,45 @@ export class AuthService {
     const refreshToken = await this.getRefreshToken(user);
 
     return {
-      id,
-      email,
       accessToken,
       refreshToken,
     };
   }
 
+  async refreshTokens(refreshToken: string) {
+    const tokens = await this.tokenRepository.findOne({
+      relations: ['user'],
+      where: {
+        refreshToken,
+      },
+    });
+
+    if (!tokens) throw new UnauthorizedException();
+
+    await this.tokenRepository.remove(tokens);
+
+    if (new Date(tokens.exp) < new Date()) throw new UnauthorizedException();
+
+    if (!tokens.user)
+      throw new UnauthorizedException('No user associated with the token');
+
+    const user = await this.usersService.findOne(tokens.user.email);
+
+    return this.generateTokens(user);
+  }
+
   private async getRefreshToken(user: IUser): Promise<Token> {
     const { id } = user;
 
+    const userId = await this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
     return await this.tokenRepository.save({
-      user: user.id,
-      refreshToken: uuidv4() + id,
+      user: userId,
+      refreshToken: uuidv4(),
       exp: add(new Date(), { months: 1 }),
     });
   }

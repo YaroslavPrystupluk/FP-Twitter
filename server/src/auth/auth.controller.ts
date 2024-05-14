@@ -20,6 +20,11 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { IToken } from 'src/types/token';
+import { Cookie } from 'src/decorators/cookie.decirator';
+
+const REFRESH_TOKEN = 'refreshtoken';
 
 @Controller('auth')
 export class AuthController {
@@ -44,30 +49,39 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    const tokens = await this.authService.login(req.user);
+  async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
+    const tokens = await this.authService.login(loginUserDto);
 
-    this.setRefreshTokenToCookie(req.res, tokens);
+    this.setRefreshTokenToCookie(tokens, res);
   }
 
   @Get('refresh')
-  async refresh(@Request() req) {
-    const tokens = await this.authService.login(req.user);
-    this.setRefreshTokenToCookie(req.res, tokens);
+  async refresh(
+    @Cookie(REFRESH_TOKEN) refreshToken: string,
+    @Res() res: Response,
+  ) {
+    if (!refreshToken) throw new UnauthorizedException();
+
+    const tokens = await this.authService.refreshTokens(refreshToken);
+
+    if (!tokens) throw new UnauthorizedException();
+
+    this.setRefreshTokenToCookie(tokens, res);
   }
 
-  private setRefreshTokenToCookie(res: Response, token: any) {
-    if (!token) throw new UnauthorizedException('No token');
-    res.cookie('refreshtoken', token, {
+  private setRefreshTokenToCookie(tokens: IToken, res: Response) {
+    if (!tokens || !tokens.refreshToken) throw new UnauthorizedException();
+
+    res.cookie(REFRESH_TOKEN, tokens.refreshToken.refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      expires: new Date(tokens.refreshToken.exp),
       secure:
         this.configService.get('NODE_ENV', 'development') === 'production',
       path: '/',
     });
 
-    res.status(HttpStatus.CREATED).json({ accessToken: token.accessToken });
+    res.status(HttpStatus.CREATED).json({ accessToken: tokens });
   }
 
   @UseGuards(JwtAuthGuard)
