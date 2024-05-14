@@ -5,6 +5,8 @@ import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeormModule } from './typeorm/typeorm.module';
 import { MailerModule } from './mailer/mailer.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -14,6 +16,13 @@ import { MailerModule } from './mailer/mailer.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeormModule,
     MailerModule,
+  ],
+
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}

@@ -16,6 +16,9 @@ export class User {
   @Column({ default: false })
   isActivated: boolean;
 
+  @Column({ default: false })
+  isRememberMe: boolean;
+
   @Column({ nullable: true })
   activateLink: string;
 

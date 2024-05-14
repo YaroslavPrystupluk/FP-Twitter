@@ -56,17 +56,17 @@ export class AuthService {
     return { message: 'User successfully activated' };
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<IToken> {
+  async login(loginUserDto: LoginUserDto, agent: string): Promise<IToken> {
     const user = await this.usersService.findOne(loginUserDto.email);
 
     const isActivated = user.isActivated;
 
     if (!isActivated) throw new UnauthorizedException('Activate your account');
 
-    return this.generateTokens(user);
+    return this.generateTokens(user, agent);
   }
 
-  private async generateTokens(user: IUser): Promise<IToken> {
+  private async generateTokens(user: IUser, agent: string): Promise<IToken> {
     const accessToken =
       'Bearer ' +
       this.jwtService.sign({
@@ -74,7 +74,7 @@ export class AuthService {
         email: user.email,
       });
 
-    const refreshToken = await this.getRefreshToken(user);
+    const refreshToken = await this.getRefreshToken(user, agent);
 
     return {
       accessToken,
@@ -82,7 +82,7 @@ export class AuthService {
     };
   }
 
-  async refreshTokens(refreshToken: string) {
+  async refreshTokens(refreshToken: string, agent: string) {
     const tokens = await this.tokenRepository.findOne({
       relations: ['user'],
       where: {
@@ -101,10 +101,10 @@ export class AuthService {
 
     const user = await this.usersService.findOne(tokens.user.email);
 
-    return this.generateTokens(user);
+    return this.generateTokens(user, agent);
   }
 
-  private async getRefreshToken(user: IUser): Promise<Token> {
+  private async getRefreshToken(user: IUser, agent: string): Promise<Token> {
     const { id } = user;
 
     const userId = await this.userRepository.findOne({
@@ -113,8 +113,23 @@ export class AuthService {
       },
     });
 
+    const token = await this.tokenRepository.findOne({
+      where: {
+        user: userId,
+        agent,
+      },
+    });
+    if (!token) {
+      return await this.tokenRepository.save({
+        user: userId,
+        refreshToken: uuidv4(),
+        exp: add(new Date(), { months: 1 }),
+        agent: agent,
+      });
+    }
+
     return await this.tokenRepository.save({
-      user: userId,
+      ...token,
       refreshToken: uuidv4(),
       exp: add(new Date(), { months: 1 }),
     });

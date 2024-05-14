@@ -24,9 +24,11 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { IToken } from 'src/types/token';
 import { Cookie } from 'src/decorators/cookie.decirator';
 import { Agent } from 'src/decorators/agent.decorator';
+import { Public } from 'src/decorators/public.decorator';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -55,9 +57,7 @@ export class AuthController {
     @Res() res: Response,
     @Agent() agent: string,
   ) {
-    console.log(agent);
-
-    const tokens = await this.authService.login(loginUserDto);
+    const tokens = await this.authService.login(loginUserDto, agent);
 
     this.setRefreshTokenToCookie(tokens, res);
   }
@@ -66,10 +66,11 @@ export class AuthController {
   async refresh(
     @Cookie(REFRESH_TOKEN) refreshToken: string,
     @Res() res: Response,
+    @Agent() agent: string,
   ) {
     if (!refreshToken) throw new UnauthorizedException();
 
-    const tokens = await this.authService.refreshTokens(refreshToken);
+    const tokens = await this.authService.refreshTokens(refreshToken, agent);
 
     if (!tokens) throw new UnauthorizedException();
 
