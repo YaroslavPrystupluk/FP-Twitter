@@ -12,6 +12,9 @@ export class Token {
   @Column()
   exp: Date;
 
+  @Column()
+  agent: string;
+
   @ManyToOne(() => User, (user) => user.tokens)
   user: User;
 }

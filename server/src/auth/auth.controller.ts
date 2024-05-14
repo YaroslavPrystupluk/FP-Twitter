@@ -23,6 +23,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { IToken } from 'src/types/token';
 import { Cookie } from 'src/decorators/cookie.decirator';
+import { Agent } from 'src/decorators/agent.decorator';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
@@ -49,7 +50,13 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Res() res: Response,
+    @Agent() agent: string,
+  ) {
+    console.log(agent);
+
     const tokens = await this.authService.login(loginUserDto);
 
     this.setRefreshTokenToCookie(tokens, res);
@@ -81,7 +88,7 @@ export class AuthController {
       path: '/',
     });
 
-    res.status(HttpStatus.CREATED).json({ accessToken: tokens });
+    res.status(HttpStatus.CREATED).json({ accessToken: tokens.accessToken });
   }
 
   @UseGuards(JwtAuthGuard)
