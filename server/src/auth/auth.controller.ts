@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpStatus,
@@ -11,6 +12,7 @@ import {
   Res,
   UnauthorizedException,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -25,6 +27,7 @@ import { IToken } from 'src/types/token';
 import { Cookie } from 'src/decorators/cookie.decirator';
 import { Agent } from 'src/decorators/agent.decorator';
 import { Public } from 'src/decorators/public.decorator';
+import { UserResponse } from 'src/user/responses/user.response';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
@@ -35,10 +38,13 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {}
+
+  @UseInterceptors(ClassSerializerInterceptor)
   @UsePipes(new ValidationPipe())
   @Post('register')
   async register(@Body() registerUserDto: RegisterUserDto) {
-    return this.authService.register(registerUserDto);
+    const user = await this.authService.register(registerUserDto);
+    return new UserResponse(user);
   }
 
   @Get('activate/:activateLink')
