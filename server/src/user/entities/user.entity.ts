@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
 import { Token } from 'src/auth/entities/token.entity';
+import { Provider } from 'src/enum/provider.enum';
 
 @Entity()
 export class User {
@@ -18,6 +19,12 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: Provider,
+  })
+  provider: Provider;
 
   @Column({ default: false })
   isActivated: boolean;

@@ -10,6 +10,8 @@ import { options } from './config/jet-modul-async-options';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Token } from './entities/token.entity';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { Token } from './entities/token.entity';
     JwtModule.registerAsync(options()),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Token]),
+    HttpModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
 })
 export class AuthModule {}

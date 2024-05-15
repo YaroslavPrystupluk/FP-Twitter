@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -138,5 +139,20 @@ export class AuthService {
 
   async logout(refreshToken: string) {
     return await this.tokenRepository.delete({ refreshToken });
+  }
+
+  async getUser(userId: string) {
+    return await this.usersService.findOne(userId);
+  }
+
+  async googleAuth(email: string, agent: string) {
+    const userExists = await this.usersService.findOne(email);
+    if (userExists) {
+      return await this.generateTokens(userExists, agent);
+    }
+    const user = await this.usersService.create({ email });
+    if (!user) throw new BadRequestException('User not created');
+
+    return await this.generateTokens(user, agent);
   }
 }

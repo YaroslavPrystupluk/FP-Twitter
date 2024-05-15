@@ -2,6 +2,7 @@ import { Exclude } from 'class-transformer';
 import { User } from '../entities/user.entity';
 import { Token } from 'src/auth/entities/token.entity';
 import { Post } from 'src/post/entities/post.entity';
+import { Provider } from 'src/enum/provider.enum';
 
 export class UserResponse implements User {
   id: string;
@@ -13,6 +14,8 @@ export class UserResponse implements User {
   isActivated: boolean;
 
   isRememberMe: boolean;
+
+  provider: Provider;
 
   @Exclude()
   activateLink: string;

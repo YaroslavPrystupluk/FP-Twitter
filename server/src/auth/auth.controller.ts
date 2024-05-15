@@ -6,7 +6,8 @@ import {
   HttpStatus,
   Param,
   Post,
-  Redirect,
+  Query,
+  Req,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -16,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -25,6 +26,10 @@ import { Cookie } from 'src/decorators/cookie.decirator';
 import { Agent } from 'src/decorators/agent.decorator';
 import { Public } from 'src/decorators/public.decorator';
 import { UserResponse } from 'src/user/responses/user.response';
+import { GoogleAuthGuard } from './guards/google.guard';
+import { HttpService } from '@nestjs/axios';
+import { mergeMap } from 'rxjs';
+import { hendleTimeoutError } from 'src/helpers/timeout-error.helpers';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
@@ -34,6 +39,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
@@ -45,12 +51,18 @@ export class AuthController {
   }
 
   @Get('activate/:activateLink')
-  @Redirect('https://www.google.com.ua/?hl=uk')
   async activate(
     @Param('activateLink')
     activateLink: string,
+    @Res() res: Response,
   ) {
     await this.authService.activate(activateLink);
+    res.redirect('http://localhost:3001/api/auth/activation');
+  }
+
+  @Get('activation')
+  activated(@Res() res: Response) {
+    res.send('<p>Account is activated</p>');
   }
 
   @UseGuards(LocalAuthGuard)
@@ -105,5 +117,32 @@ export class AuthController {
     await this.authService.logout(refreshToken);
     res.clearCookie(REFRESH_TOKEN);
     res.sendStatus(HttpStatus.OK);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  async googleLogin() {}
+
+  @Get('google/callback')
+  @UseGuards(GoogleAuthGuard)
+  async googleLoginCallback(@Req() req: Request, @Res() res: Response) {
+    const token = req.user['accessToken'];
+    return res.redirect(
+      `http://localhost:3001/api/auth/success?token=${token}`,
+    );
+  }
+
+  @Get('success')
+  async success(@Query('token') token: string, @Agent() agent: string) {
+    return this.httpService
+      .get(
+        `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}`,
+      )
+      .pipe(
+        mergeMap(({ data: { email } }) =>
+          this.authService.googleAuth(email, agent),
+        ),
+        hendleTimeoutError(),
+      );
   }
 }
