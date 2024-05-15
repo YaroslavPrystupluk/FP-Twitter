@@ -22,9 +22,9 @@ export class User {
   @Column({ nullable: true })
   activateLink: string;
 
-  @OneToMany(() => Post, (post) => post.user, { onDelete: 'CASCADE' })
+  @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
-  @OneToMany(() => Token, (token) => token.user, { onDelete: 'CASCADE' })
+  @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];
 }

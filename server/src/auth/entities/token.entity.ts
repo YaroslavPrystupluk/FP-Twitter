@@ -15,6 +15,6 @@ export class Token {
   @Column()
   agent: string;
 
-  @ManyToOne(() => User, (user) => user.tokens)
+  @ManyToOne(() => User, (user) => user.tokens, { onDelete: 'CASCADE' })
   user: User;
 }

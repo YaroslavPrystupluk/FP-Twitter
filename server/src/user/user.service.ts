@@ -36,7 +36,7 @@ export class UserService {
       html: `<a href="http://localhost:3001/api/auth/activate/${activateLink}">Activate your account : ${activateLink}</a>`,
     });
 
-    const user = await this.userRepository.save({
+    return await this.userRepository.save({
       email: createUserDto.email,
       password: bcrypt.hashSync(
         createUserDto.password,
@@ -45,8 +45,6 @@ export class UserService {
       activateLink,
       isActivated: false,
     });
-
-    return { user };
   }
   async findOne(idOrEmail: string) {
     return await this.userRepository.findOne({
@@ -74,20 +72,21 @@ export class UserService {
       updateUserDto.password,
       Number(this.configService.get('SALT_ROUNDS')),
     );
-    await this.userRepository.save(user);
-    return { user };
+    return await this.userRepository.save(user);
   }
 
   async remove(id: string) {
-    const user = await this.userRepository.findOne({
+    if (!id) throw new NotFoundException('User not found');
+
+    const userToRemove = await this.userRepository.findOne({
       where: {
         id,
       },
     });
-    if (!user) throw new NotFoundException('Usrer not found');
+    if (!userToRemove) throw new NotFoundException('User not found');
 
-    await this.userRepository.remove(user);
+    await this.userRepository.remove(userToRemove); // Видаляємо користувача
 
-    return { message: 'User successfully deleted' };
+    return { id };
   }
 }
