@@ -85,7 +85,7 @@ export class UserService {
     });
     if (!userToRemove) throw new NotFoundException('User not found');
 
-    await this.userRepository.remove(userToRemove); // Видаляємо користувача
+    await this.userRepository.remove(userToRemove);
 
     return { id };
   }

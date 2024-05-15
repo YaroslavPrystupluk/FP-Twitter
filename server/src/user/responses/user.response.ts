@@ -20,6 +20,9 @@ export class UserResponse implements User {
   posts: Post[];
   tokens: Token[];
 
+  @Exclude()
+  createdAt: Date;
+
   constructor(user: User | User[]) {
     Object.assign(this, user);
   }

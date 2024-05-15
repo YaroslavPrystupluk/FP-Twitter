@@ -1,4 +1,10 @@
-import { IsEmail, IsString, MinLength, Validate } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsString,
+  MinLength,
+  Validate,
+} from 'class-validator';
 import { IsPasswordMatchConstraint } from 'src/decorators/isPasswordMatch.decorator';
 
 export class RegisterUserDto {
@@ -15,4 +21,7 @@ export class RegisterUserDto {
     message: 'Passwords do not match',
   })
   confirmPassword: string;
+
+  @IsBoolean()
+  isActivated: boolean;
 }

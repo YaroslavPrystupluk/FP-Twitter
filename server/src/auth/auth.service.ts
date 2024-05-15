@@ -50,7 +50,8 @@ export class AuthService {
         activateLink,
       },
     });
-    if (!user) throw new NotFoundException('Activate Usrer not found');
+    if (!user) throw new NotFoundException('Activate User not found');
+
     user.isActivated = true;
     await this.userRepository.save(user);
     return { message: 'User successfully activated' };
@@ -133,5 +134,9 @@ export class AuthService {
       refreshToken: uuidv4(),
       exp: add(new Date(), { months: 1 }),
     });
+  }
+
+  async logout(refreshToken: string) {
+    return await this.tokenRepository.delete({ refreshToken });
   }
 }

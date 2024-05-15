@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
 import { Token } from 'src/auth/entities/token.entity';
 
@@ -21,6 +27,9 @@ export class User {
 
   @Column({ nullable: true })
   activateLink: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];

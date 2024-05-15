@@ -7,8 +7,6 @@ import {
   Param,
   Post,
   Redirect,
-  Req,
-  Request,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -18,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -98,16 +95,15 @@ export class AuthController {
     res.status(HttpStatus.CREATED).json({ accessToken: tokens.accessToken });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
-
   @Get('logout')
-  logout(@Req() req: Request, @Res() res: Response) {
-    res.clearCookie('refreshtoken');
-    res.redirect('/');
-    res.send('You have been logged out');
+  async logout(
+    @Cookie(REFRESH_TOKEN) refreshToken: string,
+    @Res() res: Response,
+  ) {
+    if (!refreshToken) throw new UnauthorizedException();
+
+    await this.authService.logout(refreshToken);
+    res.clearCookie(REFRESH_TOKEN);
+    res.sendStatus(HttpStatus.OK);
   }
 }
