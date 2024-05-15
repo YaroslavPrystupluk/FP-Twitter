@@ -17,12 +17,13 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ nullable: true })
+  password: string | null;
 
   @Column({
     type: 'enum',
     enum: Provider,
+    default: Provider.GOOGLE,
   })
   provider: Provider;
 

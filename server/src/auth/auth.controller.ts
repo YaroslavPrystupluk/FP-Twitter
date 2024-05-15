@@ -28,7 +28,7 @@ import { Public } from 'src/decorators/public.decorator';
 import { UserResponse } from 'src/user/responses/user.response';
 import { GoogleAuthGuard } from './guards/google.guard';
 import { HttpService } from '@nestjs/axios';
-import { mergeMap } from 'rxjs';
+import { map, mergeMap } from 'rxjs';
 import { hendleTimeoutError } from 'src/helpers/timeout-error.helpers';
 
 const REFRESH_TOKEN = 'refreshtoken';
@@ -133,7 +133,11 @@ export class AuthController {
   }
 
   @Get('success')
-  async success(@Query('token') token: string, @Agent() agent: string) {
+  async success(
+    @Query('token') token: string,
+    @Agent() agent: string,
+    @Res() res: Response,
+  ) {
     return this.httpService
       .get(
         `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}`,
@@ -142,6 +146,7 @@ export class AuthController {
         mergeMap(({ data: { email } }) =>
           this.authService.googleAuth(email, agent),
         ),
+        map((data) => this.setRefreshTokenToCookie(data, res)),
         hendleTimeoutError(),
       );
   }

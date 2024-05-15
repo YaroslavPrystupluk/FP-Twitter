@@ -30,20 +30,26 @@ export class UserService {
     if (existUser) throw new BadRequestException('This email already exists');
 
     const activateLink = uuidv4();
-    this.mailerService.sendEmail({
-      recipients: createUserDto.email,
-      subject: 'Activate your account',
-      html: `<a href="http://localhost:3001/api/auth/activate/${activateLink}">Activate your account : ${activateLink}</a>`,
-    });
+    if (createUserDto.password) {
+      this.mailerService.sendEmail({
+        recipients: createUserDto.email,
+        subject: 'Activate your account',
+        html: `<a href="http://localhost:3001/api/auth/activate/${activateLink}">Activate your account : ${activateLink}</a>`,
+      });
+    }
+
+    const hashPassword = createUserDto.password
+      ? bcrypt.hashSync(
+          createUserDto.password,
+          Number(this.configService.get('SALT_ROUNDS')),
+        )
+      : null;
 
     return await this.userRepository.save({
       email: createUserDto.email,
-      password: bcrypt.hashSync(
-        createUserDto.password,
-        Number(this.configService.get('SALT_ROUNDS')),
-      ),
+      password: hashPassword,
       activateLink,
-      isActivated: false,
+      isActivated: createUserDto.password ? false : true,
     });
   }
   async findOne(idOrEmail: string) {

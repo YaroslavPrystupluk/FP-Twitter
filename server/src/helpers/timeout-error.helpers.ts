@@ -1,4 +1,4 @@
-import { BadRequestException, RequestTimeoutException } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Observable, TimeoutError, catchError, timeout } from 'rxjs';
 
 export function hendleTimeoutError<T = unknown>() {
@@ -7,9 +7,9 @@ export function hendleTimeoutError<T = unknown>() {
       timeout(5000),
       catchError((err) => {
         if (err instanceof TimeoutError) {
-          throw new RequestTimeoutException();
+          throw new HttpException(err.message, HttpStatus.REQUEST_TIMEOUT);
         }
-        throw new BadRequestException(err);
+        throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
       }),
     );
 }

@@ -1,5 +1,6 @@
 import {
-  BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -17,6 +18,7 @@ import { Token } from './entities/token.entity';
 import { add } from 'date-fns';
 import { LoginUserDto } from './dto/login-user.dto';
 import { IToken } from 'src/types/token';
+import { Provider } from 'src/enum/provider.enum';
 
 @Injectable()
 export class AuthService {
@@ -150,8 +152,12 @@ export class AuthService {
     if (userExists) {
       return await this.generateTokens(userExists, agent);
     }
-    const user = await this.usersService.create({ email });
-    if (!user) throw new BadRequestException('User not created');
+    const user = await this.usersService.create({
+      email,
+      provider: Provider.GOOGLE,
+    });
+    if (!user)
+      throw new HttpException('User not created', HttpStatus.BAD_REQUEST);
 
     return await this.generateTokens(user, agent);
   }

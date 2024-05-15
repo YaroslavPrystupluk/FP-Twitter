@@ -1,4 +1,10 @@
-import { IsEmail, IsString, MinLength, Validate } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsString,
+  MinLength,
+  Validate,
+} from 'class-validator';
 import { IsPasswordMatchConstraint } from 'src/decorators/isPasswordMatch.decorator';
 import { Provider } from 'src/enum/provider.enum';
 
@@ -17,5 +23,9 @@ export class CreateUserDto {
   })
   confirmPassword?: string;
 
+  @IsString()
   provider?: Provider;
+
+  @IsBoolean()
+  isActivated?: boolean;
 }
