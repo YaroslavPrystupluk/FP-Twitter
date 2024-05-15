@@ -50,6 +50,7 @@ export class UserService {
       password: hashPassword,
       activateLink,
       isActivated: createUserDto.password ? false : true,
+      provider: createUserDto.provider,
     });
   }
   async findOne(idOrEmail: string) {

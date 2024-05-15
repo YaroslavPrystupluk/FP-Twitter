@@ -30,6 +30,7 @@ import { GoogleAuthGuard } from './guards/google.guard';
 import { HttpService } from '@nestjs/axios';
 import { map, mergeMap } from 'rxjs';
 import { hendleTimeoutError } from 'src/helpers/timeout-error.helpers';
+import { Provider } from 'src/enum/provider.enum';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
@@ -144,7 +145,7 @@ export class AuthController {
       )
       .pipe(
         mergeMap(({ data: { email } }) =>
-          this.authService.googleAuth(email, agent),
+          this.authService.providerAuth(email, agent, Provider.GOOGLE),
         ),
         map((data) => this.setRefreshTokenToCookie(data, res)),
         hendleTimeoutError(),

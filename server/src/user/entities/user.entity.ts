@@ -23,7 +23,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: Provider,
-    default: Provider.GOOGLE,
+    default: Provider.EMAIL,
   })
   provider: Provider;
 

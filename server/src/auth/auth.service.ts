@@ -147,14 +147,16 @@ export class AuthService {
     return await this.usersService.findOne(userId);
   }
 
-  async googleAuth(email: string, agent: string) {
+  async providerAuth(email: string, agent: string, provider: Provider) {
+    console.log(provider);
+
     const userExists = await this.usersService.findOne(email);
     if (userExists) {
       return await this.generateTokens(userExists, agent);
     }
     const user = await this.usersService.create({
       email,
-      provider: Provider.GOOGLE,
+      provider,
     });
     if (!user)
       throw new HttpException('User not created', HttpStatus.BAD_REQUEST);
