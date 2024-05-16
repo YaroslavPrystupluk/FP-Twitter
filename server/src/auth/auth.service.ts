@@ -46,7 +46,6 @@ export class AuthService {
   async register(registerUserDto: RegisterUserDto) {
     return this.usersService.create(registerUserDto);
   }
-
   async activate(activateLink: string): Promise<{ message: string }> {
     const user = await this.userRepository.findOne({
       where: {
@@ -160,5 +159,21 @@ export class AuthService {
       throw new HttpException('User not created', HttpStatus.BAD_REQUEST);
 
     return await this.generateTokens(user, agent);
+  }
+
+  async removeUnconfirmedUsers() {
+    const TEN_SECONDS = 10000; // 10 секунд
+    const unconfirmedUsers = await this.userRepository.find({
+      where: {
+        isActivated: false,
+      },
+    });
+
+    const currentTime = new Date();
+    unconfirmedUsers.forEach(async (user) => {
+      if (currentTime.getTime() - user.createdAt.getTime() > TEN_SECONDS) {
+        await this.userRepository.remove(user);
+      }
+    });
   }
 }
