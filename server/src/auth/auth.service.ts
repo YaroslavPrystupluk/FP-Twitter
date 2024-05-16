@@ -148,7 +148,6 @@ export class AuthService {
   }
 
   async providerAuth(email: string, agent: string, provider: Provider) {
-    console.log(provider);
 
     const userExists = await this.usersService.findOne(email);
     if (userExists) {
