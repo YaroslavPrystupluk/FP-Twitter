@@ -148,7 +148,6 @@ export class AuthService {
   }
 
   async providerAuth(email: string, agent: string, provider: Provider) {
-
     const userExists = await this.usersService.findOne(email);
     if (userExists) {
       return await this.generateTokens(userExists, agent);
