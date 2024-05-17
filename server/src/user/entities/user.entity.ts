@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Post } from 'src/post/entities/post.entity';
+import { Post } from 'src/post/entities/posts.entity';
 import { Token } from 'src/auth/entities/token.entity';
 import { Provider } from 'src/enum/provider.enum';
 

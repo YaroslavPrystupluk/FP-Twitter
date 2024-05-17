@@ -81,7 +81,7 @@ export class AuthService {
           email: user.email,
         },
         {
-          expiresIn: isRememberMe ? '30s' : '20s',
+          expiresIn: isRememberMe ? '30d' : '7d',
         },
       );
 
