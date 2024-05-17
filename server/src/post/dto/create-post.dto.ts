@@ -1,4 +1,15 @@
+import { IsDateString, IsString, MaxLength } from 'class-validator';
+
 export class CreatePostDto {
-  content: string;
+  @IsString()
+  @MaxLength(280, {
+    message: 'Content is too long maximal length is 280 symbols',
+  })
+  text: string;
+
+  @IsString()
   image: string;
+
+  @IsDateString()
+  createdAt: Date;
 }

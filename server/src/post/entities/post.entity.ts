@@ -12,10 +12,13 @@ export class Post {
   id: string;
 
   @Column()
-  content: string;
+  text: string;
 
   @Column({ nullable: true })
   image: string;
+
+  @Column({ default: true })
+  isFavirite: boolean;
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user: User;

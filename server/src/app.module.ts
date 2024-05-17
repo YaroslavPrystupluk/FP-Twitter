@@ -8,6 +8,7 @@ import { MailerModule } from './mailer/mailer.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
