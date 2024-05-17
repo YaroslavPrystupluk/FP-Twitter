@@ -28,4 +28,7 @@ export class CreateUserDto {
 
   @IsBoolean()
   isActivated?: boolean;
+
+  @IsBoolean()
+  isRememberMe?: boolean;
 }

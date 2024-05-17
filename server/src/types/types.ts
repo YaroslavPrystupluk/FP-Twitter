@@ -3,4 +3,5 @@ export interface IUser {
   email: string;
   uuidv4?: string;
   isActivated: boolean;
+  isRememberMe: boolean;
 }

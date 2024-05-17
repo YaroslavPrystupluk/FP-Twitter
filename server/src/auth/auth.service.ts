@@ -61,7 +61,7 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto, agent: string): Promise<IToken> {
     const user = await this.usersService.findOne(loginUserDto.email);
-    
+
     const isActivated = user.isActivated;
 
     if (!isActivated) throw new UnauthorizedException('Activate your account');
@@ -70,12 +70,20 @@ export class AuthService {
   }
 
   private async generateTokens(user: IUser, agent: string): Promise<IToken> {
+    const isRememberMe = user.isRememberMe;
+    console.log(isRememberMe);
+
     const accessToken =
       'Bearer ' +
-      this.jwtService.sign({
-        id: user.id,
-        email: user.email,
-      });
+      this.jwtService.sign(
+        {
+          id: user.id,
+          email: user.email,
+        },
+        {
+          expiresIn: isRememberMe ? '30s' : '20s',
+        },
+      );
 
     const refreshToken = await this.getRefreshToken(user, agent);
 
@@ -142,9 +150,9 @@ export class AuthService {
     return await this.tokenRepository.delete({ refreshToken });
   }
 
-  // async getUser(userId: string) {
-  //   return await this.usersService.findOne(userId);
-  // }
+  async getUser(userId: string) {
+    return await this.usersService.findOne(userId);
+  }
 
   async providerAuth(email: string, agent: string, provider: Provider) {
     const userExists = await this.usersService.findOne(email);
@@ -162,7 +170,7 @@ export class AuthService {
   }
 
   async removeUnconfirmedUsers() {
-    const TIME = add(new Date(), { minutes: 15 });
+    const TIME = 15 * 60 * 1000;
     const unconfirmedUsers = await this.userRepository.find({
       where: {
         isActivated: false,
@@ -171,7 +179,7 @@ export class AuthService {
 
     const currentTime = new Date();
     unconfirmedUsers.forEach(async (user) => {
-      if (currentTime.getTime() - user.createdAt.getTime() > TIME.getTime()) {
+      if (currentTime.getTime() - user.createdAt.getTime() > TIME) {
         await this.userRepository.remove(user);
       }
     });

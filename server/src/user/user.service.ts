@@ -51,6 +51,7 @@ export class UserService {
       activateLink,
       isActivated: createUserDto.password ? false : true,
       provider: createUserDto.provider,
+      isRememberMe: createUserDto.isRememberMe,
     });
   }
   async findOne(idOrEmail: string) {
