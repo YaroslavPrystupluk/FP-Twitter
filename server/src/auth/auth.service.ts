@@ -61,7 +61,7 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto, agent: string): Promise<IToken> {
     const user = await this.usersService.findOne(loginUserDto.email);
-
+    
     const isActivated = user.isActivated;
 
     if (!isActivated) throw new UnauthorizedException('Activate your account');
@@ -142,9 +142,9 @@ export class AuthService {
     return await this.tokenRepository.delete({ refreshToken });
   }
 
-  async getUser(userId: string) {
-    return await this.usersService.findOne(userId);
-  }
+  // async getUser(userId: string) {
+  //   return await this.usersService.findOne(userId);
+  // }
 
   async providerAuth(email: string, agent: string, provider: Provider) {
     const userExists = await this.usersService.findOne(email);
@@ -162,7 +162,7 @@ export class AuthService {
   }
 
   async removeUnconfirmedUsers() {
-    const TEN_SECONDS = 10000; // 10 секунд
+    const TIME = add(new Date(), { minutes: 15 });
     const unconfirmedUsers = await this.userRepository.find({
       where: {
         isActivated: false,
@@ -171,7 +171,7 @@ export class AuthService {
 
     const currentTime = new Date();
     unconfirmedUsers.forEach(async (user) => {
-      if (currentTime.getTime() - user.createdAt.getTime() > TEN_SECONDS) {
+      if (currentTime.getTime() - user.createdAt.getTime() > TIME.getTime()) {
         await this.userRepository.remove(user);
       }
     });

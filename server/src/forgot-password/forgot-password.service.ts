@@ -5,18 +5,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { MailerService } from 'src/mailer/mailer.service';
-import * as bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
 import { UserService } from 'src/user/user.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { IUser } from 'src/types/types';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ForgotPasswordService {
   constructor(
     private readonly mailerService: MailerService,
     private readonly userService: UserService,
+    private readonly configService: ConfigService,
   ) {}
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
@@ -27,29 +26,25 @@ export class ForgotPasswordService {
     if (!user.isActivated)
       throw new HttpException('User not activated', HttpStatus.BAD_REQUEST);
 
-    const token = uuidv4();
-
-    const forgotLink = `http://localhost:3001/api/auth/forgot-password?token=${token}`;
+    const forgotLink = `http://localhost:3001/api/forgot-password/change-password/${forgotPasswordDto.email}`;
 
     this.mailerService.sendEmail({
       recipients: user.email,
       subject: 'Forgot password',
-      html: `<a href="${forgotLink}">To reset your password for this account: ${forgotPasswordDto.email}</a>`,
+      html: `<a href="${forgotLink}">To reset your password for this account: ${forgotPasswordDto.email} click here</a>`,
     });
 
-    return { message: 'Email sent' };
+    return { message: 'Please check your email' };
   }
 
-  async changePassword(
-    changePasswordDto: ChangePasswordDto,
-    user: IUser,
-    email: string,
-  ) {
-    const userByEmail = await this.userService.findOne(email);
+  async changePassword(changePasswordDto: ChangePasswordDto, email: string) {
+    const user = await this.userService.findOne(email);
+    if (!user) throw new NotFoundException('User not found');
 
-    const newPassword = bcrypt.hashSync(changePasswordDto.password, 7);
+    const newPassword = changePasswordDto.password;
 
-    userByEmail.password = newPassword;
-    return this.userService.update(userByEmail.id, userByEmail);
+    await this.userService.update(user.id, { password: newPassword });
+
+    return { message: 'Password changed' };
   }
 }
