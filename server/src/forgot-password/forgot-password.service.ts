@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { MailerService } from 'src/mailer/mailer.service';
 import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 import { UserService } from 'src/user/user.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -26,7 +27,9 @@ export class ForgotPasswordService {
     if (!user.isActivated)
       throw new HttpException('User not activated', HttpStatus.BAD_REQUEST);
 
-    const forgotLink = `http://localhost:3001/api/auth/forgot-password?email=${forgotPasswordDto.email}`;
+    const token = uuidv4();
+
+    const forgotLink = `http://localhost:3001/api/auth/forgot-password?token=${token}`;
 
     this.mailerService.sendEmail({
       recipients: user.email,
