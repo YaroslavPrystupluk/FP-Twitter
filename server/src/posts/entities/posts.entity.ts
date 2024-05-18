@@ -17,7 +17,7 @@ export class Post {
   @Column({ nullable: true })
   image: string;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isFavirite: boolean;
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })

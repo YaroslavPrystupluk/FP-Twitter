@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -54,12 +56,23 @@ export class UserService {
       isRememberMe: createUserDto.isRememberMe,
     });
   }
-  async findOne(idOrEmail: string) {
-    return await this.userRepository.findOne({
-      where: {
-        [idOrEmail.includes('@') ? 'email' : 'id']: idOrEmail,
-      },
-    });
+
+  async findOne(idOrEmail: string): Promise<User | undefined> {
+    try {
+      const searchCondition = idOrEmail.includes('@')
+        ? { email: idOrEmail }
+        : { id: idOrEmail };
+
+      const user = await this.userRepository.findOne({
+        where: searchCondition,
+      });
+
+      if (!user) throw new NotFoundException('User not found');
+
+      return user;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findAll() {

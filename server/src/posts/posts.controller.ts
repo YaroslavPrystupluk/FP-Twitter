@@ -8,6 +8,7 @@ import {
   Delete,
   UsePipes,
   ValidationPipe,
+  Req,
 } from '@nestjs/common';
 import { PostService } from './posts.service';
 import { CreatePostDto } from './dto/create-posts.dto';
@@ -17,22 +18,22 @@ import { UpdatePostDto } from './dto/update-posts.dto';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Post()
+  @Post('/create')
   @UsePipes(new ValidationPipe())
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postService.create(createPostDto);
+  create(@Body() createPostDto: CreatePostDto, @Req() req) {
+    return this.postService.create(createPostDto, req.user);
   }
 
   @Get()
   @UsePipes(new ValidationPipe())
-  findAll() {
-    return this.postService.findAll();
+  findAll(@Req() req) {
+    return this.postService.findAll(req.user);
   }
 
-  @Get(':text')
+  @Get(':textOrId')
   @UsePipes(new ValidationPipe())
-  findOne(@Param('text') text: string) {
-    return this.postService.findOne(text);
+  findOne(@Param('textOrId') textOrId: string) {
+    return this.postService.findOne(textOrId);
   }
 
   @Patch(':id')
