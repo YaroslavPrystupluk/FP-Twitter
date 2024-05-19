@@ -51,6 +51,7 @@ export class PostController {
 
   @Patch(':id')
   @UsePipes(new ValidationPipe())
+  @UseGuards(AuthorGuard)
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(id, updatePostDto);
   }
