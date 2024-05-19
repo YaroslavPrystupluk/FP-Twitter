@@ -16,7 +16,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -26,7 +26,7 @@ import { Cookie } from 'src/decorators/cookie.decirator';
 import { Agent } from 'src/decorators/agent.decorator';
 import { Public } from 'src/decorators/public.decorator';
 import { UserResponse } from 'src/user/responses/user.response';
-import { GoogleAuthGuard } from './guards/google.guard';
+import { GoogleAuthGuard } from '../guards/google.guard';
 import { HttpService } from '@nestjs/axios';
 import { map, mergeMap } from 'rxjs';
 import { hendleTimeoutError } from 'src/helpers/timeout-error.helpers';

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Post } from './entities/posts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -37,16 +37,27 @@ export class PostService {
   }
 
   async findOne(textOrId: string) {
-    const post = await this.postsRepository.findOne({
-      where: {
-        text: textOrId,
-        id: textOrId,
-      },
+    let post: Post | undefined;
+    if (!isNaN(Number(textOrId))) {
+      post = await this.postsRepository.findOne({
+        where: {
+          id: textOrId,
+        },
 
-      relations: {
-        user: true,
-      },
-    });
+        relations: {
+          user: true,
+        },
+      });
+    } else {
+      post = await this.postsRepository.findOne({
+        where: {
+          text: Like(`%${textOrId}%`),
+        },
+        relations: {
+          user: true,
+        },
+      });
+    }
 
     if (!post) throw new NotFoundException('Post not found');
     return post;
@@ -76,5 +87,38 @@ export class PostService {
     this.postsRepository.delete(id);
 
     return id;
+  }
+
+  async toggleFavorite(id: string, user: User) {
+    console.log(user);
+
+    const post = await this.postsRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!post) throw new NotFoundException('Post not found');
+    post.isFavirite = !post.isFavirite;
+    return await this.postsRepository.save(post);
+  }
+
+  async findAllWhithPagination(id: string, page: number, limit: number) {
+    const posts = await this.postsRepository.find({
+      where: {
+        user: {
+          id,
+        },
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: {
+        user: true,
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    if (!posts) throw new NotFoundException('Posts not found');
+    return posts;
   }
 }

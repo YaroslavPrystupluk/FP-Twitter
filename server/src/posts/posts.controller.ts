@@ -9,10 +9,13 @@ import {
   UsePipes,
   ValidationPipe,
   Req,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './posts.service';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
+import { AuthorGuard } from 'src/guards/author.guard';
 
 @Controller('posts')
 export class PostController {
@@ -22,6 +25,16 @@ export class PostController {
   @UsePipes(new ValidationPipe())
   create(@Body() createPostDto: CreatePostDto, @Req() req) {
     return this.postService.create(createPostDto, req.user);
+  }
+
+  @Get('/pagination')
+  @UsePipes(new ValidationPipe())
+  findAllWhithPagination(
+    @Req() req,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.postService.findAllWhithPagination(req.user.id, +page, +limit);
   }
 
   @Get()
@@ -44,7 +57,14 @@ export class PostController {
 
   @Delete(':id')
   @UsePipes(new ValidationPipe())
+  @UseGuards(AuthorGuard)
   remove(@Param('id') id: string) {
     return this.postService.remove(id);
+  }
+
+  @Post('/toggleFavorite')
+  @UsePipes(new ValidationPipe())
+  toggleFavorite(@Body('id') id: string, @Req() req) {
+    return this.postService.toggleFavorite(id, req.user);
   }
 }

@@ -5,7 +5,7 @@ import { PostModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeormModule } from './typeorm/typeorm.module';
 import { MailerModule } from './mailer/mailer.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 
