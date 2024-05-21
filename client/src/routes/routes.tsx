@@ -11,7 +11,6 @@ import {
   FeedPosts,
   Home,
   Message,
-  NotFound,
   Notifications,
   Register,
 } from '../pages';
@@ -28,7 +27,6 @@ const router = createBrowserRouter(
       <Route path="favorites" element={<Favorites />} />
       <Route path="notifications" element={<Notifications />} />
       <Route path="message" element={<Message />} />
-      <Route path="*" element={<NotFound />} />
     </Route>,
   ),
 );

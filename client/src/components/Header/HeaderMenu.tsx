@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { pages } from '../../helpers/PointMenu';
-import { NavLink } from 'react-router-dom';
 
 const HeaderMenu: FC = () => {
   const [, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -20,13 +20,13 @@ const HeaderMenu: FC = () => {
           to={page.toLowerCase()}
           key={page}
           onClick={handleCloseNavMenu}
-          style={{
+          style={({ isActive }) => ({
             textDecoration: 'none',
-            color: '#ffffff',
-            margin: '0 10px',
+            color: isActive ? '#7fbaf5' : '#ffffff',
+            margin: '0 7px',
             textTransform: 'uppercase',
-
-          }}
+            fontSize: '14px',
+          })}
         >
           {page}
         </NavLink>

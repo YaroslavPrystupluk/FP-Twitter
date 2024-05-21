@@ -1,9 +1,13 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
 
 const FormRegister: FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [nameDisplay, srtNameDisplay] = useState<string>('');
   return (
     <Container
       maxWidth="xl"
@@ -101,37 +105,45 @@ const FormRegister: FC = () => {
           E-Mail <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => setEmail(e.target.value)}
           fullWidth
           id="outlined-password-input"
           label="email"
           type="email"
+          value={email}
         />
         <Typography mt={2} alignSelf="flex-start" fontSize={18}>
           Password <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => setPassword(e.target.value)}
           fullWidth
           id="outlined-password-input"
           label="Password"
           type="password"
+          value={password}
         />
         <Typography mt={2} alignSelf="flex-start" fontSize={18}>
           Confirmed password <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => setConfirmPassword(e.target.value)}
           fullWidth
           id="outlined-confirmed-password-input"
           label="Password"
           type="password"
+          value={confirmPassword}
         />
         <Typography mt={2} alignSelf="flex-start" fontSize={18}>
           Name <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => srtNameDisplay(e.target.value)}
           fullWidth
           id="outlined-password-input"
           label="name"
           type="text"
+          value={nameDisplay}
         />
         <Button
           fullWidth

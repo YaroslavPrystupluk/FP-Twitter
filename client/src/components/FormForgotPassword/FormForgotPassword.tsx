@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 
 const FormForgotPassword: FC = () => {
+  const [email, setEmail] = useState<string>('');
   return (
     <Container
       maxWidth="xl"
@@ -70,10 +71,12 @@ const FormForgotPassword: FC = () => {
           E-Mail <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => setEmail(e.target.value)}
           fullWidth
           id="outlined-password-input"
           label="email"
           type="email"
+          value={email}
         />
 
         <Button

@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
 
 const FormLogin: FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   return (
     <Container
       maxWidth="xl"
@@ -101,19 +103,23 @@ const FormLogin: FC = () => {
           E-Mail <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => setEmail(e.target.value)}
           fullWidth
           id="outlined-password-input"
           label="email"
           type="email"
+          value={email}
         />
         <Typography mt={2} alignSelf="flex-start" fontSize={18}>
           Password <span style={{ color: 'red' }}>*</span>
         </Typography>
         <TextField
+          onChange={(e) => setPassword(e.target.value)}
           fullWidth
           id="outlined-password-input"
           label="Password"
           type="password"
+          value={password}
         />
         <Typography
           sx={{

@@ -6,7 +6,6 @@ import FeedPosts from './FeedPosts';
 import Message from './Message';
 import Favorites from './Favorites';
 import Notifications from './Notifications';
-import NotFound from './NotFound';
 import ErrorPage from './ErrorPage';
 
 export {
@@ -18,6 +17,5 @@ export {
   Message,
   Favorites,
   Notifications,
-  NotFound,
   ErrorPage,
 };

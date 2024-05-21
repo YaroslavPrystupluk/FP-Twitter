@@ -1,8 +1,9 @@
 import { FC, useState } from 'react'
-import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import { Box, IconButton, Menu, MenuItem } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { pages } from '../../helpers/PointMenu';
-import { NavLink } from 'react-router-dom';
+
 
 
 const HeaderBuegerMenu: FC = () => {
@@ -52,11 +53,9 @@ const HeaderBuegerMenu: FC = () => {
           <MenuItem key={page} onClick={handleCloseNavMenu}>
             <NavLink
               to={page.toLowerCase()}
-              key={page}
               onClick={handleCloseNavMenu}
               style={{
                 textDecoration: 'none',
-                color: '#ffffff',
                 margin: '0 10px',
                 textTransform: 'uppercase',
               }}
