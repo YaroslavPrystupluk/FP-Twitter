@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Box, IconButton, Menu, MenuItem, Tooltip, Avatar, Typography } from '@mui/material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Edit profile', 'Logout'];
 const HeaderProfileMenu: FC = () => {
   
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(

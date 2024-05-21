@@ -8,10 +8,8 @@ const Header: FC = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <FlutterDashIcon
-            fontSize="large"
-            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
-          />
+          <HeaderBuegerMenu />
+          <FlutterDashIcon fontSize="large" sx={{ display: 'flex', mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -19,47 +17,22 @@ const Header: FC = () => {
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: 'none', sm: 'flex' },
               fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
+              fontWeight: { md: 500, lg: 700 },
+              letterSpacing: { sm: '.2rem', lg: '.3rem' },
               color: 'inherit',
               textDecoration: 'none',
               whiteSpace: 'pre-line',
+              flexGrow: { xs: 1, md: 0 },
+              textTransform: 'uppercase',
             }}
           >
             clone twitter
           </Typography>
-
-          <HeaderBuegerMenu />
-          <FlutterDashIcon
-            fontSize="large"
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
-          />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 500,
-              letterSpacing: '.2rem',
-              color: 'inherit',
-              textDecoration: 'none',
-              whiteSpace: 'pre-line',
-            }}
-          >
-            clone twitter
-          </Typography>
-          <>
-            <HeaderMenu />
-            <Seaech />
-            <HeaderProfileMenu />
-          </>
+          <HeaderMenu />
+          <Seaech />
+          <HeaderProfileMenu />
         </Toolbar>
       </Container>
     </AppBar>

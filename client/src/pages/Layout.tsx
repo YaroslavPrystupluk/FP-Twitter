@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '../components';
 
 const Layout: FC = () => {
-  const isAuth = false;
+  const isAuth = true;
   return (
     <>
       {isAuth && <Header />}

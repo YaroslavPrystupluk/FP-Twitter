@@ -5,7 +5,7 @@ const Notifications: FC = () => {
     <div>
       <p>Notifications</p>
     </div>
-  )
-}
+  );
+};
 
 export default Notifications
