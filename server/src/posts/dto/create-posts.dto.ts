@@ -10,7 +10,7 @@ export class CreatePostDto {
   text: string;
 
   @IsString()
-  image?: string;
+  image?: string = '';
 
   user: User;
 }

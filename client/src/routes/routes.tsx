@@ -15,6 +15,7 @@ import {
   Notifications,
   Register,
 } from '../pages';
+import ForgotPassword from '../pages/ForgotPassword';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="auth" element={<Auth />} />
       <Route path="register" element={<Register />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
       <Route path="posts" element={<FeedPosts />} />
       <Route path="favorites" element={<Favorites />} />
       <Route path="notifications" element={<Notifications />} />

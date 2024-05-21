@@ -1,11 +1,10 @@
 import { FC } from 'react'
+import { FormLogin } from '../components'
 
 
 const Auth: FC = () => {
   return (
-    <div>
-      <p>Auth</p>
-    </div>
+<FormLogin/>
   )
 }
 

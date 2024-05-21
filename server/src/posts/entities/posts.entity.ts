@@ -14,7 +14,7 @@ export class Post {
   @Column()
   text: string;
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   image: string;
 
   @Column({ default: false })

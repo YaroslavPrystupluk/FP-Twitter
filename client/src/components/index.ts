@@ -1,6 +1,6 @@
-import Header from './Header';
-import HeaderMenu from './HeaderMenu';
-import HeaderBuegerMenu from './HeaderBuegerMenu';
-import HeaderProfileMenu from './HeaderProfileMenu';
+import Header from './Header/Header';
+import FormLogin from './FormLogin/FormLogin';
+import FormRegister from './FormRegister/FormRegister';
+import FormForgotPassword from './FormForgotPassword/FormForgotPassword';
 
-export { Header, HeaderMenu, HeaderBuegerMenu, HeaderProfileMenu }
+export { Header, FormLogin, FormRegister, FormForgotPassword };

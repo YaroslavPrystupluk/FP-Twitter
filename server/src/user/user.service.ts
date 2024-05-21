@@ -50,6 +50,7 @@ export class UserService {
     return await this.userRepository.save({
       email: createUserDto.email,
       password: hashPassword,
+      displayname: createUserDto.displayname,
       activateLink,
       isActivated: createUserDto.password ? false : true,
       provider: createUserDto.provider,

@@ -1,17 +1,19 @@
-import { Container } from '@mui/material'
-import { FC } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Container } from '@mui/material';
+import { FC } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Header } from '../components';
 
 const Layout: FC = () => {
+  const isAuth = false;
   return (
     <>
-      <Header />
+      {isAuth && <Header />}
+
       <Container maxWidth="xl">
         <Outlet />
       </Container>
     </>
   );
-}
+};
 
-export default Layout
+export default Layout;

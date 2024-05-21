@@ -1,11 +1,9 @@
 import { FC } from 'react';
 import { AppBar, Toolbar, Typography, Container } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
-import { HeaderBuegerMenu, HeaderMenu, HeaderProfileMenu } from '.';
+import { HeaderBuegerMenu, HeaderMenu, HeaderProfileMenu, Seaech } from '.';
 
 const Header: FC = () => {
-  const isAuth = true;
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -33,7 +31,7 @@ const Header: FC = () => {
             clone twitter
           </Typography>
 
-          {isAuth && <HeaderBuegerMenu />}
+          <HeaderBuegerMenu />
           <FlutterDashIcon
             fontSize="large"
             sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
@@ -49,7 +47,7 @@ const Header: FC = () => {
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 500,
-              letterSpacing: '.3rem',
+              letterSpacing: '.2rem',
               color: 'inherit',
               textDecoration: 'none',
               whiteSpace: 'pre-line',
@@ -57,13 +55,11 @@ const Header: FC = () => {
           >
             clone twitter
           </Typography>
-          {isAuth && (
-            <>
-              <HeaderMenu />
-              <HeaderProfileMenu />
-            </>
-            
-          )}
+          <>
+            <HeaderMenu />
+            <Seaech />
+            <HeaderProfileMenu />
+          </>
         </Toolbar>
       </Container>
     </AppBar>

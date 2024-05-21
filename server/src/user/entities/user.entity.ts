@@ -20,6 +20,9 @@ export class User {
   @Column({ nullable: true })
   password: string | null;
 
+  @Column({ default: 'User' + Date.now() })
+  displayname: string;
+
   @Column({
     type: 'enum',
     enum: Provider,

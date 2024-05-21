@@ -7,6 +7,7 @@ import { Provider } from 'src/enum/provider.enum';
 export class UserResponse implements User {
   id: string;
   email: string;
+  displayname: string;
 
   @Exclude()
   password: string;
