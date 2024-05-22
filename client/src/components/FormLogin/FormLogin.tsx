@@ -1,5 +1,13 @@
 import { FC, useState } from 'react';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  TextField,
+  Typography,
+} from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
 
@@ -105,7 +113,6 @@ const FormLogin: FC = () => {
         <TextField
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
-          id="outlined-password-input"
           label="email"
           type="email"
           value={email}
@@ -116,7 +123,6 @@ const FormLogin: FC = () => {
         <TextField
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
-          id="outlined-password-input"
           label="Password"
           type="password"
           value={password}
@@ -133,6 +139,12 @@ const FormLogin: FC = () => {
         >
           Forgot password?
         </Typography>
+        <FormControlLabel
+        
+          sx={{ alignSelf: 'flex-start', padding: '15px 0 0 0' }}
+          control={<Checkbox name="remember" />}
+          label="Remember me"
+        />
         <Button
           fullWidth
           variant="contained"

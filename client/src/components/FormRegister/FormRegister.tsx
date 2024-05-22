@@ -118,7 +118,6 @@ const FormRegister: FC = () => {
         <TextField
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
-          id="outlined-password-input"
           label="Password"
           type="password"
           value={password}
@@ -129,7 +128,6 @@ const FormRegister: FC = () => {
         <TextField
           onChange={(e) => setConfirmPassword(e.target.value)}
           fullWidth
-          id="outlined-confirmed-password-input"
           label="Password"
           type="password"
           value={confirmPassword}
@@ -140,7 +138,6 @@ const FormRegister: FC = () => {
         <TextField
           onChange={(e) => srtNameDisplay(e.target.value)}
           fullWidth
-          id="outlined-password-input"
           label="name"
           type="text"
           value={nameDisplay}

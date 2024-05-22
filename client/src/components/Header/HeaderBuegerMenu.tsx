@@ -1,17 +1,13 @@
-import { FC, useState } from 'react'
+import { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box, IconButton, Menu, MenuItem } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
-import { pages } from '../../helpers/PointMenu';
-
-
+import { pages } from '../../helpers/pointMenu.helpers';
 
 const HeaderBuegerMenu: FC = () => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null,
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
 
@@ -67,7 +63,6 @@ const HeaderBuegerMenu: FC = () => {
       </Menu>
     </Box>
   );
-}
+};
 
-export default HeaderBuegerMenu
-
+export default HeaderBuegerMenu;

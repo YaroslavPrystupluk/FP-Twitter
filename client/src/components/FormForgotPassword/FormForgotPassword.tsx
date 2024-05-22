@@ -73,7 +73,6 @@ const FormForgotPassword: FC = () => {
         <TextField
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
-          id="outlined-password-input"
           label="email"
           type="email"
           value={email}

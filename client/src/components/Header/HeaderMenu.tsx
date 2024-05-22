@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { pages } from '../../helpers/PointMenu';
+import { pages } from '../../helpers/pointMenu.helpers';
 
 const HeaderMenu: FC = () => {
   const [, setAnchorElNav] = useState<null | HTMLElement>(null);
