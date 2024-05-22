@@ -2,10 +2,10 @@ import { FC } from 'react'
 import { FormLogin } from '../components'
 
 
-const Auth: FC = () => {
+const Login: FC = () => {
   return (
 <FormLogin/>
   )
 }
 
-export default Auth
+export default Login

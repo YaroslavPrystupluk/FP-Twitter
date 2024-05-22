@@ -1,5 +1,5 @@
 import Home from './Home';
-import Auth from './Auth';
+import Login from './Login';
 import Register from './Register';
 import Layout from './Layout';
 import FeedPosts from './FeedPosts';
@@ -10,7 +10,7 @@ import ErrorPage from './ErrorPage';
 
 export {
   Home,
-  Auth,
+  Login,
   Register,
   Layout,
   FeedPosts,
