@@ -10,6 +10,7 @@ import {
   ValidationPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -39,6 +40,7 @@ export class UserController {
   @Get(':idOrEmail')
   async findOne(@Param('idOrEmail') idOrEmail: string) {
     const user = await this.userService.findOne(idOrEmail);
+    if (!user) throw new NotFoundException('User not found');
     return new UserResponse(user);
   }
 

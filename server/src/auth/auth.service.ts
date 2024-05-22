@@ -154,14 +154,21 @@ export class AuthService {
     return await this.usersService.findOne(userId);
   }
 
-  async providerAuth(idOrEmail: string, agent: string, provider: Provider) {
-    const userExists = await this.usersService.findOne(idOrEmail);
+  async providerAuth(
+    email: string,
+    name: string,
+    agent: string,
+    provider: Provider,
+  ) {
+    const userExists = await this.usersService.findOne(email);
     if (userExists) {
       return await this.generateTokens(userExists, agent);
     }
     const user = await this.usersService.create({
-      email: idOrEmail,
+      email,
       provider,
+      displayname: name,
+      isRememberMe: true,
     });
     if (!user)
       throw new HttpException('User not created', HttpStatus.BAD_REQUEST);

@@ -61,11 +61,9 @@ export class UserService {
       ? { email: idOrEmail }
       : { id: idOrEmail };
 
-    const user = await this.userRepository.findOne({
+    return await this.userRepository.findOne({
       where: searchCondition,
     });
-    if (!user) throw new NotFoundException('User not found');
-    return user;
   }
 
   async findAll() {
