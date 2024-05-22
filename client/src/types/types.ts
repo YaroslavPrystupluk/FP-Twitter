@@ -1,13 +1,13 @@
 export interface IUserData {
-  name?: string;
   email: string;
   password?: string;
+  displayname?: string;
 }
 
-export interface IPersoneUserData {
-  email: string;
-  displayName: string;
-  provider: string;
-  isActivated: boolean;
-  isRememberMy: boolean;
+export interface IResponseUserData {
+  email: string | undefined;
+  displayname: string | undefined;
+  provider: string | undefined;
+  isActivated: boolean | undefined;
+  isRememberMy: boolean | undefined;
 }

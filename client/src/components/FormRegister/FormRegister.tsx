@@ -1,13 +1,35 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
+import { authService } from '../../services/auth.service';
+import { toast } from 'react-toastify';
 
 const FormRegister: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [nameDisplay, srtNameDisplay] = useState<string>('');
+
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+    try {
+      event.preventDefault();
+      const data = await authService.registration({
+        email,
+        password,
+        displayname: nameDisplay,
+      });
+
+      if (data) {
+        toast.success('Registration was successful!');
+      }
+    } catch (err: Error) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
+  };
+
   return (
     <Container
       maxWidth="xl"
