@@ -90,8 +90,6 @@ export class PostService {
   }
 
   async toggleFavorite(id: string, user: User) {
-    console.log(user);
-
     const post = await this.postsRepository.findOne({
       where: {
         id,

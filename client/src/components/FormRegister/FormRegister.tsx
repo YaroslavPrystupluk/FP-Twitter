@@ -4,6 +4,7 @@ import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
 import { authService } from '../../services/auth.service';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const FormRegister: FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -17,13 +18,15 @@ const FormRegister: FC = () => {
       const data = await authService.registration({
         email,
         password,
+        confirmPassword,
         displayname: nameDisplay,
       });
 
       if (data) {
         toast.success('Registration was successful!');
       }
-    } catch (err: Error) {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
       const error = err.response?.data.message;
 
       toast.error(error.toString());
@@ -123,71 +126,77 @@ const FormRegister: FC = () => {
             marginBottom: 2,
           }}
         ></Box>
-        <Typography alignSelf="flex-start" fontSize={18}>
-          E-Mail <span style={{ color: 'red' }}>*</span>
-        </Typography>
-        <TextField
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-          id="outlined-password-input"
-          label="email"
-          type="email"
-          value={email}
-        />
-        <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-          Password <span style={{ color: 'red' }}>*</span>
-        </Typography>
-        <TextField
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          label="Password"
-          type="password"
-          value={password}
-        />
-        <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-          Confirmed password <span style={{ color: 'red' }}>*</span>
-        </Typography>
-        <TextField
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          fullWidth
-          label="Password"
-          type="password"
-          value={confirmPassword}
-        />
-        <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-          Name <span style={{ color: 'red' }}>*</span>
-        </Typography>
-        <TextField
-          onChange={(e) => srtNameDisplay(e.target.value)}
-          fullWidth
-          label="name"
-          type="text"
-          value={nameDisplay}
-        />
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ marginTop: 2, textTransform: 'none' }}
-        >
-          Singl up
-        </Button>
+        <Box component="form" onSubmit={handleRegister} sx={{ width: '100%' }}>
+          <Typography alignSelf="flex-start" fontSize={18}>
+            E-Mail <span style={{ color: 'red' }}>*</span>
+          </Typography>
+          <TextField
+            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            id="outlined-password-input"
+            label="email"
+            type="email"
+            value={email}
+          />
+          <Typography mt={2} alignSelf="flex-start" fontSize={18}>
+            Password <span style={{ color: 'red' }}>*</span>
+          </Typography>
+          <TextField
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            label="Password"
+            type="password"
+            value={password}
+          />
+          <Typography mt={2} alignSelf="flex-start" fontSize={18}>
+            Confirmed password <span style={{ color: 'red' }}>*</span>
+          </Typography>
+          <TextField
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            fullWidth
+            label="Confirmed password"
+            type="password"
+            value={confirmPassword}
+          />
+          <Typography mt={2} alignSelf="flex-start" fontSize={18}>
+            Name <span style={{ color: 'red' }}>*</span>
+          </Typography>
+          <TextField
+            onChange={(e) => srtNameDisplay(e.target.value)}
+            fullWidth
+            label="name"
+            type="text"
+            value={nameDisplay}
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ marginTop: 2, textTransform: 'none' }}
+          >
+            Singl up
+          </Button>
+        </Box>
         <Typography
           sx={{
             padding: '25px 0 0 0',
           }}
         >
           {'Already have an account? '}
-          <Box
-            component="span"
-            sx={{
-              color: '#1976d2',
-              '&:hover': {
-                color: '#7fbaf5',
-              },
-            }}
-          >
-            Sing in
-          </Box>
+          <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Box
+              component="span"
+              sx={{
+                color: '#1976d2',
+                '&:hover': {
+                  color: '#7fbaf5',
+                },
+              }}
+            >
+              Sing in
+            </Box>
+          </Link>
         </Typography>
       </Box>
     </Container>

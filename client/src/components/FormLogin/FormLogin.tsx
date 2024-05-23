@@ -10,10 +10,41 @@ import {
 } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
+import { authService } from '../../services/auth.service';
+import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
+import { setTokenToLocalStorage } from '../../helpers/localStorage.helpers';
+import { useAppDispatch } from '../../store/hooks';
+import { login } from '../../store/user/userSlice';
 
 const FormLogin: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    try {
+      event.preventDefault();
+      const data = await authService.login({
+        email,
+        password,
+        rememberMe: false,
+      });
+
+      if (data) {
+        setTokenToLocalStorage('accessToken', data.accessToken);
+        dispatch(login(data));
+        toast.success('Login was successful!');
+        navigate('/posts');
+      }
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
+  };
   return (
     <Container
       maxWidth="xl"
@@ -107,68 +138,72 @@ const FormLogin: FC = () => {
             marginBottom: 2,
           }}
         ></Box>
-        <Typography alignSelf="flex-start" fontSize={18}>
-          E-Mail <span style={{ color: 'red' }}>*</span>
-        </Typography>
-        <TextField
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-          label="email"
-          type="email"
-          value={email}
-        />
-        <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-          Password <span style={{ color: 'red' }}>*</span>
-        </Typography>
-        <TextField
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          label="Password"
-          type="password"
-          value={password}
-        />
-        <Typography
-          sx={{
-            alignSelf: 'flex-start',
-            padding: '25px 0 0 0',
-            color: '#1976d2',
-            '&:hover': {
-              color: '#7fbaf5',
-            },
-          }}
-        >
-          Forgot password?
-        </Typography>
-        <FormControlLabel
-        
-          sx={{ alignSelf: 'flex-start', padding: '15px 0 0 0' }}
-          control={<Checkbox name="remember" />}
-          label="Remember me"
-        />
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ marginTop: 2, textTransform: 'none' }}
-        >
-          Singl In
-        </Button>
-        <Typography
-          sx={{
-            padding: '25px 0 0 0',
-          }}
-        >
-          {'Don\'t have an account? '}
-          <Box
-            component="span"
+        <Box component="form" onSubmit={handleLogin} sx={{ width: '100%' }}>
+          <Typography alignSelf="flex-start" fontSize={18}>
+            E-Mail <span style={{ color: 'red' }}>*</span>
+          </Typography>
+          <TextField
+            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            label="email"
+            type="email"
+            value={email}
+          />
+          <Typography mt={2} alignSelf="flex-start" fontSize={18}>
+            Password <span style={{ color: 'red' }}>*</span>
+          </Typography>
+          <TextField
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            label="Password"
+            type="password"
+            value={password}
+          />
+          <Typography
             sx={{
+              alignSelf: 'flex-start',
+              padding: '25px 0 0 0',
               color: '#1976d2',
               '&:hover': {
                 color: '#7fbaf5',
               },
             }}
           >
-            Sing up
-          </Box>
+            Forgot password?
+          </Typography>
+          <FormControlLabel
+            sx={{ alignSelf: 'flex-start', padding: '15px 0 0 0' }}
+            control={<Checkbox name="remember" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ marginTop: 2, textTransform: 'none' }}
+          >
+            Singl In
+          </Button>
+        </Box>
+        <Typography
+          sx={{
+            padding: '25px 0 0 0',
+          }}
+        >
+          {'Do not have an account? '}
+          <Link to="/register" style={{ textDecoration: 'none' }}>
+            <Box
+              component="span"
+              sx={{
+                color: '#1976d2',
+                '&:hover': {
+                  color: '#7fbaf5',
+                },
+              }}
+            >
+              Sing up
+            </Box>
+          </Link>
         </Typography>
       </Box>
     </Container>

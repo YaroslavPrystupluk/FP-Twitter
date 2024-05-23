@@ -9,6 +9,7 @@ import {
 export class IsPasswordMatchConstraint implements ValidatorConstraintInterface {
   validate(confirmPassword: string, args: ValidationArguments) {
     const obj = args.object as CreateUserDto;
+
     return obj.password === confirmPassword;
   }
 

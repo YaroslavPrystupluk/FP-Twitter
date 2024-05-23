@@ -1,7 +1,7 @@
 export const getTokenFromLocalStorage = (): string => {
-  const data = localStorage.getItem('token');
+  const data = localStorage.getItem('tokenTwittwr');
   const token: string = data ? JSON.parse(data) : '';
-  return token;
+   return token;
 }
 
 export const setTokenToLocalStorage = (key: string, token: string): void => {

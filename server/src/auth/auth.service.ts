@@ -69,9 +69,18 @@ export class AuthService {
     return this.generateTokens(user, agent);
   }
 
+  async remember(loginUserDto: LoginUserDto) {
+    const user = await this.usersService.findOne(loginUserDto.email);
+    if (!user) throw new NotFoundException('User not found');
+    user.isRememberMe = user.isRememberMe;
+    await this.usersService.update(user.id, user);
+    console.log(user);
+
+    return user.isRememberMe;
+  }
+
   private async generateTokens(user: IUser, agent: string): Promise<IToken> {
     const isRememberMe = user.isRememberMe;
-    console.log(isRememberMe);
 
     const accessToken =
       'Bearer ' +
