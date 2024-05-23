@@ -85,7 +85,7 @@ export class AuthController {
     this.setRefreshTokenToCookie(tokens, res);
   }
 
-  @Post('remember')
+  @Post('rememberMe')
   async remember(@Body() loginUserDto: LoginUserDto) {
     return this.authService.remember(loginUserDto);
   }

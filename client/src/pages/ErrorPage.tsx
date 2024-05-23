@@ -4,13 +4,12 @@ import { Container, Typography, Button } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const ErrorPage: FC = () => {
-   const error = useRouteError();
-  console.error(error);
+  useRouteError();
 
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate('/');
+    navigate('/posts', { replace: true });
   };
 
   return (

@@ -74,7 +74,6 @@ export class AuthService {
     if (!user) throw new NotFoundException('User not found');
     user.isRememberMe = user.isRememberMe;
     await this.usersService.update(user.id, user);
-    console.log(user);
 
     return user.isRememberMe;
   }

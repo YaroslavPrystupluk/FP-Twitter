@@ -45,6 +45,27 @@ const FormLogin: FC = () => {
       toast.error(error.toString());
     }
   };
+
+  const handleLoginGoogle = async ( event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    try {
+      event.preventDefault();
+      const data = await authService.loginGoogle();
+      console.log(data);
+      
+      if (data) {
+        setTokenToLocalStorage('accessToken', data.accessToken);
+        dispatch(login(data));
+        toast.success('Login was successful!');
+        navigate('/posts');
+      }
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
+  };
+
   return (
     <Container
       maxWidth="xl"
@@ -110,6 +131,7 @@ const FormLogin: FC = () => {
           }}
         ></Box>
         <Button
+        onClick={handleLoginGoogle}
           variant="outlined"
           sx={{
             borderColor: '#000000',

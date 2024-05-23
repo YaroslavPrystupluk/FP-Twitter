@@ -22,5 +22,11 @@ export const authService = {
     return data;
   },
 
+  async loginGoogle(): Promise<IUser | undefined> {
+    const { data } = await instance.get<IUser>('/auth/google');
+
+    return data;
+  },
+
   async getMy() {},
 };
