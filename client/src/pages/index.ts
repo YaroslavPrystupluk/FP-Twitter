@@ -7,6 +7,8 @@ import Message from './Message';
 import Favorites from './Favorites';
 import Notifications from './Notifications';
 import ErrorPage from './ErrorPage';
+import ProfileUser from './ProfileUser';
+import EditProfileUser from './EditProfileUser';
 
 export {
   Home,
@@ -18,4 +20,6 @@ export {
   Favorites,
   Notifications,
   ErrorPage,
+  ProfileUser,
+  EditProfileUser
 };

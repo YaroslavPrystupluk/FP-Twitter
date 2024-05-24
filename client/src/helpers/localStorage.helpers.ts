@@ -1,5 +1,5 @@
 export const getTokenFromLocalStorage = (): string => {
-  const data = localStorage.getItem('tokenTwittwr');
+  const data = localStorage.getItem('accessToken');
   const token: string = data ? JSON.parse(data) : '';
    return token;
 }

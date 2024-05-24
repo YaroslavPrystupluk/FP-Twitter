@@ -4,13 +4,14 @@ import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
 import { authService } from '../../services/auth.service';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FormRegister: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [nameDisplay, srtNameDisplay] = useState<string>('');
+  const navigate = useNavigate();
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -24,6 +25,7 @@ const FormRegister: FC = () => {
 
       if (data) {
         toast.success('Registration was successful!');
+        navigate('/login');
       }
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {

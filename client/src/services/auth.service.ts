@@ -1,4 +1,5 @@
 import { instance } from '../api/axios.api';
+import { setTokenToLocalStorage } from '../helpers/localStorage.helpers';
 import {
   IUserDataLogin,
   IResponseUserDataRegister,
@@ -23,10 +24,33 @@ export const authService = {
   },
 
   async loginGoogle(): Promise<IUser | undefined> {
-    const { data } = await instance.get<IUser>('/auth/google');
+    const { data } = await instance.get<IUser>('auth/google');
 
     return data;
   },
 
-  async getMy() {},
+  async getProfile() {
+    const { data } = await instance.get<IUser>('auth/profile');
+
+    if (data) return data;
+  },
+
+  async logout(): Promise<void> {
+    return await instance.get('auth/logout');
+  },
+
+  // async forgotPassword(email: string): Promise<void> {
+  //   return await instance.patch('change-password', { email });
+  // },
+
+  async refreshToken(): Promise<void> {
+    try {
+      const response = await instance.get('/auth/refresh');
+      const { accessToken } = response.data;
+
+      setTokenToLocalStorage('accessToken', accessToken);
+    } catch (error) {
+      console.error('Unable to refresh token', error);
+    }
+  },
 };

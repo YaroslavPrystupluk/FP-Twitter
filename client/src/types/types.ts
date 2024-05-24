@@ -4,6 +4,7 @@ export interface IUser {
   password?: string;
   isRememberMe?: boolean;
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface IUserDataRegister {

@@ -12,7 +12,7 @@ import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import GoogleIcon from '@mui/icons-material/Google';
 import { authService } from '../../services/auth.service';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { setTokenToLocalStorage } from '../../helpers/localStorage.helpers';
 import { useAppDispatch } from '../../store/hooks';
 import { login } from '../../store/user/userSlice';
@@ -50,7 +50,8 @@ const FormLogin: FC = () => {
     try {
       event.preventDefault();
       const data = await authService.loginGoogle();
-      console.log(data);
+console.log(data);
+
       
       if (data) {
         setTokenToLocalStorage('accessToken', data.accessToken);
@@ -181,7 +182,8 @@ const FormLogin: FC = () => {
             type="password"
             value={password}
           />
-          <Typography
+          <NavLink to="/forgot-password" style={{ textDecoration: 'none' }}>
+          <Box
             sx={{
               alignSelf: 'flex-start',
               padding: '25px 0 0 0',
@@ -192,7 +194,8 @@ const FormLogin: FC = () => {
             }}
           >
             Forgot password?
-          </Typography>
+          </Box>
+          </NavLink>
           <FormControlLabel
             sx={{ alignSelf: 'flex-start', padding: '15px 0 0 0' }}
             control={<Checkbox name="remember" />}

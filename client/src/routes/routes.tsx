@@ -3,7 +3,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { Layout } from '../pages';
+import { Layout, ProfileUser } from '../pages';
 import {
   Login,
   ErrorPage,
@@ -15,18 +15,72 @@ import {
   Register,
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
+import ProtectedRoute from '../hoc/ProtectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
-      <Route index element={<Home />} />
+      <Route
+        index
+        element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        }
+      />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
-      <Route path="posts" element={<FeedPosts />} />
-      <Route path="favorites" element={<Favorites />} />
-      <Route path="notifications" element={<Notifications />} />
-      <Route path="message" element={<Message />} />
+      <Route
+        path="posts"
+        element={
+          <ProtectedRoute>
+            <FeedPosts />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="favorites"
+        element={
+          <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="notifications"
+        element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="message"
+        element={
+          <ProtectedRoute>
+            <Message />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="profile"
+        element={
+          <ProtectedRoute>
+            <ProfileUser />
+          </ProtectedRoute>
+        }
+        errorElement={<ErrorPage />}
+      />
+      <Route
+        path="edit-profile"
+        element={
+          <ProtectedRoute>
+            <ProfileUser />
+          </ProtectedRoute>
+        }
+        errorElement={<ErrorPage />}
+      />
     </Route>,
   ),
 );

@@ -8,6 +8,7 @@ import {
   Post,
   Query,
   Req,
+  Request,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -17,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { Response, Request } from 'express';
+import { Response, Request as ExpressRequest } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -31,6 +32,7 @@ import { HttpService } from '@nestjs/axios';
 import { map, mergeMap } from 'rxjs';
 import { hendleTimeoutError } from 'src/helpers/timeout-error.helpers';
 import { Provider } from 'src/enum/provider.enum';
+import { AuthGuard } from '@nestjs/passport';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
@@ -83,6 +85,12 @@ export class AuthController {
     const tokens = await this.authService.login(loginUserDto, agent);
 
     this.setRefreshTokenToCookie(tokens, res);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 
   @Post('rememberMe')
@@ -138,7 +146,7 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
-  async googleLoginCallback(@Req() req: Request, @Res() res: Response) {
+  async googleLoginCallback(@Req() req: ExpressRequest, @Res() res: Response) {
     const token = req.user['accessToken'];
     return res.redirect(
       `http://localhost:3001/api/auth/success?token=${token}`,
