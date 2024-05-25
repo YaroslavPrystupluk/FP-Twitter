@@ -1,18 +1,20 @@
 import { FC } from 'react';
-// import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { getTokenFromLocalStorage } from '../helpers/localStorage.helpers';
 
 interface IProps {
   children: JSX.Element;
 }
 
 const ProtectedRoute: FC<IProps> = ({ children }) => {
-  // const location = useLocation();
+  const location = useLocation();
   const isAuth = useAuth();
   console.log('ProtectedRoute: ', isAuth);
+  const token = getTokenFromLocalStorage();
 
-  if (!isAuth) {
-    // return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!isAuth && !token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;

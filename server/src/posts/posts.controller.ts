@@ -68,4 +68,9 @@ export class PostController {
   toggleFavorite(@Body('id') id: string, @Req() req) {
     return this.postService.toggleFavorite(id, req.user);
   }
+
+  @Post('upload')
+  upload(@Req() req) {
+    // return this.postService.upload(req);
+  }
 }

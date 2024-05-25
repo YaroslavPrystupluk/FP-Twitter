@@ -15,29 +15,31 @@ const Layout: FC = () => {
   
     const dispatch = useAppDispatch();
 
+    const checkAuth = async () => {
+      const token = getTokenFromLocalStorage();
+      try {
+        if (token) {
+          const data = await authService.getProfile();
+          if (data) {
+            dispatch(login(data));
+          } else {
+            dispatch(logout());
+          }
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        const error = err.response?.data.message;
+
+        toast.error(error.toString());
+      }
+    };
+
     
     useEffect(() => {
-      const checkAuth = async () => {
-        const token = getTokenFromLocalStorage();
-        try {
-          if (token) {
-            const data = await authService.getProfile();
-            if (data) {
-              dispatch(login(data));
-            } else {
-              dispatch(logout());
-            }
-          }
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-          const error = err.response?.data.message;
-
-          toast.error(error.toString());
-        }
-      };
-
       checkAuth();
-    }, [dispatch]);
+      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
   return (
     <>
       {isAuth && <Header />}
