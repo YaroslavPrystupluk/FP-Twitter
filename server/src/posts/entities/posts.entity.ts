@@ -14,8 +14,8 @@ export class Post {
   @Column()
   text: string;
 
-  @Column({ default: '' })
-  image: string;
+  @Column('text', { array: true, default: [] })
+  image: string[];
 
   @Column({ default: false })
   isFavirite: boolean;

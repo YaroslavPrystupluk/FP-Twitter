@@ -11,16 +11,22 @@ import {
   Req,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PostService } from './posts.service';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
 import { AuthorGuard } from 'src/guards/author.guard';
+import { multerConfig } from './config/multer.config';
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'image', maxCount: 10 }], multerConfig),
+  )
   @Post('/create')
   @UsePipes(new ValidationPipe())
   create(@Body() createPostDto: CreatePostDto, @Req() req) {
@@ -63,14 +69,9 @@ export class PostController {
     return this.postService.remove(id);
   }
 
-  @Post('/toggleFavorite')
-  @UsePipes(new ValidationPipe())
-  toggleFavorite(@Body('id') id: string, @Req() req) {
-    return this.postService.toggleFavorite(id, req.user);
-  }
-
-  @Post('upload')
-  upload(@Req() req) {
-    // return this.postService.upload(req);
-  }
+  // @Post('/toggleFavorite')
+  // @UsePipes(new ValidationPipe())
+  // toggleFavorite(@Body('id') id: string, @Req() req) {
+  //   return this.postService.toggleFavorite(id, req.user);
+  // }
 }

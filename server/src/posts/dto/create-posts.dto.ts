@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { User } from 'src/user/entities/user.entity';
 
 export class CreatePostDto {
@@ -9,8 +9,8 @@ export class CreatePostDto {
   })
   text: string;
 
-  @IsString()
-  image?: string = '';
+  @IsArray()
+  image?: string[];
 
   user: User;
 }
