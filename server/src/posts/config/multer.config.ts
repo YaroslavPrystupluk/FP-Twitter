@@ -11,8 +11,8 @@ export const multerConfig = {
     },
   }),
   fileFilter(req, file: Express.Multer.File, cb) {
-    if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
-      cb(
+    if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|webp|avif|svg)$/)) {
+      return cb(
         new HttpException('Unsupported file type', HttpStatus.BAD_REQUEST),
         false,
       );

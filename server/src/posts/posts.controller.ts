@@ -24,9 +24,6 @@ import { multerConfig } from './config/multer.config';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'image', maxCount: 10 }], multerConfig),
-  )
   @Post('/create')
   @UsePipes(new ValidationPipe())
   create(@Body() createPostDto: CreatePostDto, @Req() req) {
@@ -74,4 +71,12 @@ export class PostController {
   // toggleFavorite(@Body('id') id: string, @Req() req) {
   //   return this.postService.toggleFavorite(id, req.user);
   // }
+
+  @Post('upload')
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'image', maxCount: 20 }], multerConfig),
+  )
+  uploadFiles() {
+    return 'upload';
+  }
 }
