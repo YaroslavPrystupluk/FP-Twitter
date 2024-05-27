@@ -10,7 +10,7 @@ interface IProps {
 const ProtectedRoute: FC<IProps> = ({ children }) => {
   const location = useLocation();
   const isAuth = useAuth();
-  console.log('ProtectedRoute: ', isAuth);
+
   const token = getTokenFromLocalStorage();
 
   if (!isAuth && !token) {

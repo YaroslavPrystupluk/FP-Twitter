@@ -11,7 +11,6 @@ import { useAppDispatch } from '../store/hooks';
 
 const Layout: FC = () => {
   const isAuth = useAuth();
-  console.log('loyat:',isAuth);
   
     const dispatch = useAppDispatch();
 
