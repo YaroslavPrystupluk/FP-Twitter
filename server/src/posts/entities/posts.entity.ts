@@ -25,6 +25,6 @@ export class Post {
   @OneToMany(() => Favorite, (favorite) => favorite.post)
   favorites: Favorite[];
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_DATETIME' })
   createdAt: Date;
 }

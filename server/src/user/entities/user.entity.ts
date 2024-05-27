@@ -40,7 +40,7 @@ export class User {
   @Column({ nullable: true })
   activateLink: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_DATETIME' })
   createdAt: Date;
 
   @OneToMany(() => Post, (post) => post.user)
