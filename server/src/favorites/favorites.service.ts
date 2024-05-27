@@ -45,10 +45,12 @@ export class FavoritesService {
     return posts;
   }
 
-  async removeFavorite(userId: string, postId: string): Promise<void> {
+  async removeFavorite(userId: string, postId: string): Promise<string> {
     await this.favoriteRepository.delete({
       user: { id: userId },
       post: { id: postId },
     });
+
+    return 'ok';
   }
 }

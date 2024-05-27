@@ -14,6 +14,7 @@ export class AuthorGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const { id }: { id: string } = await request.params;
+
     if (!id) {
       throw new NotFoundException('Post ID is missing');
     }
