@@ -11,10 +11,16 @@ export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postsRepository: Repository<Post>,
   ) {}
-  async create(createPostDto: CreatePostDto, user: User) {
+  async create(
+    createPostDto: CreatePostDto,
+    user: User,
+    files: { image?: Express.Multer.File[] },
+  ) {
+    const images = files?.image?.map((file) => file.path) || [];
+
     const newPost = {
       text: createPostDto.text,
-      image: createPostDto.image,
+      image: images,
       user,
     };
 
@@ -63,7 +69,11 @@ export class PostService {
     return post;
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto) {
+  async update(
+    id: string,
+    updatePostDto: UpdatePostDto,
+    files: { image?: Express.Multer.File[] },
+  ) {
     const post = await this.postsRepository.findOne({
       where: {
         id,
@@ -71,6 +81,13 @@ export class PostService {
     });
 
     if (!post) throw new NotFoundException('Post not found');
+
+    if (files?.image) {
+      const images = files.image.map((file) => file.filename);
+      updatePostDto.image = images;
+    } else {
+      updatePostDto.image = post.image.filter((image) => image !== image);
+    }
 
     const updatedPost = this.postsRepository.update(id, updatePostDto);
     return updatedPost;

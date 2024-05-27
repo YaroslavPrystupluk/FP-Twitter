@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { diskStorage } from 'multer';
+import * as path from 'path';
 
 export const multerConfig = {
   storage: diskStorage({
-    destination: './uploads',
+    destination: path.join(__dirname, '../../../uploads'),
     filename: (req, file, cb) => {
       const name = file.originalname.split('.')[0];
       const ext = file.originalname.split('.')[1];

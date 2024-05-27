@@ -12,6 +12,7 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PostService } from './posts.service';
@@ -24,46 +25,64 @@ import { multerConfig } from './config/multer.config';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Post('/create')
+  @Post('create')
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'image', maxCount: 20 }], multerConfig),
+  )
   @UsePipes(new ValidationPipe())
-  create(@Body() createPostDto: CreatePostDto, @Req() req) {
-    return this.postService.create(createPostDto, req.user);
+  async create(
+    @UploadedFiles() files: { image?: Express.Multer.File[] },
+    @Body() createPostDto: CreatePostDto,
+    @Req() req,
+  ) {
+    return await this.postService.create(createPostDto, req.user, files);
   }
 
-  @Get('/pagination')
+  @Get('pagination')
   @UsePipes(new ValidationPipe())
-  findAllWhithPagination(
+  async findAllWhithPagination(
     @Req() req,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    return this.postService.findAllWhithPagination(req.user.id, +page, +limit);
+    return await this.postService.findAllWhithPagination(
+      req.user.id,
+      +page,
+      +limit,
+    );
   }
 
   @Get()
   @UsePipes(new ValidationPipe())
-  findAll(@Req() req) {
-    return this.postService.findAll(req.user);
+  async findAll(@Req() req) {
+    return await this.postService.findAll(req.user);
   }
 
   @Get(':textOrId')
   @UsePipes(new ValidationPipe())
-  findOne(@Param('textOrId') textOrId: string) {
-    return this.postService.findOne(textOrId);
+  async findOne(@Param('textOrId') textOrId: string) {
+    return await this.postService.findOne(textOrId);
   }
 
   @Patch(':id')
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'image', maxCount: 20 }], multerConfig),
+  )
   @UsePipes(new ValidationPipe())
   @UseGuards(AuthorGuard)
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(id, updatePostDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+    @UploadedFiles() files: { image?: Express.Multer.File[] },
+  ) {
+    return await this.postService.update(id, updatePostDto, files);
   }
 
   @Delete(':id')
   @UsePipes(new ValidationPipe())
   @UseGuards(AuthorGuard)
-  remove(@Param('id') id: string) {
-    return this.postService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.postService.remove(id);
   }
 
   // @Post('/toggleFavorite')
@@ -71,12 +90,4 @@ export class PostController {
   // toggleFavorite(@Body('id') id: string, @Req() req) {
   //   return this.postService.toggleFavorite(id, req.user);
   // }
-
-  @Post('upload')
-  @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'image', maxCount: 20 }], multerConfig),
-  )
-  uploadFiles() {
-    return 'upload';
-  }
 }
