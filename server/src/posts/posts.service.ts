@@ -106,17 +106,6 @@ export class PostService {
     return id;
   }
 
-  // async toggleFavorite(id: string, user: User) {
-  //   const post = await this.postsRepository.findOne({
-  //     where: {
-  //       id,
-  //     },
-  //   });
-  //   if (!post) throw new NotFoundException('Post not found');
-  //   post.isFavirite = !post.isFavirite;
-  //   return await this.postsRepository.save(post);
-  // }
-
   async findAllWhithPagination(id: string, page: number, limit: number) {
     const posts = await this.postsRepository.find({
       where: {

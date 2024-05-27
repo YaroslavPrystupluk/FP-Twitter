@@ -8,6 +8,7 @@ import {
 import { Post } from 'src/posts/entities/posts.entity';
 import { Token } from 'src/auth/entities/token.entity';
 import { Provider } from 'src/enum/provider.enum';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 
 @Entity()
 export class User {
@@ -44,6 +45,9 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites: Favorite[];
 
   @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];

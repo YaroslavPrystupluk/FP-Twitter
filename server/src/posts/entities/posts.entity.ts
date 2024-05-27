@@ -1,9 +1,11 @@
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 @Entity()
@@ -17,11 +19,11 @@ export class Post {
   @Column('text', { array: true, default: [] })
   image: string[];
 
-  @Column({ default: false })
-  isFavirite: boolean;
-
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user: User;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.post)
+  favorites: Favorite[];
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

@@ -84,10 +84,4 @@ export class PostController {
   async remove(@Param('id') id: string) {
     return await this.postService.remove(id);
   }
-
-  // @Post('/toggleFavorite')
-  // @UsePipes(new ValidationPipe())
-  // toggleFavorite(@Body('id') id: string, @Req() req) {
-  //   return this.postService.toggleFavorite(id, req.user);
-  // }
 }

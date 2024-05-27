@@ -3,6 +3,7 @@ import { User } from '../entities/user.entity';
 import { Token } from 'src/auth/entities/token.entity';
 import { Post } from 'src/posts/entities/posts.entity';
 import { Provider } from 'src/enum/provider.enum';
+import { Favorite } from 'src/favorites/entities/favorite.entity';
 
 export class UserResponse implements User {
   id: string;
@@ -23,6 +24,7 @@ export class UserResponse implements User {
 
   posts: Post[];
   tokens: Token[];
+  favorites: Favorite[];
 
   @Exclude()
   createdAt: Date;
