@@ -46,10 +46,19 @@ export class FavoritesService {
   }
 
   async removeFavorite(userId: string, postId: string): Promise<string> {
-    await this.favoriteRepository.delete({
-      user: { id: userId },
-      post: { id: postId },
+    const favorite = await this.favoriteRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+        post: {
+          id: postId,
+        },
+      },
     });
+
+    if (!favorite) throw new NotFoundException('Favorite not found');
+    await this.favoriteRepository.delete(favorite);
 
     return 'ok';
   }

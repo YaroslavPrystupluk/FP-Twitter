@@ -7,6 +7,8 @@ import {
   Req,
   Query,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { AuthorGuard } from 'src/guards/author.guard';
@@ -23,6 +25,7 @@ export class FavoritesController {
   }
 
   @Get('pagination')
+  @UsePipes(new ValidationPipe())
   async findAllWhithPaginationFavorite(
     @Req() req,
     @Query('page') page: number,
