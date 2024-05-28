@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     MailerModule,
     ForgotPasswordModule,
     FavoritesModule,
+    SubscriptionModule,
   ],
 
   providers: [
