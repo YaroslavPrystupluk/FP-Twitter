@@ -59,9 +59,10 @@ export class UserService {
   }
 
   async findOne(idOrEmail: string): Promise<User | undefined> {
-    const searchCondition = idOrEmail.includes('@')
-      ? { email: idOrEmail }
-      : { id: idOrEmail };
+    const searchCondition =
+      typeof idOrEmail === 'string' && idOrEmail.includes('@')
+        ? { email: idOrEmail }
+        : { id: idOrEmail };
 
     return await this.userRepository.findOne({
       where: searchCondition,

@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
 import { Like, Repository } from 'typeorm';
@@ -11,6 +13,27 @@ export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postsRepository: Repository<Post>,
   ) {}
+
+  async findAllWhithPagination(id: string, page: number, limit: number) {
+    const posts = await this.postsRepository.find({
+      where: {
+        user: {
+          id,
+        },
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: {
+        user: true,
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    if (!posts) throw new NotFoundException('Posts not found');
+    return posts;
+  }
+
   async create(
     createPostDto: CreatePostDto,
     user: User,
@@ -82,14 +105,31 @@ export class PostService {
 
     if (!post) throw new NotFoundException('Post not found');
 
-    if (files?.image) {
-      const images = files.image.map((file) => file.filename);
+    if (files?.image && files.image.length > 0) {
+      const images = files.image.map((file) => file.path);
       updatePostDto.image = images;
-    } else {
-      updatePostDto.image = post.image.filter((image) => image !== image);
     }
+    const deletedImages = post.image.filter((image) => {
+      if (updatePostDto.image) return !updatePostDto.image.includes(image);
 
-    const updatedPost = this.postsRepository.update(id, updatePostDto);
+      return (updatePostDto.image = []);
+    });
+
+    deletedImages.forEach((image) => {
+      const imagePath = `${image}`;
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      } else {
+        console.warn(`Image not found: ${imagePath}`);
+      }
+    });
+
+    const updatedPost = await this.postsRepository.save({
+      ...post,
+      ...updatePostDto,
+    });
+
     return updatedPost;
   }
 
@@ -100,29 +140,17 @@ export class PostService {
       },
     });
 
+    post.image.forEach((image) => {
+      if (fs.existsSync(`${image}`)) {
+        fs.unlinkSync(`${image}`);
+      } else {
+        throw new NotFoundException('Image not found');
+      }
+    });
+
     if (!post) throw new NotFoundException('Post not found');
     this.postsRepository.delete(id);
 
     return id;
-  }
-
-  async findAllWhithPagination(id: string, page: number, limit: number) {
-    const posts = await this.postsRepository.find({
-      where: {
-        user: {
-          id,
-        },
-      },
-      order: {
-        createdAt: 'DESC',
-      },
-      relations: {
-        user: true,
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
-    if (!posts) throw new NotFoundException('Posts not found');
-    return posts;
   }
 }

@@ -15,12 +15,10 @@ import { AuthorGuard } from 'src/guards/author.guard';
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
-  @Post(':userId/:postId')
-  @UseGuards(AuthorGuard)
-  addFavorite(
-    @Param('userId') userId: string,
-    @Param('postId') postId: string,
-  ) {
+  @Post('/:postId')
+  // @UseGuards(AuthorGuard)
+  addFavorite(@Param('postId') postId: string, @Req() req) {
+    const userId = req.user.id;
     return this.favoritesService.addFavorite(userId, postId);
   }
 
@@ -37,12 +35,10 @@ export class FavoritesController {
     );
   }
 
-  @Delete(':userId/:postId')
+  @Delete(':postId')
   // @UseGuards(AuthorGuard)
-  removeFavorite(
-    @Param('userId') userId: string,
-    @Param('postId') postId: string,
-  ) {
+  removeFavorite(@Param('postId') postId: string, @Req() req) {
+    const userId = req.user.id;
     return this.favoritesService.removeFavorite(userId, postId);
   }
 }
