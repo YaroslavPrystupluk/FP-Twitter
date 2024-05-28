@@ -12,7 +12,7 @@ export class Favorite {
   @PrimaryGeneratedColumn({ name: 'favorite_id' })
   id: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_DATETIME' })
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.favorites, { onDelete: 'CASCADE' })

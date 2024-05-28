@@ -25,6 +25,8 @@ export class UserResponse implements User {
   posts: Post[];
   tokens: Token[];
   favorites: Favorite[];
+  avatar: string;
+  scrinshots: string;
 
   @Exclude()
   createdAt: Date;

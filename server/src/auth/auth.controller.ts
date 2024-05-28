@@ -164,8 +164,14 @@ export class AuthController {
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`,
       )
       .pipe(
-        mergeMap(({ data: { email, name } }) =>
-          this.authService.providerAuth(email, name, agent, Provider.GOOGLE),
+        mergeMap(({ data: { email, name, picture } }) =>
+          this.authService.providerAuth(
+            email,
+            name,
+            picture,
+            agent,
+            Provider.GOOGLE,
+          ),
         ),
         map((data) => this.setRefreshTokenToCookie(data, res)),
         hendleTimeoutError(),

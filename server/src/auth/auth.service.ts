@@ -165,6 +165,7 @@ export class AuthService {
   async providerAuth(
     email: string,
     name: string,
+    picture: string,
     agent: string,
     provider: Provider,
   ) {
@@ -176,8 +177,10 @@ export class AuthService {
       email,
       provider,
       displayname: name,
+      avatar: picture,
       isRememberMe: true,
     });
+
     if (!user)
       throw new HttpException('User not created', HttpStatus.BAD_REQUEST);
 

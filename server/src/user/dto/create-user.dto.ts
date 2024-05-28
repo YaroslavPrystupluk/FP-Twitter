@@ -37,4 +37,10 @@ export class CreateUserDto {
 
   @IsBoolean()
   isRememberMe?: boolean;
+
+  @IsString()
+  avatar: string;
+
+  @IsString()
+  scrinshots?: string;
 }

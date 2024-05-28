@@ -40,7 +40,13 @@ export class User {
   @Column({ nullable: true })
   activateLink: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_DATETIME' })
+  @Column({ nullable: true })
+  avatar: string;
+
+  @Column({ nullable: true })
+  scrinshots: string;
+
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
   @OneToMany(() => Post, (post) => post.user)

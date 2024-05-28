@@ -53,6 +53,8 @@ export class UserService {
       isActivated: createUserDto.password ? false : true,
       provider: createUserDto.provider,
       isRememberMe: createUserDto.isRememberMe,
+      avatar: createUserDto.avatar,
+      scrinshots: createUserDto.scrinshots,
     });
   }
 
