@@ -4,6 +4,7 @@ import { Token } from 'src/auth/entities/token.entity';
 import { Post } from 'src/posts/entities/posts.entity';
 import { Provider } from 'src/enum/provider.enum';
 import { Favorite } from 'src/favorites/entities/favorite.entity';
+import { Subscription } from 'src/subscription/entities/subscription.entity';
 
 export class UserResponse implements User {
   id: string;
@@ -27,6 +28,9 @@ export class UserResponse implements User {
   favorites: Favorite[];
   avatar: string;
   scrinshots: string;
+
+  subscribers: Subscription[];
+  subscriptions: Subscription[];
 
   @Exclude()
   createdAt: Date;
