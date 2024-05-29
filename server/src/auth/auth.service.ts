@@ -72,7 +72,7 @@ export class AuthService {
   async remember(loginUserDto: LoginUserDto) {
     const user = await this.usersService.findOne(loginUserDto.email);
     if (!user) throw new NotFoundException('User not found');
-    user.isRememberMe = user.isRememberMe;
+    user.isRememberMe = true;
     await this.usersService.update(user.id, user);
 
     return user.isRememberMe;
@@ -132,12 +132,17 @@ export class AuthService {
       },
     });
 
+    if (!userId) throw new NotFoundException('User not found');
+
+    await this.tokenRepository.delete({ user: userId, agent });
+
     const token = await this.tokenRepository.findOne({
       where: {
         user: userId,
         agent,
       },
     });
+
     if (!token) {
       return await this.tokenRepository.save({
         user: userId,

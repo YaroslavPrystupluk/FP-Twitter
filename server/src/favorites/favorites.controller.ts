@@ -6,19 +6,15 @@ import {
   Delete,
   Req,
   Query,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import { AuthorGuard } from 'src/guards/author.guard';
-
 @Controller('favorites')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
-  @Post('/:postId')
-  // @UseGuards(AuthorGuard)
+  @Post(':postId')
   addFavorite(@Param('postId') postId: string, @Req() req) {
     const userId = req.user.id;
     return this.favoritesService.addFavorite(userId, postId);
@@ -39,7 +35,6 @@ export class FavoritesController {
   }
 
   @Delete(':postId')
-  // @UseGuards(AuthorGuard)
   removeFavorite(@Param('postId') postId: string, @Req() req) {
     const userId = req.user.id;
     return this.favoritesService.removeFavorite(userId, postId);

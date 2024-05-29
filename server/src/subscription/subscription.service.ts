@@ -18,7 +18,6 @@ export class SubscriptionService {
     // const subscriber = this.subscriptionRepository.findOne({
     //   where: { subscriberId },
     // });
-
     // const subscribedTo = this.subscriptionRepository.findOne({
     //   where: { subscribedToId: createSubscriptionDto.subscribedToId },
     // });
