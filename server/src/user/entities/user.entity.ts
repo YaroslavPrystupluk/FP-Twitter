@@ -41,7 +41,7 @@ export class User {
   @Column({ nullable: true })
   activateLink: string;
 
-  @Column({ nullable: true })
+  @Column({ default: 'https://i.stack.imgur.com/l60Hf.png' })
   avatar: string;
 
   @Column({ nullable: true })

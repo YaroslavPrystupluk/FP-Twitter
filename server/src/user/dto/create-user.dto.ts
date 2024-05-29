@@ -39,7 +39,7 @@ export class CreateUserDto {
   isRememberMe?: boolean;
 
   @IsString()
-  avatar: string;
+  avatar: string = 'https://i.stack.imgur.com/l60Hf.png';
 
   @IsString()
   scrinshots?: string;

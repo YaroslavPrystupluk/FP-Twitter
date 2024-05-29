@@ -28,5 +28,5 @@ export class RegisterUserDto {
   displayname: string;
 
   @IsString()
-  avatar: string;
+  avatar: string = 'https://i.stack.imgur.com/l60Hf.png';
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Favorite } from './entities/favorite.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,7 +24,9 @@ export class FavoritesService {
     if (!user || !post) throw new NotFoundException('User or Post not found');
 
     if (post.user.id === userId) {
-      throw new Error('You cannot add your own post to favorites');
+      throw new BadRequestException(
+        'You cannot add your own post to favorites',
+      );
     }
 
     const favorite = this.favoriteRepository.create({ user, post });
