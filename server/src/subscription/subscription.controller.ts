@@ -2,41 +2,45 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
   Delete,
+  Req,
+  Query,
 } from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
-import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 
 @Controller('subscription')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @Post(':id/subscribe')
-  async subscribe(
-    @Param('id') subscriberId: string,
-    @Body() createSubscriptionDto: CreateSubscriptionDto,
+  @Post(':followingId')
+  async subscribe(@Param('followingId') followingId: string, @Req() req) {
+    const followerId = String(req.user.id);
+
+    return this.subscriptionService.subscribe(followerId, followingId);
+  }
+
+  @Get('pagination')
+  async findAll(
+    @Req() req,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
   ) {
-    // return await this.subscriptionService.subscribe(
-    //   subscriberId,
-    //   createSubscriptionDto.subscribedToId,
-    // );
+    return await this.subscriptionService.findAllWhithPagination(
+      req.user.id,
+      +page,
+      +limit,
+    );
   }
 
-  @Get()
-  async findAll() {
-    return await this.subscriptionService.findAll();
+  @Get(':followingId')
+  async findOne(@Param('followingId') followingId: string) {
+    return await this.subscriptionService.findOne(followingId);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.subscriptionService.findOne(+id);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.subscriptionService.remove(+id);
+  @Delete(':followingId')
+  async unsubscribe(@Param('followingId') followingId: string, @Req() req) {
+    const followerId = req.user.id;
+    return this.subscriptionService.unsubscribe(followerId, followingId);
   }
 }

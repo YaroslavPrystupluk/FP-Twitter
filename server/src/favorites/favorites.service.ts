@@ -17,6 +17,12 @@ export class FavoritesService {
     const user = await this.userService.findOne(userId);
     const post = await this.postService.findOne(postId);
 
+    if (!user || !post) throw new NotFoundException('User or Post not found');
+
+    if (post.user.id === userId) {
+      throw new Error('You cannot add your own post to favorites');
+    }
+
     const favorite = this.favoriteRepository.create({ user, post });
     return this.favoriteRepository.save(favorite);
   }

@@ -11,11 +11,11 @@ export class Subscription {
   @PrimaryGeneratedColumn({ name: 'subscription_id' })
   id: string;
 
-  @ManyToOne(() => User, (user) => user.subscribers)
-  subscribedTo: User;
+  @ManyToOne(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
+  follower: User;
 
-  @ManyToOne(() => User, (user) => user.subscriptions)
-  subscriber: User;
+  @ManyToOne(() => User, (user) => user.following, { onDelete: 'CASCADE' })
+  following: User;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

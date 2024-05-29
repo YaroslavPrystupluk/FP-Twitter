@@ -59,9 +59,9 @@ export class User {
   @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];
 
-  @OneToMany(() => Subscription, (subscription) => subscription.subscriber)
-  subscriptions: Subscription[];
+  @OneToMany(() => Subscription, (subscription) => subscription.follower)
+  followers: Subscription[];
 
-  @OneToMany(() => Subscription, (subscription) => subscription.subscribedTo)
-  subscribers: Subscription[];
+  @OneToMany(() => Subscription, (subscription) => subscription.following)
+  following: Subscription[];
 }

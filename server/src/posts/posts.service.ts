@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as fs from 'fs';
-import * as path from 'path';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
 import { Like, Repository } from 'typeorm';

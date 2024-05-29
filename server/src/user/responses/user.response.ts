@@ -29,8 +29,8 @@ export class UserResponse implements User {
   avatar: string;
   scrinshots: string;
 
-  subscribers: Subscription[];
-  subscriptions: Subscription[];
+  followers: Subscription[];
+  following: Subscription[];
 
   @Exclude()
   createdAt: Date;
