@@ -13,13 +13,9 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     credentials: true,
-    origin: [
-      'http://localhost:5173',
-      'https://accounts.google.com/o/oauth2/v2/auth',
-      'http://localhost:3001/api/auth/google',
-    ],
+    origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
+    allowedHeaders: 'Authorization,Referrer-Policy,no-referrer-when-downgrade',
   });
   await app.listen(3001);
 }
