@@ -14,8 +14,6 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: 'http://localhost:5173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Authorization,Referrer-Policy,no-referrer-when-downgrade',
   });
   await app.listen(3001);
 }
