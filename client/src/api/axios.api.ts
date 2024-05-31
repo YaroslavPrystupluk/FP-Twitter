@@ -7,7 +7,7 @@ export const instance = axios.create({
   withCredentials: true,
   headers: {
     Authorization: getTokenFromLocalStorage() || '',
-    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'https://accounts.google.com',
   },
 });
 
