@@ -64,7 +64,7 @@ export class PostController {
     return await this.postService.findOne(textOrId);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'image', maxCount: 20 }], multerConfig),
   )

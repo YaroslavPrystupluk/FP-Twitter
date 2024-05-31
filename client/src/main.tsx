@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import io from 'socket.io-client';
 import { ToastContainer } from 'react-toastify';
 import CssBaseline from '@mui/material/CssBaseline';
 import { store } from './store/store.ts';
@@ -16,3 +17,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ToastContainer theme="colored" position="bottom-left" autoClose={3000} />
   </Provider>,
 );
+
+const socket = io('http://localhost:3001');

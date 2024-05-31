@@ -15,36 +15,46 @@ import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 
-@Controller('message')
+@Controller('messages')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
-  @Post()
+  @Post('create/:receiverId')
   @UsePipes(new ValidationPipe())
-  createMessage(@Body() createMessageDto: CreateMessageDto) {
-    return this.messageService.createMessage(createMessageDto);
+  async createMessage(
+    @Param('receiverId') receiverId: string,
+    @Body() createMessageDto: CreateMessageDto,
+    @Req() req,
+  ) {
+    const senderId = req.user.id;
+
+    return await this.messageService.createMessage(
+      receiverId,
+      senderId,
+      createMessageDto,
+    );
   }
 
   @Get('pagination')
   @UsePipes(new ValidationPipe())
-  getAllMessagesWithPagination(
+  async getAllMessagesWithPagination(
     @Req() req,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
     const userId = req.user.id;
-    return this.messageService.getMessagesByUser(userId, +page, +limit);
+    return await this.messageService.getMessagesByUser(userId, +page, +limit);
   }
 
   @Get('pagination/:receiverId')
-  getConversation(
+  async getConversation(
     @Param('receiverId') receiverId: string,
     @Req() req,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
     const userId = req.user.id;
-    return this.messageService.getConversation(
+    return await this.messageService.getConversation(
       userId,
       receiverId,
       +page,
@@ -52,18 +62,18 @@ export class MessageController {
     );
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @UsePipes(new ValidationPipe())
-  updateMessage(
+  async updateMessage(
     @Param('id') id: string,
     @Body() updateMessageDto: UpdateMessageDto,
   ) {
-    return this.messageService.updateMessage(id, updateMessageDto);
+    return await this.messageService.updateMessage(id, updateMessageDto);
   }
 
   @Delete(':id')
   @UsePipes(new ValidationPipe())
-  removeMessage(@Param('id') id: string) {
-    return this.messageService.removeMessage(id);
+  async removeMessage(@Param('id') id: string) {
+    return await this.messageService.removeMessage(id);
   }
 }

@@ -15,7 +15,7 @@ import { SubscriptionService } from './subscription.service';
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @Post(':followingId')
+  @Post('create/:followingId')
   @UsePipes(new ValidationPipe())
   async subscribe(@Param('followingId') followingId: string, @Req() req) {
     const followerId = String(req.user.id);

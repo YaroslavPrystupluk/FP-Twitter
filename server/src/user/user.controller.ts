@@ -22,7 +22,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
-  @Post()
+  @Post('create')
   @UsePipes(new ValidationPipe())
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.userService.create(createUserDto);
@@ -45,7 +45,7 @@ export class UserController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
-  @Patch(':id')
+  @Patch('update/:id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.userService.update(id, updateUserDto);
     return new UserResponse(user);

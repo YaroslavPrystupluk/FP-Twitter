@@ -34,7 +34,11 @@ export class MassageGateway
     client: Socket,
     payload: CreateMessageDto,
   ): Promise<void> {
-    const message = await this.messageService.createMessage(payload);
+    const message = await this.messageService.createMessage(
+      payload.receiverId,
+      payload.senderId,
+      payload,
+    );
     this.server.emit('message', message);
   }
 }

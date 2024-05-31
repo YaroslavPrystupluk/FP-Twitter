@@ -14,7 +14,7 @@ import { FavoritesService } from './favorites.service';
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
-  @Post(':postId')
+  @Post('create/:postId')
   @UsePipes(new ValidationPipe())
   addFavorite(@Param('postId') postId: string, @Req() req) {
     const userId = req.user.id;
