@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class MessageService {
