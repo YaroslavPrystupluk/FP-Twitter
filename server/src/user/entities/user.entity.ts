@@ -10,6 +10,7 @@ import { Token } from 'src/auth/entities/token.entity';
 import { Provider } from 'src/enum/provider.enum';
 import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { Subscription } from 'src/subscription/entities/subscription.entity';
+import { Message } from 'src/message/entities/message.entity';
 
 @Entity()
 export class User {
@@ -64,4 +65,10 @@ export class User {
 
   @OneToMany(() => Subscription, (subscription) => subscription.following)
   following: Subscription[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  sentMessages: Message[];
+
+  @OneToMany(() => Message, (message) => message.receiver)
+  receivedMessages: Message[];
 }

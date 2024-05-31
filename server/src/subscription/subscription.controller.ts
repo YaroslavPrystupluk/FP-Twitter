@@ -6,6 +6,8 @@ import {
   Delete,
   Req,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
 
@@ -14,6 +16,7 @@ export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
   @Post(':followingId')
+  @UsePipes(new ValidationPipe())
   async subscribe(@Param('followingId') followingId: string, @Req() req) {
     const followerId = String(req.user.id);
 
@@ -21,6 +24,7 @@ export class SubscriptionController {
   }
 
   @Get('pagination')
+  @UsePipes(new ValidationPipe())
   async findAll(
     @Req() req,
     @Query('page') page: number,
@@ -34,11 +38,13 @@ export class SubscriptionController {
   }
 
   @Get(':followingId')
+  @UsePipes(new ValidationPipe())
   async findOne(@Param('followingId') followingId: string) {
     return await this.subscriptionService.findOne(followingId);
   }
 
   @Delete(':followingId')
+  @UsePipes(new ValidationPipe())
   async unsubscribe(@Param('followingId') followingId: string, @Req() req) {
     const followerId = req.user.id;
     return this.subscriptionService.unsubscribe(followerId, followingId);

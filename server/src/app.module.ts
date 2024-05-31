@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SubscriptionModule } from './subscription/subscription.module';
     ForgotPasswordModule,
     FavoritesModule,
     SubscriptionModule,
+    MessageModule,
   ],
 
   providers: [

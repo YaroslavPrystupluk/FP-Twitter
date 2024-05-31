@@ -15,6 +15,7 @@ export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   @Post(':postId')
+  @UsePipes(new ValidationPipe())
   addFavorite(@Param('postId') postId: string, @Req() req) {
     const userId = req.user.id;
     return this.favoritesService.addFavorite(userId, postId);
@@ -35,6 +36,7 @@ export class FavoritesController {
   }
 
   @Delete(':postId')
+  @UsePipes(new ValidationPipe())
   removeFavorite(@Param('postId') postId: string, @Req() req) {
     const userId = req.user.id;
     return this.favoritesService.removeFavorite(userId, postId);

@@ -5,6 +5,7 @@ import { Post } from 'src/posts/entities/posts.entity';
 import { Provider } from 'src/enum/provider.enum';
 import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { Subscription } from 'src/subscription/entities/subscription.entity';
+import { Message } from 'src/message/entities/message.entity';
 
 export class UserResponse implements User {
   id: string;
@@ -31,6 +32,8 @@ export class UserResponse implements User {
 
   followers: Subscription[];
   following: Subscription[];
+  sentMessages: Message[];
+  receivedMessages: Message[];
 
   @Exclude()
   createdAt: Date;
