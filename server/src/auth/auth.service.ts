@@ -47,6 +47,8 @@ export class AuthService {
     return this.usersService.create(registerUserDto);
   }
   async activate(activateLink: string): Promise<{ message: string }> {
+    if (!activateLink)
+      throw new HttpException('Activate link not found', HttpStatus.NOT_FOUND);
     const user = await this.userRepository.findOne({
       where: {
         activateLink,

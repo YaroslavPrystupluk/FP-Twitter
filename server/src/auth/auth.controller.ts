@@ -70,11 +70,6 @@ export class AuthController {
     res.redirect('http://localhost:5173/activated');
   }
 
-  // @Get('activation')
-  // activated(@Res() res: Response) {
-  //   res.send('<p>Account is activated</p>');
-  // }
-
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(

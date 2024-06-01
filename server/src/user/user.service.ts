@@ -30,6 +30,7 @@ export class UserService {
     if (existUser) throw new BadRequestException('This email already exists');
 
     const activateLink = uuidv4();
+
     if (createUserDto.password) {
       this.mailerService.sendEmail({
         recipients: createUserDto.email,

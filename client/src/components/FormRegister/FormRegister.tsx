@@ -24,7 +24,7 @@ const FormRegister: FC = () => {
       });
 
       if (data) {
-        toast.success('Registration was successful!');
+        toast.success(`Please, confirm your email! ${data.email}`);
         navigate('/login');
       }
       /* eslint-disable @typescript-eslint/no-explicit-any */
