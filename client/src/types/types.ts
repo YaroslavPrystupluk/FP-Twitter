@@ -25,12 +25,12 @@ export interface IResponseUserDataRegister {
 export interface IUserDataLogin {
   email: string;
   password?: string;
-  rememberMe?: boolean;
+  isRememberMe?: boolean | undefined;
 }
 
 export interface IResponseUserDataLogin {
   accessToken: string;
   email: string;
   password: string;
-  isRememberMe?: boolean;
+  isRememberMe?: boolean | undefined;
 }

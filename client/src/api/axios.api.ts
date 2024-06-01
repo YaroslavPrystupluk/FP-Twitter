@@ -7,7 +7,6 @@ export const instance = axios.create({
   withCredentials: true,
   headers: {
     Authorization: getTokenFromLocalStorage() || '',
-    'Access-Control-Allow-Origin': 'https://accounts.google.com',
   },
 });
 
@@ -23,10 +22,14 @@ async (error) => {
   if (
     error.response.status === 401 &&
     error.config &&
-    !error.config._isRetry
+    !error.config._isRetry &&
+    !originalRequest.url.includes('auth/login') &&
+    !originalRequest.url.includes('auth/google') &&
+    !originalRequest.url.includes('auth/register')
   ) {
     originalRequest._isRetry = true;
     try {
+     
     await authService.refreshToken();
     return instance.request(originalRequest);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

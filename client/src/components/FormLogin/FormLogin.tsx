@@ -28,8 +28,7 @@ const FormLogin: FC = () => {
       event.preventDefault();
       const data = await authService.login({
         email,
-        password,
-        rememberMe: false,
+        password
       });
 
       if (data) {
