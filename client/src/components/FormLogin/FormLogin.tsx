@@ -20,6 +20,7 @@ import { login } from '../../store/user/userSlice';
 const FormLogin: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +29,8 @@ const FormLogin: FC = () => {
       event.preventDefault();
       const data = await authService.login({
         email,
-        password
+        password,
+        isRememberMe: rememberMe,
       });
 
       if (data) {
@@ -62,6 +64,10 @@ const FormLogin: FC = () => {
 
       toast.error(error.toString());
     }
+  };
+
+  const handleRememberMe = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberMe(event.target.checked);
   };
 
   return (
@@ -129,7 +135,7 @@ const FormLogin: FC = () => {
           }}
         ></Box>
         <Button
-        onClick={handleLoginGoogle}
+          onClick={handleLoginGoogle}
           variant="outlined"
           sx={{
             borderColor: '#000000',
@@ -180,22 +186,22 @@ const FormLogin: FC = () => {
             value={password}
           />
           <NavLink to="/forgot-password" style={{ textDecoration: 'none' }}>
-          <Box
-            sx={{
-              alignSelf: 'flex-start',
-              padding: '25px 0 0 0',
-              color: '#1976d2',
-              '&:hover': {
-                color: '#7fbaf5',
-              },
-            }}
-          >
-            Forgot password?
-          </Box>
+            <Box
+              sx={{
+                alignSelf: 'flex-start',
+                padding: '25px 0 0 0',
+                color: '#1976d2',
+                '&:hover': {
+                  color: '#7fbaf5',
+                },
+              }}
+            >
+              Forgot password?
+            </Box>
           </NavLink>
           <FormControlLabel
             sx={{ alignSelf: 'flex-start', padding: '15px 0 0 0' }}
-            control={<Checkbox name="remember" />}
+            control={<Checkbox onChange={handleRememberMe} name="remember" />}
             label="Remember me"
           />
           <Button

@@ -62,21 +62,12 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto, agent: string): Promise<IToken> {
     const user = await this.usersService.findOne(loginUserDto.email);
-
     const isActivated = user.isActivated;
-
     if (!isActivated) throw new UnauthorizedException('Activate your account');
+    user.isRememberMe = loginUserDto.isRememberMe;
+    await this.userRepository.save(user);
 
     return this.generateTokens(user, agent);
-  }
-
-  async remember(loginUserDto: LoginUserDto) {
-    const user = await this.usersService.findOne(loginUserDto.email);
-    if (!user) throw new NotFoundException('User not found');
-    user.isRememberMe = true;
-    await this.usersService.update(user.id, user);
-
-    return user.isRememberMe;
   }
 
   private async generateTokens(user: IUser, agent: string): Promise<IToken> {

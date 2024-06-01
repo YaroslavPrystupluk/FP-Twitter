@@ -21,7 +21,7 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
-      state.user.isRememberMe = true;
+      state.user.isRememberMe = action.payload.isRememberMe;
       state.isAuth = true;
     },
     logout: (state) => {

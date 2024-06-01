@@ -11,5 +11,5 @@ export class LoginUserDto {
   password: string;
 
   @IsBoolean()
-  rememberMe: boolean;
+  isRememberMe?: boolean;
 }

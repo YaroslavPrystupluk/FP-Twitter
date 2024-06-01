@@ -88,11 +88,6 @@ export class AuthController {
     return req.user;
   }
 
-  @Post('rememberMe')
-  async remember(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.remember(loginUserDto);
-  }
-
   @Get('refresh')
   async refresh(
     @Cookie(REFRESH_TOKEN) refreshToken: string,
