@@ -67,13 +67,13 @@ export class AuthController {
     @Res() res: Response,
   ) {
     await this.authService.activate(activateLink);
-    res.redirect('http://localhost:3001/api/auth/activation');
+    res.redirect('http://localhost:5173/activated');
   }
 
-  @Get('activation')
-  activated(@Res() res: Response) {
-    res.send('<p>Account is activated</p>');
-  }
+  // @Get('activation')
+  // activated(@Res() res: Response) {
+  //   res.send('<p>Account is activated</p>');
+  // }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')

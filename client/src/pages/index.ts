@@ -9,6 +9,7 @@ import Notifications from './Notifications';
 import ErrorPage from './ErrorPage';
 import ProfileUser from './ProfileUser';
 import EditProfileUser from './EditProfileUser';
+import ActivatedPage from './ActivatedPage';
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   Notifications,
   ErrorPage,
   ProfileUser,
-  EditProfileUser
+  EditProfileUser,
+  ActivatedPage
 };

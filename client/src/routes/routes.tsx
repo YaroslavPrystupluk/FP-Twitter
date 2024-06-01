@@ -3,7 +3,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { Layout, ProfileUser } from '../pages';
+import { ActivatedPage, Layout, ProfileUser } from '../pages';
 import {
   Login,
   ErrorPage,
@@ -78,6 +78,14 @@ const router = createBrowserRouter(
           <ProtectedRoute>
             <ProfileUser />
           </ProtectedRoute>
+        }
+        errorElement={<ErrorPage />}
+      />
+
+       <Route
+        path="activated"
+        element={
+            <ActivatedPage />
         }
         errorElement={<ErrorPage />}
       />
