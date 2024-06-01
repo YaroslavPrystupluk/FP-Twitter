@@ -9,7 +9,7 @@ const ActivatedPage: FC = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate('/login', { replace: true });
+    navigate('/posts', { replace: true });
   };
 
   return (

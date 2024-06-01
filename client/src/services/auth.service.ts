@@ -39,9 +39,9 @@ export const authService = {
     return await instance.get('auth/logout');
   },
 
-  // async forgotPassword(email: string): Promise<void> {
-  //   return await instance.patch('change-password', { email });
-  // },
+  async forgotPassword(email: string): Promise<void> {
+    return await instance.patch('change-password', { email });
+  },
 
   async refreshToken(): Promise<void> {
     try {

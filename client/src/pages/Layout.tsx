@@ -13,20 +13,17 @@ import { useAppDispatch } from '../store/hooks';
 const Layout: FC = () => {
   const isAuth = useAuth();
 
- 
   if (isAuth) {
-     const socket = io('http://localhost:3001', {
-       withCredentials: true,
-       autoConnect: true,
-       transports: ['websocket'],
-       reconnection: true,
-       reconnectionAttempts: Infinity
-     });
+    const socket = io('http://localhost:3001', {
+      withCredentials: true,
+      autoConnect: true,
+      transports: ['websocket'],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+    });
     socket.on('connect', () => {
       console.log('socket connected');
-      
     });
-
   }
 
   const dispatch = useAppDispatch();

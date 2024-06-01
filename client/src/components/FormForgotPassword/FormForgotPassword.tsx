@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
+import { Link } from 'react-router-dom';
 
 const FormForgotPassword: FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -91,17 +92,19 @@ const FormForgotPassword: FC = () => {
           }}
         >
           {'Remember your credentials? '}
-          <Box
-            component="span"
-            sx={{
-              color: '#1976d2',
-              '&:hover': {
-                color: '#7fbaf5',
-              },
-            }}
-          >
-            Sign in
-          </Box>
+          <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Box
+              component="span"
+              sx={{
+                color: '#1976d2',
+                '&:hover': {
+                  color: '#7fbaf5',
+                },
+              }}
+            >
+              Sing in
+            </Box>
+          </Link>
         </Typography>
       </Box>
     </Container>

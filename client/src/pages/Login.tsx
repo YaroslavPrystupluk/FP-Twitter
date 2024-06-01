@@ -1,11 +1,8 @@
-import { FC } from 'react'
-import { FormLogin } from '../components'
-
+import { FC } from 'react';
+import { FormLogin } from '../components';
 
 const Login: FC = () => {
-  return (
-<FormLogin/>
-  )
-}
+  return <FormLogin />;
+};
 
-export default Login
+export default Login;

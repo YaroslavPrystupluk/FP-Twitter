@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'react';
 import { useRouteError, useNavigate } from 'react-router-dom';
 import { Container, Typography, Button } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -6,14 +6,14 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 const ErrorPage: FC = () => {
   useRouteError();
 
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleGoHome = () => {
     navigate('/posts', { replace: true });
   };
 
   return (
-   <Container
+    <Container
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -28,7 +28,8 @@ const ErrorPage: FC = () => {
         Oops! Page Not Found
       </Typography>
       <Typography variant="body1" paragraph>
-        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        The page you are looking for might have been removed, had its name
+        changed, or is temporarily unavailable.
       </Typography>
       <Button
         variant="contained"
@@ -40,7 +41,6 @@ const ErrorPage: FC = () => {
       </Button>
     </Container>
   );
-}
+};
 
-
-export default ErrorPage
+export default ErrorPage;

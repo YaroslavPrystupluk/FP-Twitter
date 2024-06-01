@@ -28,6 +28,8 @@ export class ForgotPasswordService {
 
     const forgotLink = `http://localhost:3001/api/forgot-password/change-password/${forgotPasswordDto.email}`;
 
+    console.log(user.email);
+
     this.mailerService.sendEmail({
       recipients: user.email,
       subject: 'Forgot password',

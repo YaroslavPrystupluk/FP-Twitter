@@ -1,10 +1,8 @@
-import { FC } from 'react'
-import { FormForgotPassword } from '../components'
+import { FC } from 'react';
+import { FormForgotPassword } from '../components';
 
 const ForgotPassword: FC = () => {
-  return (
-<FormForgotPassword/>
-  )
-}
+  return <FormForgotPassword />;
+};
 
-export default ForgotPassword
+export default ForgotPassword;
