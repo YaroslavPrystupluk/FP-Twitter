@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
-const allowedOrigins = ['http://localhost:5173'];
+// const allowedOrigins = ['http://localhost:5173'];
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
