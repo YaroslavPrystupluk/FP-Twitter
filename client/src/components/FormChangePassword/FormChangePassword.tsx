@@ -10,8 +10,6 @@ const FormChangePassword: FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const navigate = useNavigate();
   const { email } = useParams();
-  console.log(email);
-  
 
   const handleChangePassword = async (
     event: React.FormEvent<HTMLFormElement>,

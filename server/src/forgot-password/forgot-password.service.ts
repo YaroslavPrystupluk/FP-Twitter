@@ -36,9 +36,6 @@ export class ForgotPasswordService {
 
   async changePassword(changePasswordDto: ChangePasswordDto, email: string) {
     const user = await this.userService.findOne(email);
-    console.log(email);
-
-    console.log(user);
 
     if (!user) throw new NotFoundException('User not found');
 
