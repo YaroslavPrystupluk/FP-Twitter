@@ -3,8 +3,10 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { ActivatedPage, Layout, ProfileUser } from '../pages';
 import {
+  ActivatedPage, 
+  Layout, 
+  ProfileUser,
   Login,
   ErrorPage,
   Favorites,
@@ -13,6 +15,7 @@ import {
   Message,
   Notifications,
   Register,
+  ChangePassword
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
@@ -31,6 +34,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="change-password/:email" element={<ChangePassword />} />
       <Route
         path="posts"
         element={
@@ -70,7 +74,6 @@ const router = createBrowserRouter(
             <ProfileUser />
           </ProtectedRoute>
         }
-        errorElement={<ErrorPage />}
       />
       <Route
         path="edit-profile"
@@ -79,7 +82,6 @@ const router = createBrowserRouter(
             <ProfileUser />
           </ProtectedRoute>
         }
-        errorElement={<ErrorPage />}
       />
 
        <Route
@@ -87,7 +89,6 @@ const router = createBrowserRouter(
         element={
             <ActivatedPage />
         }
-        errorElement={<ErrorPage />}
       />
     </Route>,
   ),

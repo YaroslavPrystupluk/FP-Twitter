@@ -2,9 +2,23 @@ import { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import { Link } from 'react-router-dom';
+import { authService } from '../../services/auth.service';
+import { toast } from 'react-toastify';
 
 const FormForgotPassword: FC = () => {
   const [email, setEmail] = useState<string>('');
+  const handleforgotPassword = async () => {
+    try {
+      await authService.forgotPassword(email);
+
+      toast.success(`Please, confirm your email! ${email}`);
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
+  };
   return (
     <Container
       maxWidth="xl"
@@ -80,6 +94,7 @@ const FormForgotPassword: FC = () => {
         />
 
         <Button
+          onClick={handleforgotPassword}
           fullWidth
           variant="contained"
           sx={{ marginTop: 2, textTransform: 'none' }}

@@ -10,6 +10,7 @@ import ErrorPage from './ErrorPage';
 import ProfileUser from './ProfileUser';
 import EditProfileUser from './EditProfileUser';
 import ActivatedPage from './ActivatedPage';
+import ChangePassword from './ChangePassword';
 
 export {
   Home,
@@ -23,5 +24,6 @@ export {
   ErrorPage,
   ProfileUser,
   EditProfileUser,
-  ActivatedPage
+  ActivatedPage,
+  ChangePassword,
 };
