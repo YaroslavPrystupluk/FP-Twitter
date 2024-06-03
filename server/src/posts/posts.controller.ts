@@ -38,9 +38,6 @@ export class PostController {
     return await this.postService.create(createPostDto, req.user, files);
   }
 
-  @Get()
-  @UsePipes(new ValidationPipe())
-
   @Get('pagination')
   @UsePipes(new ValidationPipe())
   async findAllWhithPagination(
@@ -58,7 +55,7 @@ export class PostController {
   @Get()
   @UsePipes(new ValidationPipe())
   async findAll(@Req() req) {
-    return await this.postService.findAll(req.user);
+    return await this.postService.findAll(req.user.id);
   }
 
   @Get(':textOrId')

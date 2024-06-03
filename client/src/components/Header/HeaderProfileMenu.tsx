@@ -8,7 +8,7 @@ import {
   Tooltip,
   Avatar,
 } from '@mui/material';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logout } from '../../store/user/userSlice';
 import { removeTokenFromLocalStorage } from '../../helpers/localStorage.helpers';
 import { toast } from 'react-toastify';
@@ -17,6 +17,7 @@ import { authService } from '../../services/auth.service';
 const HeaderProfileMenu: FC = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
 
   const handleLogout = () => {
      authService.logout();
@@ -37,7 +38,7 @@ const HeaderProfileMenu: FC = () => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={user?.displayname} src={user?.avatar} />
         </IconButton>
       </Tooltip>
       <Menu

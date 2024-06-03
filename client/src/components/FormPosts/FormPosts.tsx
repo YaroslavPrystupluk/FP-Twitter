@@ -26,6 +26,9 @@ const FormPosts: FC = () => {
   const [fileNames, setFileNames] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
+  
+  
+
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
@@ -38,7 +41,6 @@ const FormPosts: FC = () => {
 
       const data = await postsService.createPost(formData);
       dispatch(createPost(data));
-      
       setText('');
       setFiles([]);
       setFileNames([]);
@@ -53,13 +55,23 @@ const FormPosts: FC = () => {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files);
       setFiles([...files, ...selectedFiles]);
       const selectedFileNames = selectedFiles.map((file) => file.name);
       setFileNames([...fileNames, ...selectedFileNames]);
     }
+   /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
   };
+
+
+
 
   return (
     <Container

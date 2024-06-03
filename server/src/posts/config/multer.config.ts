@@ -7,8 +7,7 @@ export const multerConfig = {
     destination: path.join(__dirname, '../../../uploads'),
     filename: (req, file, cb) => {
       const name = file.originalname.split('.')[0];
-      const ext = file.originalname.split('.')[1];
-      cb(null, `${name}-${Date.now()}.${ext}`);
+      cb(null, `${name}-${Date.now()}`);
     },
   }),
   fileFilter(req, file: Express.Multer.File, cb) {
@@ -21,8 +20,7 @@ export const multerConfig = {
     cb(null, true);
   },
   limits: {
-    fileSize: 10 * 1024 * 1024, 
-    files: 10, 
+    fileSize: 10 * 1024 * 1024,
+    files: 10,
   },
-  
 };

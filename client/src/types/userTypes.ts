@@ -4,6 +4,8 @@ export interface IUser {
   password?: string;
   isRememberMe?: boolean;
   accessToken: string;
+  avatar?: string;
+  displayname: string;
   refreshToken: string;
 }
 

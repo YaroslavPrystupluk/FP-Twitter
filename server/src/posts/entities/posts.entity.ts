@@ -17,7 +17,7 @@ export class Post {
   text: string;
 
   @Column('text', { array: true, default: [] })
-  image: string[];
+  image?: string[];
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user: User;

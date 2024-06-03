@@ -14,7 +14,6 @@ const initialState: PostState = {
 
 export const postSlice = createSlice({
   name: 'posts',
-
   initialState,
   reducers: {
     getAllPosts: (state, action: PayloadAction<IPost[]>) => {
