@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-import { IUser } from '../../types/types';
+import { IUser } from '../../types/userTypes';
 
-// Define a type for the slice state
 interface UserState {
   user: IUser | null;
   isAuth: boolean;
@@ -32,7 +31,5 @@ export const userSlice = createSlice({
 });
 
 export const { login, logout } = userSlice.actions;
-
 export const selectCount = (state: RootState) => state.user;
-
 export default userSlice.reducer;

@@ -5,7 +5,7 @@ import {
   IResponseUserDataRegister,
   IUserDataRegister,
   IUser,
-} from '../types/types';
+} from '../types/userTypes';
 
 export const authService = {
   async registration(
@@ -24,8 +24,10 @@ export const authService = {
   },
 
   async loginGoogle(): Promise<IUser | undefined> {
+    console.log('loginGoogle');
     const { data } = await instance.get<IUser>('auth/google');
-
+    console.log(data);
+    
     return data;
   },
 

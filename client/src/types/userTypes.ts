@@ -34,3 +34,4 @@ export interface IResponseUserDataLogin {
   password: string;
   isRememberMe?: boolean | undefined;
 }
+

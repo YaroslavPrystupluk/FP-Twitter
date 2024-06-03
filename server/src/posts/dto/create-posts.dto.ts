@@ -17,7 +17,7 @@ export class CreatePostDto {
 
   @IsOptional()
   @IsArray()
-  image?: string[];
+  image: string[];
 
   user: User;
 }

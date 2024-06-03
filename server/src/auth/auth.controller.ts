@@ -33,6 +33,7 @@ import { map, mergeMap } from 'rxjs';
 import { hendleTimeoutError } from 'src/helpers/timeout-error.helpers';
 import { Provider } from 'src/enum/provider.enum';
 import { AuthGuard } from '@nestjs/passport';
+import axios from 'axios';
 
 const REFRESH_TOKEN = 'refreshtoken';
 
@@ -138,9 +139,11 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   async googleLoginCallback(@Req() req: ExpressRequest, @Res() res: Response) {
     const token = req.user['accessToken'];
-    return res.redirect(
+    const { data } = await axios.get(
       `http://localhost:3001/api/auth/success?token=${token}`,
     );
+
+    return res.send(data.accessToken);
   }
 
   @Get('success')

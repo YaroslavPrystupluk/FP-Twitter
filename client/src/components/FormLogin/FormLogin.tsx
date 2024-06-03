@@ -51,6 +51,7 @@ const FormLogin: FC = () => {
     try {
       event.preventDefault();
       const data = await authService.loginGoogle();
+     console.log(data);
      
       if (data) {
         setTokenToLocalStorage('accessToken', data.accessToken);

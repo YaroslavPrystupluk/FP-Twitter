@@ -27,7 +27,7 @@ export class PostController {
 
   @Post('create')
   @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'image', maxCount: 20 }], multerConfig),
+    FileFieldsInterceptor([{ name: 'image', maxCount: 10 }], multerConfig),
   )
   @UsePipes(new ValidationPipe())
   async create(
