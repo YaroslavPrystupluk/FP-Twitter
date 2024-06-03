@@ -11,15 +11,19 @@ const initialState: PostState = {
   posts: [],
 };
 
+
 export const postSlice = createSlice({
   name: 'posts',
 
   initialState,
   reducers: {
+    getAllPosts: (state, action: PayloadAction<IPost[]>) => {
+      state.posts = action.payload;
+    },
+
     createPost: (state, action: PayloadAction<IPost>) => {
       state.posts?.push(action.payload);
     },
-
     updatePost: (state, action: PayloadAction<IPost>) => {
       state.posts = state.posts?.map((post) => {
         if (post.id === action.payload.id) {
@@ -37,6 +41,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { createPost } = postSlice.actions;
+export const { createPost, updatePost, getAllPosts, deletePost } =
+  postSlice.actions;
 export const selectCount = (state: RootState) => state.posts;
 export default postSlice.reducer;

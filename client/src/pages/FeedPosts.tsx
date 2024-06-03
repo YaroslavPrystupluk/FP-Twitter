@@ -1,9 +1,10 @@
 import { FC } from 'react'
-import { FormPosts } from '../components'
+import { FormPosts, PostsList } from '../components'
 
 const FeedPosts: FC = () => {
   return (
     <div>
+     <PostsList />
      <FormPosts />
     </div>
   )

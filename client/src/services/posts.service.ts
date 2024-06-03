@@ -2,10 +2,17 @@ import { instance } from '../api/axios.api';
 import { IPost, IResponsePostsCreate } from '../types/postsType';
 
 export const postsService = {
+
+  async getAllPosts(): Promise<IPost[]> {
+    const { data } = await instance.get<IPost[]>('posts/pagination&page=1&limit=10');
+    console.log(data);
+    
+    return data;
+  },
   async createPost(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     postDataCreate: FormData,
-  ): Promise<IResponsePostsCreate> {
+  ): Promise<IPost> {
     const { data } = await instance.post<IPost>(
       'posts/create',
       postDataCreate,

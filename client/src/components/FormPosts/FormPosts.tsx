@@ -5,6 +5,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import { postsService } from '../../services/posts.service';
 import { toast } from 'react-toastify';
+import { useAppDispatch } from '../../store/hooks';
+import { createPost } from '../../store/posts/postSlice';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -22,6 +24,7 @@ const FormPosts: FC = () => {
   const [text, setText] = useState<string>('');
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
 
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -33,7 +36,9 @@ const FormPosts: FC = () => {
         formData.append('image', file);
       });
 
-      await postsService.createPost(formData);
+      const data = await postsService.createPost(formData);
+      dispatch(createPost(data));
+      
       setText('');
       setFiles([]);
       setFileNames([]);

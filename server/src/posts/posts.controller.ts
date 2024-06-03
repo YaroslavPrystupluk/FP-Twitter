@@ -38,6 +38,9 @@ export class PostController {
     return await this.postService.create(createPostDto, req.user, files);
   }
 
+  @Get()
+  @UsePipes(new ValidationPipe())
+
   @Get('pagination')
   @UsePipes(new ValidationPipe())
   async findAllWhithPagination(
