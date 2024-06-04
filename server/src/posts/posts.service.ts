@@ -179,13 +179,19 @@ export class PostService {
     });
     if (!post) throw new NotFoundException('Post not found');
 
-    // Видалення зображення зі списку зображень поста
     post.image = post.image.filter((img) => img !== imageName);
-
-    // Зберігаємо зміни у пості
     await this.postsRepository.save(post);
 
-    // Повертаємо ім'я видаленого файлу
+
+    const imagePath = `uploads/${imageName}`;
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    } else {
+      console.warn(`Image not found: ${imagePath}`);
+    } 
+    
+
+
     return imageName;
   }
 }
