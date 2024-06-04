@@ -1,12 +1,17 @@
 import { FC } from 'react'
-import { FormPosts, PostsList } from '../components'
+import {  FormAddPosts, PostsList } from '../components'
+import { Box, Container } from '@mui/material'
 
 const FeedPosts: FC = () => {
   return (
-    <div>
+    <Container maxWidth="lg">
+      <Box>
+        <FormAddPosts />
+      </Box>
+    <Box component="section" >
      <PostsList />
-     <FormPosts />
-    </div>
+    </Box>
+    </Container>
   )
 }
 

@@ -19,6 +19,7 @@ import {
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
+import { FormAddPosts } from '../components';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,14 @@ const router = createBrowserRouter(
         element={
           <ProtectedRoute>
             <FeedPosts />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="posts/create"
+        element={
+          <ProtectedRoute>
+            <FormAddPosts />
           </ProtectedRoute>
         }
       />

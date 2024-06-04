@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 const Header: FC = () => {
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      <Container maxWidth="xl" >
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <HeaderBuegerMenu />
           <FlutterDashIcon fontSize="large" sx={{ display: 'flex', mr: 1 }} />
           <Link to="/posts" style={{ textDecoration: 'none', color: 'inherit' }}>

@@ -15,6 +15,14 @@ export const postsService = {
     return data;
   },
 
+  async updatePost(id: string, postDataUpdate: FormData) {
+    const { data } = await instance.patch<IPost>(
+      `posts/update/${id}`,
+      postDataUpdate,
+    );
+    return data;
+  },
+
   async deletePost(id: string) {
     const { data } = await instance.delete<IPost>(`posts/${id}`);
 

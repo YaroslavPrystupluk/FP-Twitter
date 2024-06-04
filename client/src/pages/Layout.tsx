@@ -56,7 +56,7 @@ const Layout: FC = () => {
     <>
       {isAuth && <Header />}
 
-      <Container maxWidth="xl">
+      <Container component="main" maxWidth="xl">
         <Outlet />
       </Container>
     </>
