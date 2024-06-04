@@ -2,21 +2,20 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
-  Navigate
+  Navigate,
 } from 'react-router-dom';
 import {
-  ActivatedPage, 
-  Layout, 
+  ActivatedPage,
+  Layout,
   ProfileUser,
   Login,
   ErrorPage,
   Favorites,
   FeedPosts,
-  Home,
   Message,
   Notifications,
   Register,
-  ChangePassword
+  ChangePassword,
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
@@ -94,12 +93,7 @@ const router = createBrowserRouter(
         }
       />
 
-       <Route
-        path="activated"
-        element={
-            <ActivatedPage />
-        }
-      />
+      <Route path="activated" element={<ActivatedPage />} />
     </Route>,
   ),
 );

@@ -84,4 +84,14 @@ export class PostController {
   async remove(@Param('id') id: string) {
     return await this.postService.remove(id);
   }
+
+  @Delete(':id/:imageName')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthorGuard)
+  async deleteFile(
+    @Param('id') id: string,
+    @Param('imageName') imageName: string,
+  ) {
+    return await this.postService.removeFile(id, imageName);
+  }
 }

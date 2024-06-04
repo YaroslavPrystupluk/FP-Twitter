@@ -6,16 +6,18 @@ import {
   TextField,
   Button,
   styled,
-  Avatar,
+  CardMedia,
+  IconButton,
 } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { postsService } from '../../services/posts.service';
 import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { createPost, selectPosts } from '../../store/posts/postSlice';
+import { useAppDispatch } from '../../store/hooks';
+import { updatePost } from '../../store/posts/postSlice';
 import { useGoBack } from '../../hooks/useGoBack';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -30,34 +32,47 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const FormEditPosts: FC = () => {
-  const [text, setText] = useState<string>('');
-  const [files, setFiles] = useState<File[]>([]);
-  const [fileNames, setFileNames] = useState<string[]>([]);
   const dispatch = useAppDispatch();
-  const posts = useAppSelector(selectPosts);
   const goBack = useGoBack();
-  const { id } = useParams();
-  const post = posts.find((post) => post.id === id);
-  console.log(post);
-  console.log(id);
-  
+  const { state } = useLocation();
 
-  const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const [text, setText] = useState<string>(state.text || '');
+  const [files, setFiles] = useState<File[]>(state.files || []);
+  const [fileNames, setFileNames] = useState<string[]>(state.fileNames || []);
+  const [existingImages, setExistingImages] = useState<string[]>(
+    state.image || [],
+  );
+
+  const handleRemoveImage = async (imageName: string) => {
+    try {
+      await postsService.deleteFile(state.id, imageName);
+      const updatedImages = existingImages.filter(
+        (image) => image !== imageName,
+      );
+      setExistingImages(updatedImages);
+      dispatch(updatePost({ ...state, image: updatedImages }));
+      toast.success('File deleted successfully!');
+    } catch (error) {
+      toast.error('Failed to delete file.');
+    }
+  };
+
+  const handlePostEdit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
     try {
       const formData = new FormData();
       formData.append('text', text);
       files.forEach((file) => {
         formData.append('image', file);
       });
+      const data = await postsService.updatePost(state.id, formData);
+      dispatch(updatePost(data));
+      goBack();
 
-      const data = await postsService.createPost(formData);
-      dispatch(createPost(data));
       setText('');
       setFiles([]);
       setFileNames([]);
-      toast.success('Post created!');
+      toast.success('Post updated!');
 
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
@@ -68,18 +83,11 @@ const FormEditPosts: FC = () => {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      if (event.target.files && event.target.files.length > 0) {
-        const selectedFiles = Array.from(event.target.files);
-        setFiles([...files, ...selectedFiles]);
-        const selectedFileNames = selectedFiles.map((file) => file.name);
-        setFileNames([...fileNames, ...selectedFileNames]);
-      }
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-    } catch (err: any) {
-      const error = err.response?.data.message;
-
-      toast.error(error.toString());
+    if (event.target.files && event.target.files.length > 0) {
+      const selectedFiles = Array.from(event.target.files);
+      setFiles([...files, ...selectedFiles]);
+      const selectedFileNames = selectedFiles.map((file) => file.name);
+      setFileNames([...fileNames, ...selectedFileNames]);
     }
   };
 
@@ -153,16 +161,33 @@ const FormEditPosts: FC = () => {
             value={text}
           />
           <Box>
-            {/* {posts.image.map((image) => (
-              <CardMedia
+            {existingImages.map((image) => (
+              <Box
                 key={image}
-                sx={{ paddingTop: '10px', maxWidth: '10%' }}
-                component="img"
-                image={`http://localhost:3001/api/uploads/${image}`}
-                alt="Paella dish"
-              />
-            ))} */}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingTop: '10px',
+                }}
+              >
+                <CardMedia
+                  sx={{ maxWidth: '10%' }}
+                  component="img"
+                  image={`http://localhost:3001/api/uploads/${image}`}
+                  alt="Post image"
+                />
+                <IconButton onClick={() => handleRemoveImage(image)}>
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </Box>
+            ))}
           </Box>
+
+          {fileNames.map((fileName, index) => (
+            <Typography key={index} sx={{ marginLeft: 2 }}>
+              {fileName}
+            </Typography>
+          ))}
 
           <Box
             component="section"
@@ -184,12 +209,11 @@ const FormEditPosts: FC = () => {
                 onChange={handleFileChange}
               />
             </Button>
-            {fileNames.map((fileName, index) => (
+            {/* {fileNames.map((fileName, index) => (
               <Typography key={index} sx={{ marginLeft: 2 }}>
                 {fileName}
               </Typography>
-            ))}
-            DB
+            ))} */}
           </Box>
           <Box
             component="section"
@@ -201,7 +225,7 @@ const FormEditPosts: FC = () => {
             mt={2}
           >
             <Button
-              onClick={handlePostAdd}
+              onClick={handlePostEdit}
               type="submit"
               variant="contained"
               color="success"

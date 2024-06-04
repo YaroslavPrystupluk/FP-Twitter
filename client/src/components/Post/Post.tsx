@@ -81,7 +81,7 @@ const Post: FC<IProps> = ({ post }) => {
                 onClose={handleMenuClose}
                 style={{ width: '100%' }}
               >
-                <Link to={`/posts/update/${post.id}`} style={{textDecoration: 'none', color: '#000000dd'}}>
+                <Link to={`/posts/update/${post.id}`} state={post} style={{textDecoration: 'none', color: '#000000dd'}}>
                 <MenuItem onClick={handleMenuClose}>
                   <ListItemIcon>
                     <EditIcon fontSize="small" />

@@ -28,4 +28,11 @@ export const postsService = {
 
     return data;
   },
+
+  async deleteFile(id: string, imageName: string) {
+    const { data } = await instance.delete<IPost>(
+      `posts/${id}/${imageName}`,
+    );
+    return data;
+  },
 };

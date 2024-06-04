@@ -118,22 +118,26 @@ export class PostService {
     if (!post) throw new NotFoundException('Post not found');
 
     if (files?.image && files.image.length > 0) {
-      const images = files.image.map((file) => file.path);
-      updatePostDto.image = images;
+      const images = files.image.map((file) => file.filename);
+      updatePostDto.image = post.image.concat(images);
+    } else {
+      updatePostDto.image = post.image;
     }
+    if (!updatePostDto.image) {
+      updatePostDto.image = post.image;
+    }
+
     const deletedImages = post.image.filter((image) => {
       if (updatePostDto.image) return !updatePostDto.image.includes(image);
-
-      return (updatePostDto.image = []);
+      return false;
     });
 
     deletedImages.forEach((image) => {
-      const imagePath = `${image}`;
-
+      const imagePath = `uploads/${image}`;
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
       } else {
-        console.warn(`Image not found: ${imagePath}`);
+        throw new NotFoundException(`Image not found: ${imagePath}`);
       }
     });
 
@@ -165,5 +169,23 @@ export class PostService {
     await this.postsRepository.delete(id);
 
     return id;
+  }
+
+  async removeFile(id: string, imageName: string) {
+    const post = await this.postsRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!post) throw new NotFoundException('Post not found');
+
+    // Видалення зображення зі списку зображень поста
+    post.image = post.image.filter((img) => img !== imageName);
+
+    // Зберігаємо зміни у пості
+    await this.postsRepository.save(post);
+
+    // Повертаємо ім'я видаленого файлу
+    return imageName;
   }
 }
