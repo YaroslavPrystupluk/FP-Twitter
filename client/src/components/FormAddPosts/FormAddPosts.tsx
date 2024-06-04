@@ -35,6 +35,7 @@ const FormAddPosts: FC = () => {
   const dispatch = useAppDispatch();
   const formRef = useRef<HTMLDivElement>(null);
 
+
   useOutsideClick({ ref: formRef, callback: () => setOpen(false) });
 
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,6 +54,8 @@ const FormAddPosts: FC = () => {
       setFiles([]);
       setFileNames([]);
       toast.success('Post created!');
+
+      setOpen(false);
 
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
@@ -79,8 +82,10 @@ const FormAddPosts: FC = () => {
   };
 
   const handleTextFieldClick = useCallback(() => {
+    if(open) return;
     setOpen(!open);
   }, [open]);
+  
 
   return (
     <Container
@@ -89,7 +94,6 @@ const FormAddPosts: FC = () => {
       sx={{
         my: 2,
       }}
-      ref={formRef}
     >
       <Box
         component="section"
@@ -98,10 +102,11 @@ const FormAddPosts: FC = () => {
           p: 4,
           borderRadius: 1,
           border: '1px solid #E0E0E0',
-          minWidth: { xs: 300, sm: 600, md: 800, lg: 1000 },
+          maxWidth: 700,
+          margin: '0 auto',
         }}
       >
-        <Box component="form" sx={{ width: '100%', padding: 0 }}>
+        <Box component="form" sx={{ width: '100%', padding: 0 }} ref={formRef}>
           <TextField
             onClick={handleTextFieldClick}
             onChange={(e) => setText(e.target.value)}
@@ -148,6 +153,7 @@ const FormAddPosts: FC = () => {
               mt={2}
             >
               <Button
+                fullWidth
                 onClick={handlePostAdd}
                 type="submit"
                 variant="contained"
@@ -155,14 +161,6 @@ const FormAddPosts: FC = () => {
                 sx={{ marginTop: 2, textTransform: 'none' }}
               >
                 Create post
-              </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                color="error"
-                sx={{ marginTop: 2, textTransform: 'none' }}
-              >
-                Cancel
               </Button>
             </Box>
           </Collapse>

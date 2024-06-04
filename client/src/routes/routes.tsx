@@ -2,6 +2,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate
 } from 'react-router-dom';
 import {
   ActivatedPage, 
@@ -19,7 +20,7 @@ import {
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
-import { FormAddPosts } from '../components';
+import { FormEditPost } from '../components';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,7 +29,7 @@ const router = createBrowserRouter(
         index
         element={
           <ProtectedRoute>
-            <Home />
+            <Navigate to="/posts" />
           </ProtectedRoute>
         }
       />
@@ -45,10 +46,10 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="posts/create"
+        path="posts/update/:id"
         element={
           <ProtectedRoute>
-            <FormAddPosts />
+            <FormEditPost />
           </ProtectedRoute>
         }
       />

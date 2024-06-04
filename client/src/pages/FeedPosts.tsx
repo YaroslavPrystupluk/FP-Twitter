@@ -4,7 +4,7 @@ import { Box, Container } from '@mui/material'
 
 const FeedPosts: FC = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Box>
         <FormAddPosts />
       </Box>
