@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { IPost } from '../../types/postsType';
 import {
   Card,
@@ -21,8 +21,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { postsService } from '../../services/posts.service';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { deletePost, getAllPosts } from '../../store/posts/postSlice';
+import { useAppDispatch } from '../../store/hooks';
+import { deletePost } from '../../store/posts/postSlice';
+
 
 interface IProps {
   post: IPost;
@@ -30,7 +31,6 @@ interface IProps {
 
 const Post: FC<IProps> = ({ post }) => {
   const dispatch = useAppDispatch();
-  const posts = useAppSelector((state) => state.posts.posts);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -42,14 +42,15 @@ const Post: FC<IProps> = ({ post }) => {
     setAnchorEl(null);
   };
 
-  const handledeletePost = async (id: string) => {
-    const data = await postsService.deletePost(id);
-    dispatch(deletePost(data));
+  const handleDeletePost = async (id: string) => {
+    try {
+      await postsService.deletePost(id);
+      dispatch(deletePost(id));
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+    }
   };
 
-  useEffect(() => {
-    dispatch(getAllPosts(posts));
-  }, [posts]);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -80,10 +81,10 @@ const Post: FC<IProps> = ({ post }) => {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  handledeletePost(post.id);
+                  handleDeletePost(post.id);
                   handleMenuClose();
                 }}>
-                <ListItemIcon onClick={() => console.log('hello')}>
+                <ListItemIcon>
                   <DeleteIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary="Delete post" />

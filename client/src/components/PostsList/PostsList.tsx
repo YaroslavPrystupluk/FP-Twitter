@@ -1,12 +1,12 @@
 import { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getAllPosts } from '../../store/posts/postSlice';
+import { getAllPosts, selectPosts } from '../../store/posts/postSlice';
 import { postsService } from '../../services/posts.service';
 import Post from '../Post/Post';
 
 const PostsList: FC = () => {
   const dispatch = useAppDispatch();
-  const posts = useAppSelector((state) => state.posts.posts);
+  const posts = useAppSelector(selectPosts);
 
 useEffect(() => {
   const fetchPosts = async () => {

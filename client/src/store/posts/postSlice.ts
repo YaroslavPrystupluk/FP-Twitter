@@ -31,16 +31,13 @@ export const postSlice = createSlice({
         return post;
       });
     },
-
-    deletePost: (state, action: PayloadAction<IPost>) => {
-      state.posts = state.posts?.filter(
-        (post) => post.id !== action.payload.id,
-      );
+    deletePost(state, action: PayloadAction<string>) {
+      state.posts = state.posts.filter((post) => post.id !== action.payload);
     },
   },
 });
 
 export const { createPost, updatePost, getAllPosts, deletePost } =
   postSlice.actions;
-export const selectCount = (state: RootState) => state.posts;
+export const selectPosts = (state: RootState) => state.posts.posts;
 export default postSlice.reducer;

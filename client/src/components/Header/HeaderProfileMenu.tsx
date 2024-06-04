@@ -9,7 +9,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { logout } from '../../store/user/userSlice';
+import { logout, selectUser } from '../../store/user/userSlice';
 import { removeTokenFromLocalStorage } from '../../helpers/localStorage.helpers';
 import { toast } from 'react-toastify';
 import { authService } from '../../services/auth.service';
@@ -17,7 +17,8 @@ import { authService } from '../../services/auth.service';
 const HeaderProfileMenu: FC = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
+  const userState = useAppSelector(selectUser);
+  const user = userState.user;
 
   const handleLogout = () => {
      authService.logout();

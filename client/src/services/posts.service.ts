@@ -4,7 +4,6 @@ import { IPost, IResponsePostsCreate } from '../types/postsType';
 export const postsService = {
   async getAllPosts(): Promise<IPost[]> {
     const { data } = await instance.get<IPost[]>('posts');
-    console.log(data);
 
     return data;
   },
@@ -18,7 +17,7 @@ export const postsService = {
 
   async deletePost(id: string) {
     const { data } = await instance.delete<IPost>(`posts/${id}`);
-    this.getAllPosts();
+
     return data;
   },
 };
