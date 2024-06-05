@@ -5,7 +5,10 @@ import FormForgotPassword from './FormForgotPassword/FormForgotPassword';
 import FormChangePassword from './FormChangePassword/FormChangePassword';
 import FormAddPosts from './FormAddPosts/FormAddPosts';
 import PostsList from './PostsList/PostsList';
+import Post from './Post/Post';
 import FormEditPost from './FormEditPost/FormEditPost';
+import FavoritesList from './FavoritesList/FavoritesList';
+import Favorites from './Favorites/Favorites';
 
 export {
   Header,
@@ -15,5 +18,8 @@ export {
   FormChangePassword,
   FormAddPosts,
   FormEditPost,
-  PostsList
+  PostsList,
+  Post,
+  FavoritesList,
+  Favorites
 };

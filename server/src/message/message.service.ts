@@ -45,11 +45,10 @@ export class MessageService {
   async getMessagesByUser(userId: string, page: number, limit: number) {
     return await this.messageRepository.find({
       where: [{ sender: { id: userId } }, { receiver: { id: userId } }],
-      relations: ['sender', 'receiver'],
-
       order: {
         createdAt: 'DESC',
       },
+      relations: ['sender', 'receiver'],
 
       skip: (page - 1) * limit,
       take: limit,
@@ -67,11 +66,10 @@ export class MessageService {
         { sender: { id: userId }, receiver: { id: receiverId } },
         { sender: { id: receiverId }, receiver: { id: userId } },
       ],
-      relations: ['sender', 'receiver'],
-
       order: {
         createdAt: 'DESC',
       },
+      relations: ['sender', 'receiver'],
 
       skip: (page - 1) * limit,
       take: limit,

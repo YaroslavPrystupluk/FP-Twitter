@@ -33,10 +33,5 @@ export const postsService = {
       `posts/${id}/${imageName}`,
     );
     return data;
-  },
-
-  async addFavoritePosts(postId: string): Promise<IPost[]> {
-    const { data } = await instance.post<IPost[]>(`posts/favorites/${postId}`);
-    return data;
-  },
+  }, 
 };

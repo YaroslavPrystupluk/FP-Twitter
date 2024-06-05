@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getAllPosts, selectPosts } from '../../store/posts/postSlice';
 import { postsService } from '../../services/posts.service';
-import Post from '../Post/Post';
+import { Post } from '../../components';
 
 const PostsList: FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ useEffect(() => {
   };
 
   fetchPosts();
-}, [dispatch]);
+}, [dispatch, posts]);
 
   return (
     <div>

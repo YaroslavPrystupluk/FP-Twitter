@@ -62,14 +62,18 @@ export class PostService {
           id,
         },
       },
-      relations: {
-        user: true,
-      },
+
       order: {
         createdAt: 'DESC',
       },
+
+      relations: {
+        user: true,
+      }
+
     });
-    if (!posts) throw new NotFoundException('Posts not found');
+    if (!posts || posts.length === 0)
+      throw new NotFoundException('Posts not found');
     return posts;
   }
 
