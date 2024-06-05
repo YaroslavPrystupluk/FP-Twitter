@@ -57,6 +57,24 @@ export class FavoritesService {
     return posts;
   }
 
+  async findAllFavorite(id: string) {
+    const posts = await this.favoriteRepository.find({
+      where: {
+        user: {
+          id,
+        },
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: {
+        user: true,
+      },
+    });
+    if (!posts) throw new NotFoundException('Posts not found');
+    return posts;
+  }
+
   async removeFavorite(userId: string, postId: string): Promise<string> {
     const favorite = await this.favoriteRepository.findOne({
       where: {

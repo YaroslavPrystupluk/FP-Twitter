@@ -34,6 +34,11 @@ export class FavoritesController {
       +limit,
     );
   }
+  @Get()
+  @UsePipes(new ValidationPipe())
+  async findAllFavorite(@Req() req) {
+    return await this.favoritesService.findAllFavorite(req.user.id);
+  }
 
   @Delete(':postId')
   @UsePipes(new ValidationPipe())

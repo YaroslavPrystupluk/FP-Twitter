@@ -35,7 +35,6 @@ const FormAddPosts: FC = () => {
   const dispatch = useAppDispatch();
   const formRef = useRef<HTMLDivElement>(null);
 
-
   useOutsideClick({ ref: formRef, callback: () => setOpen(false) });
 
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,10 +81,9 @@ const FormAddPosts: FC = () => {
   };
 
   const handleTextFieldClick = useCallback(() => {
-    if(open) return;
+    if (open) return;
     setOpen(!open);
   }, [open]);
-  
 
   return (
     <Container

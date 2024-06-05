@@ -1,11 +1,16 @@
 import { FC } from 'react'
+import { Container, Box } from '@mui/material';
+import { FavoritesList } from '../components';
+
 
 const Favorites: FC = () => {
   return (
-    <div>
-      <p>Favorites</p>
-    </div>
-  )
+    <Container maxWidth="xl">
+      <Box component="section">
+        <FavoritesList />
+      </Box>
+    </Container>
+  );
 }
 
 export default Favorites

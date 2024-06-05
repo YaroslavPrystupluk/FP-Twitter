@@ -69,8 +69,7 @@ export class PostService {
 
       relations: {
         user: true,
-      }
-
+      },
     });
     if (!posts || posts.length === 0)
       throw new NotFoundException('Posts not found');
@@ -186,15 +185,12 @@ export class PostService {
     post.image = post.image.filter((img) => img !== imageName);
     await this.postsRepository.save(post);
 
-
     const imagePath = `uploads/${imageName}`;
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath);
     } else {
       console.warn(`Image not found: ${imagePath}`);
-    } 
-    
-
+    }
 
     return imageName;
   }
