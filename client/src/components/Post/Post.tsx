@@ -157,8 +157,16 @@ const Post: FC<IProps> = ({ post }) => {
         <CardContent>
           <Typography paragraph>{post.text}</Typography>
         </CardContent>
-        <CardActions disableSpacing onClick={() => handleToggleLike(post.id)}>
-          <IconButton aria-label="add to favorites">
+        <CardActions disableSpacing>
+          <IconButton
+            onClick={() => handleToggleLike(post.id)}
+            color={
+              favorites.some((fav) => fav.id === post.id)
+                ? 'error'
+                : 'default'
+            }
+            aria-label="add to favorites"
+          >
             <FavoriteIcon />
           </IconButton>
         </CardActions>
