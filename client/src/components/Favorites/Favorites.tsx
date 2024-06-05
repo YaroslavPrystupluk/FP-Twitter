@@ -33,10 +33,10 @@ import {
 import { toast } from 'react-toastify';
 
 interface IProps {
-  post: IPost;
+  favorite: IPost;
 }
 
-const Favorites: FC<IProps> = ({ post }) => {
+const Favorites: FC<IProps> = ({ favorite }) => {
   const dispatch = useAppDispatch();
   const favorites = useAppSelector(selectFavorites);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
