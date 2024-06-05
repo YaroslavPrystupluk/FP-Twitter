@@ -65,18 +65,17 @@ const Post: FC<IProps> = ({ post }) => {
   };
 
   const handleToggleLike = async (postId: string) => {
-    
     try {
       const isFavorite = favorites.some(
-        (favoritePost) => favoritePost.id === postId,
+        (favoritePost) => favoritePost.post.id === postId,
       );
       if (isFavorite) {
-        await favoritesService.deleteFavoritePost(postId);
-        dispatch(deleteFavorite(postId));
+        const data = await favoritesService.deleteFavoritePost(postId);
+        dispatch(deleteFavorite(data));
         toast.success('Post removed from favorites!');
       } else {
-        await favoritesService.addFavoritePosts(postId);
-        dispatch(addToFavorites(post));
+    const newFavorite = await favoritesService.addFavoritePosts(postId);
+        dispatch(addToFavorites(newFavorite));
         toast.success('Post added to favorites!');
       }
       /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -164,7 +163,7 @@ const Post: FC<IProps> = ({ post }) => {
           <IconButton
             onClick={() => handleToggleLike(post.id)}
             color={
-              favorites.some((fav) => fav.id === post.id)
+              favorites.some((fav) => fav.post.id === post.id)
                 ? 'error'
                 : 'default'
             }

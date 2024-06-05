@@ -20,7 +20,7 @@ useEffect(() => {
   };
 
   fetchPosts();
-}, [dispatch, posts]);
+}, [dispatch, posts.length]);
 
   return (
     <div>

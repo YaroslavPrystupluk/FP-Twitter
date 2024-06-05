@@ -49,6 +49,7 @@ export class FavoritesService {
       },
       relations: {
         post: true,
+        user: true,
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -69,6 +70,7 @@ export class FavoritesService {
       },
       relations: {
         user: true,
+        post: true,
       },
     });
     if (!posts) throw new NotFoundException('Posts not found');
@@ -85,11 +87,14 @@ export class FavoritesService {
           id: postId,
         },
       },
+      relations: {
+        user: true,
+        post: true,
+      },
     });
 
     if (!favorite) throw new NotFoundException('Favorite not found');
     await this.favoriteRepository.delete(favorite.id);
-
-    return 'ok';
+    return favorite.id;
   }
 }
