@@ -67,12 +67,15 @@ const Post: FC<IProps> = ({ post }) => {
   const handleToggleLike = async (postId: string) => {
     
     try {
-      if (favorites.includes(post)) {
+      const isFavorite = favorites.some(
+        (favoritePost) => favoritePost.id === postId,
+      );
+      if (isFavorite) {
         await favoritesService.deleteFavoritePost(postId);
         dispatch(deleteFavorite(postId));
         toast.success('Post removed from favorites!');
       } else {
-        await favoritesService.addFavoritePosts( postId);
+        await favoritesService.addFavoritePosts(postId);
         dispatch(addToFavorites(post));
         toast.success('Post added to favorites!');
       }
