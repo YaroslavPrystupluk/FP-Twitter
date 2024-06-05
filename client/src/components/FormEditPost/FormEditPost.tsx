@@ -52,8 +52,12 @@ const FormEditPosts: FC = () => {
       setExistingImages(updatedImages);
       dispatch(updatePost({ ...state, image: updatedImages }));
       toast.success('File deleted successfully!');
-    } catch (error) {
-      toast.error('Failed to delete file.');
+
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
     }
   };
 

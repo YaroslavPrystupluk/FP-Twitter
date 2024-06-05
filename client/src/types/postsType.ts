@@ -8,8 +8,3 @@ export interface IPost {
   createdAt: string;
 }
 
-export interface IResponsePostsCreate {
-  text: string;
-  image: string[];
-}
-

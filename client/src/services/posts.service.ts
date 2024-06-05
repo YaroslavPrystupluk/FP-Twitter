@@ -1,5 +1,5 @@
 import { instance } from '../api/axios.api';
-import { IPost, IResponsePostsCreate } from '../types/postsType';
+import { IPost } from '../types/postsType';
 
 export const postsService = {
   async getAllPosts(): Promise<IPost[]> {
@@ -8,7 +8,6 @@ export const postsService = {
     return data;
   },
   async createPost(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     postDataCreate: FormData,
   ): Promise<IPost> {
     const { data } = await instance.post<IPost>('posts/create', postDataCreate);
@@ -33,6 +32,11 @@ export const postsService = {
     const { data } = await instance.delete<IPost>(
       `posts/${id}/${imageName}`,
     );
+    return data;
+  },
+
+  async addFavoritePosts(postId: string): Promise<IPost[]> {
+    const { data } = await instance.post<IPost[]>(`posts/favorites/${postId}`);
     return data;
   },
 };

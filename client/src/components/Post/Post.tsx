@@ -21,9 +21,16 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { postsService } from '../../services/posts.service';
-import { useAppDispatch } from '../../store/hooks';
+import { favoritesService } from '../../services/favorites.service';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { deletePost } from '../../store/posts/postSlice';
 import { Link } from 'react-router-dom';
+import {
+  addToFavorites,
+  deleteFavorite,
+  selectFavorites,
+} from '../../store/favorite/favoriteSlice';
+import { toast } from 'react-toastify';
 
 interface IProps {
   post: IPost;
@@ -31,6 +38,7 @@ interface IProps {
 
 const Post: FC<IProps> = ({ post }) => {
   const dispatch = useAppDispatch();
+  const favorites = useAppSelector(selectFavorites);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -46,8 +54,33 @@ const Post: FC<IProps> = ({ post }) => {
     try {
       await postsService.deletePost(id);
       dispatch(deletePost(id));
-    } catch (error) {
-      console.error('Failed to delete post:', error);
+      toast.success('Post deleted successfully!');
+
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
+  };
+
+  const handleToggleLike = async (postId: string) => {
+    
+    try {
+      if (favorites.includes(post)) {
+        await favoritesService.deleteFavoritePost(postId);
+        dispatch(deleteFavorite(postId));
+        toast.success('Post removed from favorites!');
+      } else {
+        await favoritesService.addFavoritePosts( postId);
+        dispatch(addToFavorites(post));
+        toast.success('Post added to favorites!');
+      }
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
     }
   };
 
@@ -81,13 +114,17 @@ const Post: FC<IProps> = ({ post }) => {
                 onClose={handleMenuClose}
                 style={{ width: '100%' }}
               >
-                <Link to={`/posts/update/${post.id}`} state={post} style={{textDecoration: 'none', color: '#000000dd'}}>
-                <MenuItem onClick={handleMenuClose}>
-                  <ListItemIcon>
-                    <EditIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary="Edit post" />
-                </MenuItem>
+                <Link
+                  to={`/posts/update/${post.id}`}
+                  state={post}
+                  style={{ textDecoration: 'none', color: '#000000dd' }}
+                >
+                  <MenuItem onClick={handleMenuClose}>
+                    <ListItemIcon>
+                      <EditIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Edit post" />
+                  </MenuItem>
                 </Link>
                 <MenuItem
                   onClick={() => {
@@ -120,7 +157,7 @@ const Post: FC<IProps> = ({ post }) => {
         <CardContent>
           <Typography paragraph>{post.text}</Typography>
         </CardContent>
-        <CardActions disableSpacing>
+        <CardActions disableSpacing onClick={() => handleToggleLike(post.id)}>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
