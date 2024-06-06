@@ -37,7 +37,7 @@ export class UserController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
-  @Get(':idOrEmail')
+  @Get('search/:idOrEmail')
   async findOne(@Param('idOrEmail') idOrEmail: string) {
     const user = await this.userService.findOne(idOrEmail);
     if (!user) throw new NotFoundException('User not found');

@@ -58,7 +58,7 @@ export class PostController {
     return await this.postService.findAll(req.user.id);
   }
 
-  @Get(':textOrId')
+  @Get('search/:textOrId')
   @UsePipes(new ValidationPipe())
   async findOne(@Param('textOrId') textOrId: string) {
     return await this.postService.findOne(textOrId);
