@@ -1,5 +1,5 @@
 import { useAppSelector } from '../store/hooks';
-import { selectUser } from '../store/user/userSlice';
+import { selectUser } from '../store/auth/authSlice';
 
 export const useAuth = (): boolean => {
   const isAuthState = useAppSelector(selectUser);

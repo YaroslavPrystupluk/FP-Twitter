@@ -13,7 +13,7 @@ const initialState: UserState = {
   isAuth: false,
 };
 
-export const userSlice = createSlice({
+export const authSlice = createSlice({
   name: 'user',
 
   initialState,
@@ -30,6 +30,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout } = userSlice.actions;
-export const selectUser = (state: RootState) => state.user;
-export default userSlice.reducer;
+export const { login, logout } = authSlice.actions;
+export const selectUser = (state: RootState) => state.auth;
+export default authSlice.reducer;

@@ -9,7 +9,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { logout, selectUser } from '../../store/user/userSlice';
+import { logout, selectUser } from '../../store/auth/authSlice';
 import { removeTokenFromLocalStorage } from '../../helpers/localStorage.helpers';
 import { toast } from 'react-toastify';
 import { authService } from '../../services/auth.service';
@@ -21,9 +21,9 @@ const HeaderProfileMenu: FC = () => {
   const user = userState.user;
 
   const handleLogout = () => {
-     authService.logout();
+    authService.logout();
     dispatch(logout());
-   
+
     removeTokenFromLocalStorage('accessToken');
     toast.success('Logout was successful!');
   };

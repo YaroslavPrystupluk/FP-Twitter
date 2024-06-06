@@ -5,12 +5,10 @@ import {
   Typography,
   TextField,
   Button,
-  styled,
   CardMedia,
   IconButton,
 } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { postsService } from '../../services/posts.service';
 import { toast } from 'react-toastify';
@@ -18,18 +16,8 @@ import { useAppDispatch } from '../../store/hooks';
 import { updatePost } from '../../store/posts/postSlice';
 import { useGoBack } from '../../hooks/useGoBack';
 import { useLocation } from 'react-router-dom';
+import { UploadButton } from '..';
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 const FormEditPosts: FC = () => {
   const dispatch = useAppDispatch();
@@ -86,7 +74,7 @@ const FormEditPosts: FC = () => {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files);
       setFiles([...files, ...selectedFiles]);
@@ -187,37 +175,19 @@ const FormEditPosts: FC = () => {
             ))}
           </Box>
 
-          {fileNames.map((fileName, index) => (
-            <Typography key={index} sx={{ marginLeft: 2 }}>
-              {fileName}
-            </Typography>
-          ))}
-
           <Box
             component="section"
             sx={{ display: 'flex', alignItems: 'center' }}
             mt={2}
           >
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-              sx={{ textTransform: 'none' }}
-            >
-              Upload file
-              <VisuallyHiddenInput
-                type="file"
-                multiple
-                onChange={handleFileChange}
-              />
-            </Button>
-            {/* {fileNames.map((fileName, index) => (
+            <UploadButton  multiple={true} 
+              onChange={handleFileChange} 
+              buttonText='Upload image' />
+            {fileNames.map((fileName, index) => (
               <Typography key={index} sx={{ marginLeft: 2 }}>
                 {fileName}
               </Typography>
-            ))} */}
+            ))}
           </Box>
           <Box
             component="section"

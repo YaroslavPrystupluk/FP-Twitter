@@ -23,12 +23,6 @@ export class FavoritesService {
 
     if (!user || !post) throw new NotFoundException('User or Post not found');
 
-    if (post.user.id === userId) {
-      throw new BadRequestException(
-        'You cannot add your own post to favorites',
-      );
-    }
-
     const favorite = this.favoriteRepository.create({ user, post });
     return this.favoriteRepository.save(favorite);
   }

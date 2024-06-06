@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '../components';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-toastify';
-import { login, logout } from '../store/user/userSlice';
+import { login, logout } from '../store/auth/authSlice';
 import { authService } from '../services/auth.service';
 import { getTokenFromLocalStorage } from '../helpers/localStorage.helpers';
 import { useAppDispatch } from '../store/hooks';
@@ -60,7 +60,7 @@ const Layout: FC = () => {
         <Outlet />
       </Container>
     </>
-  ); 
+  );
 };
 
 export default Layout;

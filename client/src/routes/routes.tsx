@@ -16,6 +16,7 @@ import {
   Notifications,
   Register,
   ChangePassword,
+  EditProfileUser,
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
@@ -88,7 +89,7 @@ const router = createBrowserRouter(
         path="edit-profile"
         element={
           <ProtectedRoute>
-            <ProfileUser />
+            <EditProfileUser />
           </ProtectedRoute>
         }
       />

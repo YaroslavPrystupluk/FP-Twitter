@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { setTokenToLocalStorage } from '../../helpers/localStorage.helpers';
 import { useAppDispatch } from '../../store/hooks';
-import { login } from '../../store/user/userSlice';
+import { login } from '../../store/auth/authSlice';
 
 const FormLogin: FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -47,11 +47,13 @@ const FormLogin: FC = () => {
     }
   };
 
-  const handleLoginGoogle = async ( event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+  const handleLoginGoogle = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ): Promise<void> => {
     try {
       event.preventDefault();
       const data = await authService.loginGoogle();
-     
+
       if (data) {
         setTokenToLocalStorage('accessToken', data.accessToken);
         dispatch(login(data));

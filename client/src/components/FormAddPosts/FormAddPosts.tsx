@@ -7,25 +7,12 @@ import {
   Button,
   Collapse,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { postsService } from '../../services/posts.service';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '../../store/hooks';
 import { createPost } from '../../store/posts/postSlice';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
+import { UploadButton } from '..';
 
 const FormAddPosts: FC = () => {
   const [text, setText] = useState<string>('');
@@ -120,21 +107,11 @@ const FormAddPosts: FC = () => {
               sx={{ display: 'flex', alignItems: 'center' }}
               mt={2}
             >
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-                sx={{ textTransform: 'none' }}
-              >
-                Upload file
-                <VisuallyHiddenInput
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                />
-              </Button>
+              <UploadButton
+                multiple={true}
+                onChange={handleFileChange}
+                buttonText="Upload image"
+              />
               {fileNames.map((fileName, index) => (
                 <Typography key={index} sx={{ marginLeft: 2 }}>
                   {fileName}
