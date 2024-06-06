@@ -56,11 +56,11 @@ const Layout: FC = () => {
     <>
       {isAuth && <Header />}
 
-      <Container component="main" maxWidth="xl">
+      <Container component="main" maxWidth="xl" sx={{ mt: { xs: 0, sm: 8 } }}>
         <Outlet />
       </Container>
     </>
-  );
+  ); 
 };
 
 export default Layout;

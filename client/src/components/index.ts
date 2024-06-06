@@ -9,6 +9,7 @@ import Post from './Post/Post';
 import FormEditPost from './FormEditPost/FormEditPost';
 import FavoritesList from './FavoritesList/FavoritesList';
 import Favorites from './Favorites/Favorites';
+import Profile from './Profile/Profile';
 
 export {
   Header,
@@ -21,5 +22,6 @@ export {
   PostsList,
   Post,
   FavoritesList,
-  Favorites
+  Favorites,
+  Profile
 };

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Header: FC = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl" >
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <HeaderBuegerMenu />

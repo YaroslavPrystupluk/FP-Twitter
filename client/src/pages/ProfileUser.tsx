@@ -1,11 +1,8 @@
 import { FC } from 'react'
+import { Profile } from '../components'
 
 const ProfileUser: FC = () => {
-  return (
-    <div>
-      <p>Profile</p>
-    </div>
-  )
+  return <Profile />
 }
 
 export default ProfileUser
