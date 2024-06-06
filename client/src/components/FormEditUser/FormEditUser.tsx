@@ -5,7 +5,8 @@ import { toast } from 'react-toastify';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { profileService } from '../../services/profile.service';
 import { useAppDispatch } from '../../store/hooks';
-import { editProfile } from '../../store/profile/profileSlice';
+import { deleteProfile, editProfile } from '../../store/profile/profileSlice';
+import { logout } from '../../store/auth/authSlice';
 
 
 
@@ -33,6 +34,20 @@ const FormEditUser: FC = () => {
       navigate('/profile/' + state.id);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const error = err.response?.data.message;
+      toast.error(error.toString());
+    }
+  };
+
+  const handleDeleteProfile = async () => {
+    try {
+      const data = await profileService.deleteProfile(state.user.id);
+      dispatch(deleteProfile(data));
+      dispatch(logout());
+      toast.success('Profile deleted!');
+      navigate('/login');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const error = err.response?.data.message;
       toast.error(error.toString());
@@ -149,27 +164,16 @@ const FormEditUser: FC = () => {
           >
             Change profile
           </Button>
+          <Button
+            onClick={handleDeleteProfile}
+            fullWidth
+            variant="contained"
+            color="error"
+            sx={{ marginTop: 2, textTransform: 'none' }}
+          >
+            Delete profile
+          </Button>
         </Box>
-        <Typography
-          sx={{
-            padding: '25px 0 0 0',
-          }}
-        >
-          {'Already have an account? '}
-          <Link to="/login" style={{ textDecoration: 'none' }}>
-            <Box
-              component="span"
-              sx={{
-                color: '#1976d2',
-                '&:hover': {
-                  color: '#7fbaf5',
-                },
-              }}
-            >
-              Sing in
-            </Box>
-          </Link>
-        </Typography>
       </Box>
     </Container>
   );

@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import {  FormAddPosts, PostsList, Profile } from '../components'
-import { Box, Container } from '@mui/material'
+import { Box, } from '@mui/material'
 
 const FeedPosts: FC = () => {
   return (
-    <Container maxWidth="xl">
-      <Box>
+    <>
+      <Box component='section'>
         <Profile />
       </Box>
       <Box>
@@ -14,7 +14,7 @@ const FeedPosts: FC = () => {
     <Box component="section" >
      <PostsList />
     </Box>
-    </Container>
+    </>
   )
 }
 

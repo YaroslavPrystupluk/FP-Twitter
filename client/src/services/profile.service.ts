@@ -11,7 +11,7 @@ export const profileService = {
   },
 
   async deleteProfile(id: string): Promise<string> {
-    const { data } = await instance.get<string>(`users/delete/${id}`);
+    const { data } = await instance.delete<string>(`user/delete/${id}`);
     return data;
   },
 };
