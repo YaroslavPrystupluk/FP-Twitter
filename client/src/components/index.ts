@@ -11,6 +11,7 @@ import FavoritesList from './FavoritesList/FavoritesList';
 import Favorites from './Favorites/Favorites';
 import Profile from './Profile/Profile';
 import UploadButton from './UploadButton/UploadButton';
+import FormEditUser from './FormEditUser/FormEditUser';
 
 export {
   Header,
@@ -25,5 +26,6 @@ export {
   FavoritesList,
   Favorites,
   Profile,
-  UploadButton
+  UploadButton,
+  FormEditUser,
 };

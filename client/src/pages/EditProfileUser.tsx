@@ -1,10 +1,9 @@
 import { FC } from 'react'
+import {FormEditUser} from '../components';
 
 const EditProfileUser: FC = () => {
   return (
-    <div>
-      <p>EditProfileUser</p>
-    </div>
+<FormEditUser />
   );
 }
 

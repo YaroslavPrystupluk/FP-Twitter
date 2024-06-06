@@ -13,13 +13,15 @@ import { toast } from 'react-toastify';
 import { useAppDispatch } from '../../store/hooks';
 import { postsService } from '../../services/posts.service';
 import { createPost } from '../../store/posts/postSlice';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 const Profile: FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const { state } = useLocation();
+  console.log(state);
 
   const handlePostAdd = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -32,6 +34,7 @@ const Profile: FC = () => {
       });
 
       const data = await postsService.createPost(formData);
+
       dispatch(createPost(data));
       setFiles([]);
       setFileNames([]);
@@ -159,21 +162,6 @@ const Profile: FC = () => {
               {fileName}
             </Typography>
           ))}
-          <Link
-            to="/edit-profile"
-            style={{
-              textDecoration: 'none',
-              color: '#ffffff',
-            }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ textTransform: 'none', width: '100%' }}
-            >
-              Edit profile
-            </Button>
-          </Link>
         </Box>
       </Box>
     </Container>

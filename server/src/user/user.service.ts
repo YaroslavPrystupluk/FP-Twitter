@@ -83,11 +83,13 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('Usrer not found');
     }
-    user.email = updateUserDto.email;
-    user.password = bcrypt.hashSync(
-      updateUserDto.password,
-      Number(this.configService.get('SALT_ROUNDS')),
-    );
+    user.displayname = updateUserDto.displayname;
+    if (updateUserDto.password) {
+      user.password = bcrypt.hashSync(
+        updateUserDto.password,
+        Number(this.configService.get('SALT_ROUNDS')),
+      );
+    }
     return await this.userRepository.save(user);
   }
 

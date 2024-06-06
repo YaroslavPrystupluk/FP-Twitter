@@ -29,7 +29,7 @@ const router = createBrowserRouter(
         index
         element={
           <ProtectedRoute>
-            <Navigate to="/posts" />
+            <Navigate to="/posts"/>
           </ProtectedRoute>
         }
       />
@@ -78,7 +78,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="profile"
+        path="profile/:id"
         element={
           <ProtectedRoute>
             <ProfileUser />
@@ -86,7 +86,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="edit-profile"
+        path="edit-profile/:id"
         element={
           <ProtectedRoute>
             <EditProfileUser />

@@ -60,7 +60,7 @@ const HeaderProfileMenu: FC = () => {
       >
         <MenuItem onClick={handleCloseUserMenu}>
           <NavLink
-            to="/profile"
+            to={`/profile/${user?.id}`}
             style={{
               textDecoration: 'none',
               margin: '0 10px',
@@ -71,7 +71,8 @@ const HeaderProfileMenu: FC = () => {
           </NavLink>
 
           <NavLink
-            to="/edit-profile"
+            to={`/edit-profile/${user?.id}`}
+            state={{ user }}
             style={{
               textDecoration: 'none',
               margin: '0 10px',
