@@ -1,9 +1,9 @@
 import { instance } from '../api/axios.api';
+import { IProfileResponse } from '../types/profileType';
 import { IUser } from '../types/userTypes';
 
 export const profileService = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async editProfile(id: string | undefined, updateUser: any): Promise<IUser> {
+  async editProfile(id: string | undefined, updateUser: IProfileResponse): Promise<IUser> {
     const { data } = await instance.patch<IUser>(`user/update/${id}`, updateUser);
     
     return data;
