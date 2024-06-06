@@ -1,5 +1,4 @@
 import { instance } from '../api/axios.api';
-import { IProfile } from '../types/profileType';
 import { IUser } from '../types/userTypes';
 
 export const profileService = {

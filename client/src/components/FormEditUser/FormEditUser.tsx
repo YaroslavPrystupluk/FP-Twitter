@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import { toast } from 'react-toastify';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { profileService } from '../../services/profile.service';
 import { useAppDispatch } from '../../store/hooks';
 import { deleteProfile, editProfile } from '../../store/profile/profileSlice';
