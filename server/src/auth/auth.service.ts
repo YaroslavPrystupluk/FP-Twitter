@@ -199,4 +199,8 @@ export class AuthService {
       }
     });
   }
+
+  async getProfile(id: string) {
+    return await this.usersService.findOne(id);
+  }
 }
