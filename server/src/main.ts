@@ -8,10 +8,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
-  app.useStaticAssets(path.join(__dirname, 'uploads'), {
+  app.useStaticAssets(path.join(__dirname, '..', 'uploads'), {
     prefix: '/api/uploads',
   });
-  app.useStaticAssets(path.join(__dirname, 'static'), {
+  app.useStaticAssets(path.join(__dirname, '..', 'static'), {
     prefix: '/api/static',
   });
   app.use(cookieParser());

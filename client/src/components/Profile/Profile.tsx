@@ -35,6 +35,7 @@ const Profile: FC = () => {
 
   useEffect(() => {
     fetchUserProfile();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(userData?.banner);
@@ -46,7 +47,7 @@ const Profile: FC = () => {
         <CardMedia
           component="img"
           height="350"
-          image={`http://localhost:3001/api/uploads/${userData?.banner}`}
+          image={`http://localhost:3001/api/static/${userData?.banner}`}
           sx={{
             borderBottomLeftRadius: 12,
             borderBottomRightRadius: 12,
@@ -69,7 +70,7 @@ const Profile: FC = () => {
         }}
       >
         <Avatar
-          src={userData?.avatar}
+          src={`http://localhost:3001/api/static/${userData?.avatar}`}
           sx={{
             width: { xs: 200, sm: 250 },
             height: { xs: 200, sm: 250 },

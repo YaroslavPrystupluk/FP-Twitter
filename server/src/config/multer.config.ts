@@ -4,7 +4,7 @@ import * as path from 'path';
 
 export const multerConfig = {
   storage: diskStorage({
-    destination: path.join(__dirname, '../uploads'),
+    destination: path.join(__dirname, '../../uploads'),
     filename: (req, file, cb) => {
       const name = file.originalname.split('.')[0];
       cb(null, `${name}-${Date.now()}`);
