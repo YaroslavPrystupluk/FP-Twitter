@@ -31,10 +31,6 @@ export const authService = {
     return data;
   },
 
-  async getRememberMe(): Promise<void> {
-    return await instance.get('auth/rememberMe');
-  },
-
   async getProfile() {
     const { data } = await instance.get<IUser>('auth/profile');
 

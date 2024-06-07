@@ -7,75 +7,43 @@ import {
   Container,
   Typography,
 } from '@mui/material';
-import { FC, useState } from 'react';
-import { UploadButton } from '..';
+import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { postsService } from '../../services/posts.service';
-import { createPost } from '../../store/posts/postSlice';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { authService } from '../../services/auth.service';
+import { login } from '../../store/auth/authSlice';
+import { Link } from 'react-router-dom';
 
 const Profile: FC = () => {
-  const [files, setFiles] = useState<File[]>([]);
-  const [fileNames, setFileNames] = useState<string[]>([]);
-  const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
-const user = useAppSelector((state) => state.auth.user);
-console.log(user);
+  const user = useAppSelector((state) => state.auth.user);
+  const [userData, setUserData] = useState(user);
 
-
-
-
-  const handlePostAdd = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
+  const fetchUserProfile = async () => {
     try {
-      const formData = new FormData();
-      // formData.append('text', text);
-      files.forEach((file) => {
-        formData.append('image', file);
-      });
-
-      const data = await postsService.createPost(formData);
-
-      dispatch(createPost(data));
-      setFiles([]);
-      setFileNames([]);
-      toast.success('Post created!');
-
-      setOpen(false);
-
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-    } catch (err: any) {
-      const error = err.response?.data.message;
-
-      toast.error(error.toString());
-    }
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      if (event.target.files && event.target.files.length > 0) {
-        const selectedFiles = Array.from(event.target.files);
-        setFiles([...files, ...selectedFiles]);
-        const selectedFileNames = selectedFiles.map((file) => file.name);
-        setFileNames([...fileNames, ...selectedFileNames]);
-        toast.success('File uploaded!');
+      const profile = await authService.getProfile();
+      if (profile) {
+        setUserData(profile);
+        dispatch(login(profile));
       }
-      /* eslint-disable @typescript-eslint/no-explicit-any */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const error = err.response?.data.message;
-
       toast.error(error.toString());
     }
   };
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>
       <Box component="section">
         <CardMedia
           component="img"
           height="350"
-          image={user?.scrinshots}
+          image={userData?.scrinshots}
           alt="profile"
           sx={{
             borderBottomLeftRadius: 12,
@@ -99,7 +67,7 @@ console.log(user);
         }}
       >
         <Avatar
-          src={user?.avatar}
+          src={userData?.avatar}
           sx={{
             width: { xs: 200, sm: 250 },
             height: { xs: 200, sm: 250 },
@@ -110,11 +78,11 @@ console.log(user);
 
         <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
           <Typography variant="h3" component="h1" gutterBottom>
-            {user?.displayname}
+            {userData?.displayname}
           </Typography>
 
           <Typography variant="body1" paragraph>
-            Email
+            {userData?.email}
           </Typography>
 
           <Typography variant="body1" paragraph>
@@ -143,27 +111,22 @@ console.log(user);
             justifyContent: 'end',
           }}
         >
-          <UploadButton
-            multiple={false}
-            onChange={handlePostAdd}
-            buttonText="Upload background image"
-          />
-          {fileNames.map((fileName, index) => (
-            <Typography key={index} sx={{ marginLeft: 2 }}>
-              {fileName}
-            </Typography>
-          ))}
-
-          <UploadButton
-            multiple={false}
-            onChange={handlePostAdd}
-            buttonText="Upload avatar"
-          />
-          {fileNames.map((fileName, index) => (
-            <Typography key={index} sx={{ marginLeft: 2 }}>
-              {fileName}
-            </Typography>
-          ))}
+          <Link to="/upload-baner">
+            <Button
+              variant="contained"
+              sx={{ marginTop: 2, textTransform: 'none' }}
+            >
+              Upload background image
+            </Button>
+          </Link>
+          <Link to="/upload-avatar">
+            <Button
+              variant="contained"
+              sx={{ marginTop: 2, textTransform: 'none' }}
+            >
+              Upload avatar
+            </Button>
+          </Link>
         </Box>
       </Box>
     </Container>

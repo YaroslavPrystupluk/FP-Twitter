@@ -15,6 +15,15 @@ export const profileService = {
     return data;
   },
 
+  async addProfile(updateUser: IUser): Promise<IUser> {
+    const { data } = await instance.post<IUser>(
+      'user/create',
+      updateUser,
+    );
+
+    return data;  
+  },
+
   async deleteProfile(id: string | undefined): Promise<string> {
     const { data } = await instance.delete<string>(`user/delete/${id}`);
     return data;

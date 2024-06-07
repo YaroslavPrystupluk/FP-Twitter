@@ -12,6 +12,8 @@ import Favorites from './Favorites/Favorites';
 import Profile from './Profile/Profile';
 import UploadButton from './UploadButton/UploadButton';
 import FormEditUser from './FormEditUser/FormEditUser';
+import FormUploadAvatar from './FormUploadAvatar/FormUploadAvatar';
+import FormUploadBaner from './FormUploadBaner/UploadBaner';
 
 export {
   Header,
@@ -28,4 +30,6 @@ export {
   Profile,
   UploadButton,
   FormEditUser,
+  FormUploadAvatar,
+  FormUploadBaner,
 };
