@@ -25,7 +25,9 @@ export class CreateUserDto {
   confirmPassword?: string;
 
   @IsString()
-  displayname?: string;
+  @MinLength(3, { message: 'Display name must be at least 3 characters long' })
+  @MaxLength(20, { message: 'Display name must be at most 20 characters long' })
+  displayname: string;
 
   @IsString()
   provider?: Provider;

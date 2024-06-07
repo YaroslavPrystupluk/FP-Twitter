@@ -83,12 +83,21 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('Usrer not found');
     }
-    
+
     if (updateUserDto.displayname) {
       user.displayname = updateUserDto.displayname;
     }
 
     if (updateUserDto.password) {
+      if (updateUserDto.password.length < 8) {
+        throw new BadRequestException(
+          'Password must be at least 8 characters long',
+        );
+      }
+
+      if (updateUserDto.password != updateUserDto.confirmPassword) {
+        throw new BadRequestException('Passwords do not match');
+      }
       user.password = bcrypt.hashSync(
         updateUserDto.password,
         Number(this.configService.get('SALT_ROUNDS')),
