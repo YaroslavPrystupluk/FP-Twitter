@@ -37,14 +37,16 @@ const Profile: FC = () => {
     fetchUserProfile();
   }, []);
 
+  console.log(userData?.banner);
+  
+
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>
       <Box component="section">
         <CardMedia
           component="img"
           height="350"
-          image={userData?.scrinshots}
-          alt="profile"
+          image={`http://localhost:3001/api/uploads/${userData?.banner}`}
           sx={{
             borderBottomLeftRadius: 12,
             borderBottomRightRadius: 12,
@@ -111,7 +113,7 @@ const Profile: FC = () => {
             justifyContent: 'end',
           }}
         >
-          <Link to="/upload-baner">
+          <Link to="/upload-banner">
             <Button
               variant="contained"
               sx={{ marginTop: 2, textTransform: 'none' }}

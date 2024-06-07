@@ -28,7 +28,7 @@ export class UserResponse implements User {
   tokens: Token[];
   favorites: Favorite[];
   avatar: string;
-  scrinshots: string;
+  banner: string;
 
   followers: Subscription[];
   following: Subscription[];

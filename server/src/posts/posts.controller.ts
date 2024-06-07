@@ -19,7 +19,7 @@ import { PostService } from './posts.service';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
 import { AuthorGuard } from 'src/guards/author.guard';
-import { multerConfig } from './config/multer.config';
+import { multerConfig } from '../config/multer.config';
 
 @Controller('posts')
 export class PostController {

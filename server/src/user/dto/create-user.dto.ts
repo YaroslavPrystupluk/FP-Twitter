@@ -39,8 +39,8 @@ export class CreateUserDto {
   isRememberMe?: boolean;
 
   @IsString()
-  avatar?: string;
+  avatar?: string = 'avatar.png';
 
   @IsString()
-  scrinshots?: string;
+  banner?: string = 'banner.png';
 }

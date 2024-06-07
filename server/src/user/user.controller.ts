@@ -11,11 +11,14 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   NotFoundException,
+  UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponse } from './responses/user.response';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from 'src/config/multer.config';
 
 @Controller('user')
 export class UserController {
@@ -54,5 +57,14 @@ export class UserController {
   @Delete('delete/:id')
   async remove(@Param('id') id: string) {
     return await this.userService.remove(id);
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', multerConfig))
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() type: 'avatar' | 'banner',
+  ) {
+    return await this.userService.uploadFile(file, type);
   }
 }

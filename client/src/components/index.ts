@@ -13,7 +13,7 @@ import Profile from './Profile/Profile';
 import UploadButton from './UploadButton/UploadButton';
 import FormEditUser from './FormEditUser/FormEditUser';
 import FormUploadAvatar from './FormUploadAvatar/FormUploadAvatar';
-import FormUploadBaner from './FormUploadBaner/UploadBaner';
+import FormUploadBanner from './FormUploadBanner/UploadBanner';
 
 export {
   Header,
@@ -31,5 +31,5 @@ export {
   UploadButton,
   FormEditUser,
   FormUploadAvatar,
-  FormUploadBaner,
+  FormUploadBanner,
 };

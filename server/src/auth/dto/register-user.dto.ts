@@ -28,5 +28,8 @@ export class RegisterUserDto {
   displayname: string;
 
   @IsString()
-  avatar?: string;
+  avatar?: string = 'avatar.png';
+
+  @IsString()
+  banner?: string = 'banner.png';
 }

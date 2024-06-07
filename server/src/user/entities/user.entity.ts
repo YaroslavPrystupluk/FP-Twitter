@@ -42,14 +42,11 @@ export class User {
   @Column({ nullable: true })
   activateLink: string;
 
-  @Column({ default: 'https://i.stack.imgur.com/l60Hf.png' })
+  @Column({ default: 'avatar.png' })
   avatar: string;
 
-  @Column({
-    default:
-      'https://drive.google.com/file/d/1k464drVvV_qLF1qRrXop4LXyf16ykbee/view?usp=drive_link'
-  })
-  scrinshots: string;
+  @Column({ default: 'banner.png' })
+  banner: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

@@ -1,15 +1,18 @@
-import { Box, Button, Typography } from '@mui/material'
-import { FC, useState } from 'react'
+import { Box, Button, CardMedia, Typography } from '@mui/material';
+import { FC, useState } from 'react';
 import { UploadButton } from '..';
 import { toast } from 'react-toastify';
 import { postsService } from '../../services/posts.service';
 import { useAppDispatch } from '../../store/hooks';
 import { createPost } from '../../store/posts/postSlice';
+import { useGoBack } from '../../hooks/useGoBack';
 
-const FormUploadBaner: FC = () => {
+const FormUploadBanner: FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
+  const [preview, setPreview] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const goBack = useGoBack();
 
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -40,6 +43,10 @@ const FormUploadBaner: FC = () => {
         setFiles([...files, ...selectedFiles]);
         const selectedFileNames = selectedFiles.map((file) => file.name);
         setFileNames([...fileNames, ...selectedFileNames]);
+
+        const file = selectedFiles[0];
+        const previewUrl = URL.createObjectURL(file);
+        setPreview(previewUrl);
       }
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
@@ -62,6 +69,16 @@ const FormUploadBaner: FC = () => {
       }}
     >
       <Box component="form" sx={{ width: '100%', padding: 0 }}>
+        <CardMedia
+          component="img"
+          height="350"
+          image={preview || ''}
+          sx={{
+            borderBottomLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            mb: 2,
+          }}
+        />
         <Box
           component="section"
           sx={{ display: 'flex', alignItems: 'center' }}
@@ -84,6 +101,7 @@ const FormUploadBaner: FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            flexDirection: 'column',
           }}
           mt={2}
         >
@@ -97,10 +115,19 @@ const FormUploadBaner: FC = () => {
           >
             Upload background image
           </Button>
+          <Button
+            fullWidth
+            onClick={goBack}
+            variant="contained"
+            color="error"
+            sx={{ marginTop: 2, textTransform: 'none' }}
+          >
+            Cancel
+          </Button>
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default FormUploadBaner;
+export default FormUploadBanner;

@@ -55,7 +55,7 @@ export class UserService {
       provider: createUserDto.provider,
       isRememberMe: createUserDto.isRememberMe,
       avatar: createUserDto.avatar,
-      scrinshots: createUserDto.scrinshots,
+      banner: createUserDto.banner,
     });
   }
 
@@ -119,5 +119,17 @@ export class UserService {
     await this.userRepository.remove(userToRemove);
 
     return { id };
+  }
+
+  async uploadFile(file: Express.Multer.File, type: 'avatar' | 'banner') {
+    if (type === 'avatar') {
+      return await this.userRepository.save({
+        avatar: file.filename,
+      });
+    } else if (type === 'banner') {
+      return await this.userRepository.save({
+        banner: file.filename,
+      });
+    }
   }
 }

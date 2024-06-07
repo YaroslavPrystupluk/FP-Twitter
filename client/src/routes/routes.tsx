@@ -20,7 +20,7 @@ import {
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
-import { FormEditPost, FormUploadAvatar, FormUploadBaner } from '../components';
+import { FormEditPost, FormUploadAvatar, FormUploadBanner } from '../components';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -88,10 +88,10 @@ const router = createBrowserRouter(
       />
 
       <Route
-        path="upload-baner"
+        path="upload-banner"
         element={
           <ProtectedRoute>
-            <FormUploadBaner />
+            <FormUploadBanner />
           </ProtectedRoute>
         }
       />

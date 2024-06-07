@@ -88,7 +88,6 @@ export class AuthController {
   async getProfile(@Request() req) {
     const userId = req.user.id;
     return await this.authService.getProfile(userId);
-
   }
 
   @Get('refresh')

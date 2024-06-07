@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { FormUploadBaner } from '../components';
+import { FormUploadBanner } from '../components';
 
-const UploadBaner: FC = () => {
-  return <FormUploadBaner />;
+const UploadBanner: FC = () => {
+  return <FormUploadBanner />;
 };
 
-export default UploadBaner;
+export default UploadBanner;

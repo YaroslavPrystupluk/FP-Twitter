@@ -1,15 +1,18 @@
-import { Box, Button, Typography } from '@mui/material'
-import { FC, useState } from 'react'
+import { Avatar, Box, Button, Typography } from '@mui/material';
+import { FC, useState } from 'react';
 import { UploadButton } from '..';
 import { toast } from 'react-toastify';
 import { postsService } from '../../services/posts.service';
 import { useAppDispatch } from '../../store/hooks';
 import { createPost } from '../../store/posts/postSlice';
+import { useGoBack } from '../../hooks/useGoBack';
 
 const FormUploadAvatar: FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
+  const [preview, setPreview] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const goBack = useGoBack();
 
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -40,6 +43,10 @@ const FormUploadAvatar: FC = () => {
         setFiles([...files, ...selectedFiles]);
         const selectedFileNames = selectedFiles.map((file) => file.name);
         setFileNames([...fileNames, ...selectedFileNames]);
+
+        const file = selectedFiles[0];
+        const previewUrl = URL.createObjectURL(file);
+        setPreview(previewUrl);
       }
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
@@ -62,6 +69,10 @@ const FormUploadAvatar: FC = () => {
       }}
     >
       <Box component="form" sx={{ width: '100%', padding: 0 }}>
+        <Avatar
+          src={preview || ''}
+          sx={{ width: 250, height: 250, margin: '0 auto' }}
+        />
         <Box
           component="section"
           sx={{ display: 'flex', alignItems: 'center' }}
@@ -84,6 +95,8 @@ const FormUploadAvatar: FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            flexDirection: 'column'
+            
           }}
           mt={2}
         >
@@ -96,6 +109,15 @@ const FormUploadAvatar: FC = () => {
             sx={{ marginTop: 2, textTransform: 'none' }}
           >
             Upload avatar
+          </Button>
+          <Button
+          fullWidth
+            onClick={goBack}
+            variant="contained"
+            color="error"
+            sx={{ marginTop: 2, textTransform: 'none' }}
+          >
+            Cancel
           </Button>
         </Box>
       </Box>

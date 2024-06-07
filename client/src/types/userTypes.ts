@@ -5,7 +5,7 @@ export interface IUser {
   isRememberMe?: boolean;
   accessToken: string;
   avatar?: string;
-  scrinshots?: string;
+  banner?: string;
   displayname: string;
   refreshToken: string;
   fololowers: IUser[];
