@@ -83,7 +83,11 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('Usrer not found');
     }
-    user.displayname = updateUserDto.displayname;
+    
+    if (updateUserDto.displayname) {
+      user.displayname = updateUserDto.displayname;
+    }
+
     if (updateUserDto.password) {
       user.password = bcrypt.hashSync(
         updateUserDto.password,

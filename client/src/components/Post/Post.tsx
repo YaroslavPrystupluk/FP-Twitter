@@ -152,7 +152,7 @@ const Post: FC<IProps> = ({ post }) => {
             sx={{ paddingTop: '10px' }}
             component="img"
             image={`http://localhost:3001/api/uploads/${image}`}
-            alt="Paella dish"
+            alt={image}
           />
         ))}
 

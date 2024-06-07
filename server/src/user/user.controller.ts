@@ -45,6 +45,7 @@ export class UserController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @UsePipes(new ValidationPipe())
   @Patch('update/:id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.userService.update(id, updateUserDto);

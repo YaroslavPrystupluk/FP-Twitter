@@ -10,7 +10,7 @@ import {
 import { FC, useState } from 'react';
 import { UploadButton } from '..';
 import { toast } from 'react-toastify';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { postsService } from '../../services/posts.service';
 import { createPost } from '../../store/posts/postSlice';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -20,8 +20,11 @@ const Profile: FC = () => {
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const { state } = useLocation();
-  console.log(state);
+const user = useAppSelector((state) => state.auth.user);
+console.log(user);
+
+
+
 
   const handlePostAdd = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -72,7 +75,7 @@ const Profile: FC = () => {
         <CardMedia
           component="img"
           height="350"
-          image="https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png"
+          image={user?.scrinshots}
           alt="profile"
           sx={{
             borderBottomLeftRadius: 12,
@@ -96,8 +99,7 @@ const Profile: FC = () => {
         }}
       >
         <Avatar
-          alt="Header Photo"
-          src="https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png"
+          src={user?.avatar}
           sx={{
             width: { xs: 200, sm: 250 },
             height: { xs: 200, sm: 250 },
@@ -108,7 +110,7 @@ const Profile: FC = () => {
 
         <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
           <Typography variant="h3" component="h1" gutterBottom>
-            Username
+            {user?.displayname}
           </Typography>
 
           <Typography variant="body1" paragraph>

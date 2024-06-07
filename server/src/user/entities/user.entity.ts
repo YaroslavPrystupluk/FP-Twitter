@@ -45,7 +45,10 @@ export class User {
   @Column({ default: 'https://i.stack.imgur.com/l60Hf.png' })
   avatar: string;
 
-  @Column({ nullable: true })
+  @Column({
+    default:
+      'https://drive.google.com/file/d/1k464drVvV_qLF1qRrXop4LXyf16ykbee/view?usp=drive_link'
+  })
   scrinshots: string;
 
   @CreateDateColumn({ type: 'timestamptz' })

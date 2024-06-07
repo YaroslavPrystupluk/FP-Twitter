@@ -8,8 +8,6 @@ import { useAppDispatch } from '../../store/hooks';
 import { deleteProfile, editProfile } from '../../store/profile/profileSlice';
 import { logout } from '../../store/auth/authSlice';
 
-
-
 const FormEditUser: FC = () => {
   const [displayname, setDisplayname] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -31,7 +29,7 @@ const FormEditUser: FC = () => {
 
       dispatch(editProfile(data));
          toast.success('Profile updated!');
-      navigate('/profile/' + state.id);
+      navigate(`/profile/${state.user.id}`);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

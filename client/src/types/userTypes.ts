@@ -5,8 +5,11 @@ export interface IUser {
   isRememberMe?: boolean;
   accessToken: string;
   avatar?: string;
+  scrinshots?: string;
   displayname: string;
   refreshToken: string;
+  fololowers: IUser[];
+  following: IUser[];
 }
 
 export interface IUserDataRegister {

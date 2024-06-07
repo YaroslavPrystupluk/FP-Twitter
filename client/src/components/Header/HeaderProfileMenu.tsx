@@ -19,8 +19,6 @@ const HeaderProfileMenu: FC = () => {
   const dispatch = useAppDispatch();
   const userState = useAppSelector(selectUser);
   const user = userState.user;
-  console.log(user);
-  
 
   const handleLogout = () => {
     authService.logout();
@@ -63,6 +61,7 @@ const HeaderProfileMenu: FC = () => {
         <MenuItem onClick={handleCloseUserMenu}>
           <NavLink
             to={`/profile/${user?.id}`}
+            state={{user}}
             style={{
               textDecoration: 'none',
               margin: '0 10px',
@@ -75,7 +74,7 @@ const HeaderProfileMenu: FC = () => {
         <MenuItem onClick={handleCloseUserMenu}>
           <NavLink
             to={`/edit-profile/${user?.id}`}
-            state={{ user }}
+            state={{user}}
             style={{
               textDecoration: 'none',
               margin: '0 10px',
