@@ -16,12 +16,9 @@ export const profileService = {
   },
 
   async addProfile(updateUser: IUser): Promise<IUser> {
-    const { data } = await instance.post<IUser>(
-      'user/create',
-      updateUser,
-    );
+    const { data } = await instance.post<IUser>('user/create', updateUser);
 
-    return data;  
+    return data;
   },
 
   async deleteProfile(id: string | undefined): Promise<string> {
@@ -37,6 +34,21 @@ export const profileService = {
   async getAllProfiles(): Promise<IUser[]> {
     const { data } = await instance.get<IUser[]>('user');
 
+    return data;
+  },
+
+  async uploadFile(
+    userId: string | undefined,
+    file: File,
+    type: 'avatar' | 'banner',
+  ): Promise<IUser> {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('type', type);
+    const { data } = await instance.post<IUser>(
+      `user/upload/${userId}`,
+      formData,
+    );
     return data;
   },
 };

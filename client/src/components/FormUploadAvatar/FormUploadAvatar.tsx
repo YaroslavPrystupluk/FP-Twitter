@@ -2,32 +2,31 @@ import { Avatar, Box, Button, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { UploadButton } from '..';
 import { toast } from 'react-toastify';
-import { postsService } from '../../services/posts.service';
-import { useAppDispatch } from '../../store/hooks';
-import { createPost } from '../../store/posts/postSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useGoBack } from '../../hooks/useGoBack';
+import { profileService } from '../../services/profile.service';
+import { uploadedFile } from '../../store/profile/profileSlice';
 
 const FormUploadAvatar: FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const goBack = useGoBack();
 
   const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
     try {
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append('image', file);
-      });
+      const data = await profileService.uploadFile(userId, files[0], 'avatar');
 
-      const data = await postsService.createPost(formData);
-      dispatch(createPost(data));
+      dispatch(uploadedFile(data));
+      setPreview(null);
+      setPreview(null);
       setFiles([]);
       setFileNames([]);
-      toast.success('Post created!');
+      goBack();
+      toast.success('Avatar uploaded successfully');
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
       const error = err.response?.data.message;
@@ -95,8 +94,7 @@ const FormUploadAvatar: FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            flexDirection: 'column'
-            
+            flexDirection: 'column',
           }}
           mt={2}
         >
@@ -104,6 +102,7 @@ const FormUploadAvatar: FC = () => {
             fullWidth
             onClick={handlePostAdd}
             type="submit"
+            disabled={files.length === 0}
             variant="contained"
             color="success"
             sx={{ marginTop: 2, textTransform: 'none' }}
@@ -111,7 +110,7 @@ const FormUploadAvatar: FC = () => {
             Upload avatar
           </Button>
           <Button
-          fullWidth
+            fullWidth
             onClick={goBack}
             variant="contained"
             color="error"

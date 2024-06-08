@@ -11,9 +11,6 @@ async function bootstrap() {
   app.useStaticAssets(path.join(__dirname, '..', 'uploads'), {
     prefix: '/api/uploads',
   });
-  app.useStaticAssets(path.join(__dirname, '..', 'static'), {
-    prefix: '/api/static',
-  });
   app.use(cookieParser());
   app.enableCors({
     credentials: true,

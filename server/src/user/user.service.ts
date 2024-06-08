@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -121,15 +123,28 @@ export class UserService {
     return { id };
   }
 
-  async uploadFile(file: Express.Multer.File, type: 'avatar' | 'banner') {
+  async uploadFile(
+    userId: string,
+    file: Express.Multer.File,
+    type: 'avatar' | 'banner',
+  ) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) throw new NotFoundException('User not found');
+
     if (type === 'avatar') {
-      return await this.userRepository.save({
-        avatar: file.filename,
-      });
+      user.avatar = file.filename;
     } else if (type === 'banner') {
-      return await this.userRepository.save({
-        banner: file.filename,
-      });
+      user.banner = file.filename;
+    } else {
+      throw new HttpException('Invalid type', HttpStatus.BAD_REQUEST);
     }
+
+    const savedUser = await this.userRepository.save(user);
+
+    return savedUser;
   }
 }

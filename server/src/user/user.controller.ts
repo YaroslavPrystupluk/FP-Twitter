@@ -12,6 +12,7 @@ import {
   ClassSerializerInterceptor,
   NotFoundException,
   UploadedFile,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -59,12 +60,14 @@ export class UserController {
     return await this.userService.remove(id);
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file', multerConfig))
+  @Post('upload/:userId')
+  @UseInterceptors(FileInterceptor('image', multerConfig))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @Body() type: 'avatar' | 'banner',
+    @Body('type') type: 'avatar' | 'banner',
+    @Req() req,
   ) {
-    return await this.userService.uploadFile(file, type);
+    const userId = req.user.id;
+    return await this.userService.uploadFile(userId, file, type);
   }
 }

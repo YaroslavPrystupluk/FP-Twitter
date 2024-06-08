@@ -38,19 +38,17 @@ const Profile: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(userData?.banner);
-
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>
       <Box component="section">
         <CardMedia
           component="img"
-          height="350"
-          image={`http://localhost:3001/api/static/${userData?.banner}`}
+          image={`${import.meta.env.VITE_UPLOAD_FILE}/${userData?.banner}`}
           sx={{
             borderBottomLeftRadius: 12,
             borderBottomRightRadius: 12,
             mb: 2,
+            height: { xs: 200, sm: 250, md: 350 },
           }}
         />
       </Box>
@@ -62,14 +60,14 @@ const Profile: FC = () => {
           justifyContent: { xs: 'center', md: 'center' },
           alignItems: 'center',
           position: { xs: 'absolute', md: 'relative' },
-          top: { xs: 250, sm: 300, md: 0 },
+          top: { xs: 150, sm: 270, md: 0 },
           left: { xs: '50%', md: 0 },
           transform: { xs: 'translateX(-50%)', md: 'none' },
           gap: { xs: 0, md: 4 },
         }}
       >
         <Avatar
-          src={`${import.meta.env.VITE_STATIC_FILE}/${userData?.avatar}`}
+          src={`${import.meta.env.VITE_UPLOAD_FILE}/${userData?.avatar}`}
           sx={{
             width: { xs: 200, sm: 250 },
             height: { xs: 200, sm: 250 },
