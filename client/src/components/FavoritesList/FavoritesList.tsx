@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getAllFavorites, selectFavorites } from '../../store/favorite/favoriteSlice';
 import { favoritesService } from '../../services/favorites.service';
 import { Favorites } from '../../components'
+import { Box, Typography } from '@mui/material';
 
 const FavoritesList: FC = () => {
 const dispatch = useAppDispatch();
@@ -22,13 +23,18 @@ const dispatch = useAppDispatch();
   }, [dispatch, favorites.length]);
 
   return (
-    <div>
+    <Box component="section" sx={{ mt: 12 }}>
+      {favorites.length === 0 && (
+        <Typography variant="h5" sx={{ textAlign: 'center', my: 10 }}>
+          No favorites yet
+        </Typography>
+      )}
       {favorites.map((favorite) => (
         <div key={favorite.id}>
           <Favorites favorite={favorite} />
         </div>
       ))}
-    </div>
+    </Box>
   );
 };
 

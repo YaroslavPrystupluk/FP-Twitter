@@ -145,16 +145,16 @@ const Post: FC<IProps> = ({ post }) => {
           title={post.user?.displayname}
           subheader={new Date(post.createdAt).toLocaleDateString()}
         />
-
-        {post.image.map((image) => (
+{post.image ?
+        (post.image.map((image) => (
           <CardMedia
             key={image}
             sx={{ paddingTop: '10px' }}
             component="img"
-            image={`http://localhost:3001/api/uploads/${image}`}
+            image={`${import.meta.env.VITE_UPLOAD_FILE}/${image}`}
             alt={image}
           />
-        ))}
+        ))) : null}
 
         <CardContent>
           <Typography paragraph>{post.text}</Typography>

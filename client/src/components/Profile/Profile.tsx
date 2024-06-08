@@ -35,11 +35,10 @@ const Profile: FC = () => {
 
   useEffect(() => {
     fetchUserProfile();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(userData?.banner);
-  
 
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>
@@ -70,7 +69,7 @@ const Profile: FC = () => {
         }}
       >
         <Avatar
-          src={`http://localhost:3001/api/static/${userData?.avatar}`}
+          src={`${import.meta.env.VITE_STATIC_FILE}/${userData?.avatar}`}
           sx={{
             width: { xs: 200, sm: 250 },
             height: { xs: 200, sm: 250 },
