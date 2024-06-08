@@ -81,14 +81,18 @@ const Profile: FC = () => {
             {userData?.displayname}
           </Typography>
 
-          <Typography variant="body1" paragraph>
+          <Typography variant="h5" paragraph>
             {userData?.email}
           </Typography>
 
-          <Typography variant="body1" paragraph>
+          <Typography variant="h6" paragraph>
             Subscriber 70
           </Typography>
-          <AvatarGroup max={8}>
+          <AvatarGroup
+            component="section"
+            sx={{ justifyContent: 'start' }}
+            max={8}
+          >
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
             <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
@@ -113,18 +117,20 @@ const Profile: FC = () => {
         >
           <Link to="/upload-banner">
             <Button
+              fullWidth
               variant="contained"
               sx={{ marginTop: 2, textTransform: 'none' }}
             >
-              Upload background image
+              Change banner
             </Button>
           </Link>
           <Link to="/upload-avatar">
             <Button
+              fullWidth
               variant="contained"
               sx={{ marginTop: 2, textTransform: 'none' }}
             >
-              Upload avatar
+              Change avatar
             </Button>
           </Link>
         </Box>

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import FlutterDashIcon from '@mui/icons-material/FlutterDash';
 import { toast } from 'react-toastify';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { profileService } from '../../services/profile.service';
 import { useAppDispatch } from '../../store/hooks';
 import { deleteProfile, editProfile } from '../../store/profile/profileSlice';
@@ -16,9 +16,7 @@ const FormEditUser: FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  const handleEditProfile = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ) => {
+  const handleEditProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       const data = await profileService.editProfile(state.user.id, {
@@ -28,7 +26,7 @@ const FormEditUser: FC = () => {
       });
 
       dispatch(editProfile(data));
-         toast.success('Profile updated!');
+      toast.success('Profile updated!');
       navigate(`/profile/${state.user.id}`);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +43,7 @@ const FormEditUser: FC = () => {
       dispatch(logout());
       toast.success('Profile deleted!');
       navigate('/login');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const error = err.response?.data.message;
       toast.error(error.toString());
@@ -122,7 +120,7 @@ const FormEditUser: FC = () => {
           sx={{ width: '100%' }}
         >
           <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-            Display name <span style={{ color: 'red' }}>*</span>
+            Display name
           </Typography>
           <TextField
             onChange={(e) => setDisplayname(e.target.value)}
@@ -133,7 +131,7 @@ const FormEditUser: FC = () => {
           />
 
           <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-            Password <span style={{ color: 'red' }}>*</span>
+            Password
           </Typography>
           <TextField
             onChange={(e) => setPassword(e.target.value)}
@@ -144,7 +142,7 @@ const FormEditUser: FC = () => {
           />
 
           <Typography mt={2} alignSelf="flex-start" fontSize={18}>
-            Confirmed password <span style={{ color: 'red' }}>*</span>
+            Confirmed password
           </Typography>
           <TextField
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -153,7 +151,35 @@ const FormEditUser: FC = () => {
             type="password"
             value={confirmPassword}
           />
-
+          <Box
+            component="section"
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: { xs: 'column', sm: 'row' },
+            }}
+          >
+            <Link to="/upload-banner">
+              <Button
+                fullWidth
+                color="success"
+                variant="contained"
+                sx={{ marginTop: 2, textTransform: 'none' }}
+              >
+                Change banner
+              </Button>
+            </Link>
+            <Link to="/upload-avatar">
+              <Button
+              fullWidth
+                color="success"
+                variant="contained"
+                sx={{ marginTop: 2, textTransform: 'none' }}
+              >
+                Change avatar
+              </Button>
+            </Link>
+          </Box>
           <Button
             type="submit"
             fullWidth
