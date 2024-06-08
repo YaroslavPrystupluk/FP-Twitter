@@ -6,8 +6,8 @@ export const profileService = {
   async editProfile(
     id: string | undefined,
     updateUser: IProfileResponse,
-  ): Promise<IProfileResponse> {
-    const { data } = await instance.patch<IProfileResponse>(
+  ): Promise<IUser> {
+    const { data } = await instance.patch<IUser>(
       `user/update/${id}`,
       updateUser,
     );

@@ -39,7 +39,10 @@ const HeaderProfileMenu: FC = () => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt={user?.displayname} src={user?.avatar} />
+          <Avatar
+            alt={user?.displayname}
+            src={`${import.meta.env.VITE_UPLOAD_FILE}/${user?.avatar}`}
+          />
         </IconButton>
       </Tooltip>
       <Menu
@@ -61,7 +64,7 @@ const HeaderProfileMenu: FC = () => {
         <MenuItem onClick={handleCloseUserMenu}>
           <NavLink
             to={`/profile/${user?.id}`}
-            state={{user}}
+            state={{ user }}
             style={{
               textDecoration: 'none',
               margin: '0 10px',
@@ -70,11 +73,11 @@ const HeaderProfileMenu: FC = () => {
           >
             Profile
           </NavLink>
-</MenuItem>
+        </MenuItem>
         <MenuItem onClick={handleCloseUserMenu}>
           <NavLink
             to={`/edit-profile/${user?.id}`}
-            state={{user}}
+            state={{ user }}
             style={{
               textDecoration: 'none',
               margin: '0 10px',
@@ -83,7 +86,7 @@ const HeaderProfileMenu: FC = () => {
           >
             Edit profile
           </NavLink>
-</MenuItem>
+        </MenuItem>
         <MenuItem onClick={handleCloseUserMenu}>
           <NavLink
             onClick={handleLogout}
