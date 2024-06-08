@@ -18,7 +18,6 @@ import { useGoBack } from '../../hooks/useGoBack';
 import { useLocation } from 'react-router-dom';
 import { UploadButton } from '..';
 
-
 const FormEditPosts: FC = () => {
   const dispatch = useAppDispatch();
   const goBack = useGoBack();
@@ -26,6 +25,7 @@ const FormEditPosts: FC = () => {
 
   const [text, setText] = useState<string>(state.text || '');
   const [files, setFiles] = useState<File[]>(state.files || []);
+  const [previews, setPreviews] = useState<string[] | null>(null);
   const [fileNames, setFileNames] = useState<string[]>(state.fileNames || []);
   const [existingImages, setExistingImages] = useState<string[]>(
     state.image || [],
@@ -60,7 +60,7 @@ const FormEditPosts: FC = () => {
       const data = await postsService.updatePost(state.id, formData);
       dispatch(updatePost(data));
       goBack();
-
+      setPreviews(null);
       setText('');
       setFiles([]);
       setFileNames([]);
@@ -74,12 +74,19 @@ const FormEditPosts: FC = () => {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files);
       setFiles([...files, ...selectedFiles]);
       const selectedFileNames = selectedFiles.map((file) => file.name);
       setFileNames([...fileNames, ...selectedFileNames]);
+
+      const previewUrls = selectedFiles.map((file) =>
+        URL.createObjectURL(file),
+      );
+      setPreviews(previewUrls);
     }
   };
 
@@ -174,20 +181,38 @@ const FormEditPosts: FC = () => {
               </Box>
             ))}
           </Box>
+          {files.length > 0 && (
+            <Typography variant="body1" sx={{ mt: 2, textAlign: 'center' }}>
+              Uploaded image
+            </Typography>
+          )}
 
+          <Box
+            component="section"
+            sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}
+          >
+            {previews?.map((preview) => (
+              <CardMedia
+                key={preview}
+                component="img"
+                image={preview || ''}
+                sx={{
+                  width: 65,
+                  my: 2,
+                }}
+              />
+            ))}
+          </Box>
           <Box
             component="section"
             sx={{ display: 'flex', alignItems: 'center' }}
             mt={2}
           >
-            <UploadButton  multiple={true} 
-              onChange={handleFileChange} 
-              buttonText='Upload image' />
-            {fileNames.map((fileName, index) => (
-              <Typography key={index} sx={{ marginLeft: 2 }}>
-                {fileName}
-              </Typography>
-            ))}
+            <UploadButton
+              multiple={true}
+              onChange={handleFileChange}
+              buttonText="Upload image"
+            />
           </Box>
           <Box
             component="section"

@@ -2,10 +2,10 @@ import { FC, useCallback, useRef, useState } from 'react';
 import {
   Container,
   Box,
-  Typography,
   TextField,
   Button,
   Collapse,
+  CardMedia,
 } from '@mui/material';
 import { postsService } from '../../services/posts.service';
 import { toast } from 'react-toastify';
@@ -17,6 +17,7 @@ import { UploadButton } from '..';
 const FormAddPosts: FC = () => {
   const [text, setText] = useState<string>('');
   const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[] | null>(null);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ const FormAddPosts: FC = () => {
 
       const data = await postsService.createPost(formData);
       dispatch(createPost(data));
+      setPreviews(null);
       setText('');
       setFiles([]);
       setFileNames([]);
@@ -58,6 +60,11 @@ const FormAddPosts: FC = () => {
         setFiles([...files, ...selectedFiles]);
         const selectedFileNames = selectedFiles.map((file) => file.name);
         setFileNames([...fileNames, ...selectedFileNames]);
+
+        const previewUrls = selectedFiles.map((file) =>
+          URL.createObjectURL(file),
+        );
+        setPreviews(previewUrls);
       }
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
@@ -104,6 +111,23 @@ const FormAddPosts: FC = () => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box
               component="section"
+              sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}
+            >
+              {previews?.map((preview) => (
+                <CardMedia
+                  key={preview}
+                  component="img"
+                  image={preview || ''}
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    my: 2,
+                  }}
+                />
+              ))}
+            </Box>
+            <Box
+              component="section"
               sx={{ display: 'flex', alignItems: 'center' }}
               mt={2}
             >
@@ -112,11 +136,6 @@ const FormAddPosts: FC = () => {
                 onChange={handleFileChange}
                 buttonText="Upload image"
               />
-              {fileNames.map((fileName, index) => (
-                <Typography key={index} sx={{ marginLeft: 2 }}>
-                  {fileName}
-                </Typography>
-              ))}
             </Box>
             <Box
               component="section"

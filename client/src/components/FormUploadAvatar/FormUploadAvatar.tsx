@@ -22,7 +22,6 @@ const FormUploadAvatar: FC = () => {
 
       dispatch(uploadedFile(data));
       setPreview(null);
-      setPreview(null);
       setFiles([]);
       setFileNames([]);
       goBack();
