@@ -15,7 +15,7 @@ const FormUploadAvatar: FC = () => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const goBack = useGoBack();
 
-  const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleChangeAvatar = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       const data = await profileService.uploadFile(userId, files[0], 'avatar');
@@ -100,7 +100,7 @@ const FormUploadAvatar: FC = () => {
         >
           <Button
             fullWidth
-            onClick={handlePostAdd}
+            onClick={handleChangeAvatar}
             type="submit"
             disabled={files.length === 0}
             variant="contained"

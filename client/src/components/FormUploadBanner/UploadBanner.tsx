@@ -2,39 +2,44 @@ import { Box, Button, CardMedia, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { UploadButton } from '..';
 import { toast } from 'react-toastify';
-import { postsService } from '../../services/posts.service';
-import { useAppDispatch } from '../../store/hooks';
-import { createPost } from '../../store/posts/postSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useGoBack } from '../../hooks/useGoBack';
+import { profileService } from '../../services/profile.service';
+import { uploadedFile } from '../../store/profile/profileSlice';
 
 const FormUploadBanner: FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const goBack = useGoBack();
 
-  const handlePostAdd = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+    const handleChangeBanner = async (
+      event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+      event.preventDefault();
+      try {
+        const data = await profileService.uploadFile(
+          userId,
+          files[0],
+          'banner',
+        );
 
-    try {
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append('image', file);
-      });
+        dispatch(uploadedFile(data));
+        setPreview(null);
+        setPreview(null);
+        setFiles([]);
+        setFileNames([]);
+        goBack();
+        toast.success('Banner uploaded successfully');
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+      } catch (err: any) {
+        const error = err.response?.data.message;
 
-      const data = await postsService.createPost(formData);
-      dispatch(createPost(data));
-      setFiles([]);
-      setFileNames([]);
-      toast.success('Post created!');
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-    } catch (err: any) {
-      const error = err.response?.data.message;
-
-      toast.error(error.toString());
-    }
-  };
+        toast.error(error.toString());
+      }
+    };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -71,7 +76,7 @@ const FormUploadBanner: FC = () => {
       <Box component="form" sx={{ width: '100%', padding: 0 }}>
         <CardMedia
           component="img"
-          height="350"
+          height="150"
           image={preview || ''}
           sx={{
             borderBottomLeftRadius: 12,
@@ -107,13 +112,13 @@ const FormUploadBanner: FC = () => {
         >
           <Button
             fullWidth
-            onClick={handlePostAdd}
+            onClick={handleChangeBanner}
             type="submit"
             variant="contained"
             color="success"
             sx={{ marginTop: 2, textTransform: 'none' }}
           >
-            Upload background image
+            Upload banner
           </Button>
           <Button
             fullWidth
