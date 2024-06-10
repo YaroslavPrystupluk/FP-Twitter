@@ -102,7 +102,7 @@ const Post: FC<IProps> = ({ post }) => {
             <Avatar
               sx={{ bgcolor: red[500] }}
               aria-label="recipe"
-              src={post.user?.avatar}
+              src={`${import.meta.env.VITE_UPLOAD_FILE}/${post.user.avatar}`}
             ></Avatar>
           }
           action={
@@ -145,16 +145,17 @@ const Post: FC<IProps> = ({ post }) => {
           title={post.user?.displayname}
           subheader={new Date(post.createdAt).toLocaleDateString()}
         />
-{post.image ?
-        (post.image.map((image) => (
-          <CardMedia
-            key={image}
-            sx={{ paddingTop: '10px' }}
-            component="img"
-            image={`${import.meta.env.VITE_UPLOAD_FILE}/${image}`}
-            alt={image}
-          />
-        ))) : null}
+        {post.image
+          ? post.image.map((image) => (
+              <CardMedia
+                key={image}
+                sx={{ paddingTop: '10px' }}
+                component="img"
+                image={`${import.meta.env.VITE_UPLOAD_FILE}/${image}`}
+                alt={image}
+              />
+            ))
+          : null}
 
         <CardContent>
           <Typography paragraph>{post.text}</Typography>

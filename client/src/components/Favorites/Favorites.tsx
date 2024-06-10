@@ -55,7 +55,7 @@ const Favorites: FC<IProps> = ({ favorite }) => {
             <Avatar
               sx={{ bgcolor: red[500] }}
               aria-label="recipe"
-              src={favorite.user.avatar}
+              src={`${import.meta.env.VITE_UPLOAD_FILE}/${favorite.user.avatar}`}
             ></Avatar>
           }
           title={favorite.user.displayname}
