@@ -27,7 +27,7 @@ const FormEditUser: FC = () => {
 
       dispatch(editProfile(data));
       toast.success('Profile updated!');
-      navigate(`/profile/${state.user.id}`);
+      navigate('/profile');
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -171,7 +171,7 @@ const FormEditUser: FC = () => {
             </Link>
             <Link to="/upload-avatar">
               <Button
-              fullWidth
+                fullWidth
                 color="success"
                 variant="contained"
                 sx={{ marginTop: 2, textTransform: 'none' }}

@@ -7,7 +7,6 @@ import {
 import {
   ActivatedPage,
   Layout,
-  ProfileUser,
   Login,
   ErrorPage,
   Favorites,
@@ -20,7 +19,13 @@ import {
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
-import { FormEditPost, FormUploadAvatar, FormUploadBanner } from '../components';
+import {
+  FormEditPost,
+  FormUploadAvatar,
+  FormUploadBanner,
+  Profile,
+ UserProfile
+} from '../components';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -79,6 +84,15 @@ const router = createBrowserRouter(
       />
 
       <Route
+        path="user/:email"
+        element={
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="upload-avatar"
         element={
           <ProtectedRoute>
@@ -97,10 +111,10 @@ const router = createBrowserRouter(
       />
 
       <Route
-        path="profile/:id"
+        path="profile"
         element={
           <ProtectedRoute>
-            <ProfileUser />
+            <Profile />
           </ProtectedRoute>
         }
       />

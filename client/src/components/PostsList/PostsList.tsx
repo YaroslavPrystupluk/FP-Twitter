@@ -8,6 +8,9 @@ import { Box, Typography } from '@mui/material';
 const PostsList: FC = () => {
   const dispatch = useAppDispatch();
   const posts = useAppSelector(selectPosts);
+  const userId = useAppSelector((state) => state.auth.userId)
+  console.log('userId', userId);
+  
 
   useEffect(() => {
     const fetchPosts = async () => {

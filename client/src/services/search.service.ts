@@ -8,8 +8,8 @@ export const searchService = {
     return data;
   },
 
-  async searchUsers(text: string): Promise<IUser> {
-    const { data } = await instance.get<IUser>(`users/search/${text}`);
+  async searchUsers(text: string): Promise<IUser[]> {
+    const { data } = await instance.get<IUser[]>(`user/search?query=${text}`);
     return data;
   }
  

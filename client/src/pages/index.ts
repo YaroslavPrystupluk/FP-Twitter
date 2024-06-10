@@ -7,7 +7,7 @@ import Message from './Message';
 import Favorites from './Favorites';
 import Notifications from './Notifications';
 import ErrorPage from './ErrorPage';
-import ProfileUser from './ProfileUser';
+import Profile from './Profile';
 import EditProfileUser from './EditProfileUser';
 import ActivatedPage from './ActivatedPage';
 import ChangePassword from './ChangePassword';
@@ -22,7 +22,7 @@ export {
   Favorites,
   Notifications,
   ErrorPage,
-  ProfileUser,
+  Profile,
   EditProfileUser,
   ActivatedPage,
   ChangePassword,

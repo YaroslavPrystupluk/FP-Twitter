@@ -15,30 +15,26 @@ const FormUploadBanner: FC = () => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const goBack = useGoBack();
 
-    const handleChangeBanner = async (
-      event: React.MouseEvent<HTMLButtonElement>,
-    ) => {
-      event.preventDefault();
-      try {
-        const data = await profileService.uploadFile(
-          userId,
-          files[0],
-          'banner',
-        );
+  const handleChangeBanner = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.preventDefault();
+    try {
+      const data = await profileService.uploadFile(userId, files[0], 'banner');
 
-        dispatch(uploadedFile(data));
-        setPreview(null);
-        setFiles([]);
-        setFileNames([]);
-        goBack();
-        toast.success('Banner uploaded successfully');
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-      } catch (err: any) {
-        const error = err.response?.data.message;
+      dispatch(uploadedFile(data));
+      setPreview(null);
+      setFiles([]);
+      setFileNames([]);
+      goBack();
+      toast.success('Banner uploaded successfully');
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
 
-        toast.error(error.toString());
-      }
-    };
+      toast.error(error.toString());
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -113,6 +109,7 @@ const FormUploadBanner: FC = () => {
             fullWidth
             onClick={handleChangeBanner}
             type="submit"
+            disabled={files.length === 0}
             variant="contained"
             color="success"
             sx={{ marginTop: 2, textTransform: 'none' }}

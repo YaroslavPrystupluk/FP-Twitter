@@ -26,8 +26,8 @@ export const profileService = {
     return data;
   },
 
-  async getOneProfile(id: string | undefined): Promise<IProfileResponse> {
-    const { data } = await instance.get<IProfileResponse>(`user/search/${id}`);
+  async getOneProfile(id: string | undefined): Promise<IUser> {
+    const { data } = await instance.get<IUser>(`user/search/${id}`);
     return data;
   },
 

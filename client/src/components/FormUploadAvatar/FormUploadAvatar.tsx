@@ -15,7 +15,9 @@ const FormUploadAvatar: FC = () => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const goBack = useGoBack();
 
-  const handleChangeAvatar = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleChangeAvatar = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     event.preventDefault();
     try {
       const data = await profileService.uploadFile(userId, files[0], 'avatar');

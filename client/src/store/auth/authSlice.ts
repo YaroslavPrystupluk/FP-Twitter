@@ -5,11 +5,13 @@ import { IUser } from '../../types/userTypes';
 
 interface IAuthState {
   user: IUser | null;
+  userId: string;
   isAuth: boolean;
 }
 
 const initialState: IAuthState = {
   user: null,
+  userId: '',
   isAuth: false,
 };
 
@@ -18,6 +20,9 @@ export const authSlice = createSlice({
 
   initialState,
   reducers: {
+    setUserId(state, action: PayloadAction<string>) {
+      state.userId = action.payload;
+    },
     login: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
       state.isAuth = true;
@@ -29,6 +34,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { setUserId, login, logout } = authSlice.actions;
 export const selectUser = (state: RootState) => state.auth;
 export default authSlice.reducer;

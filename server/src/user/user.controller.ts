@@ -13,6 +13,7 @@ import {
   NotFoundException,
   UploadedFile,
   Req,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +21,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponse } from './responses/user.response';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer.config';
+import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
@@ -69,5 +71,10 @@ export class UserController {
   ) {
     const userId = req.user.id;
     return await this.userService.uploadFile(userId, file, type);
+  }
+
+  @Get('search')
+  async searchUsers(@Query('query') query: string): Promise<User[]> {
+    return this.userService.findUsers(query);
   }
 }

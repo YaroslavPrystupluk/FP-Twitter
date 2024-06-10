@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { authService } from '../../services/auth.service';
-import { login } from '../../store/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { authService } from '../services/auth.service';
+import { login } from '../store/auth/authSlice';
 import { Link } from 'react-router-dom';
 
 const Profile: FC = () => {

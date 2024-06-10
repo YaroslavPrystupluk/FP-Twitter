@@ -171,6 +171,7 @@ const FormLogin: FC = () => {
             E-Mail <span style={{ color: 'red' }}>*</span>
           </Typography>
           <TextField
+          required
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
             label="email"
@@ -181,6 +182,7 @@ const FormLogin: FC = () => {
             Password <span style={{ color: 'red' }}>*</span>
           </Typography>
           <TextField
+          required
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
             label="Password"

@@ -133,6 +133,7 @@ const FormRegister: FC = () => {
             E-Mail <span style={{ color: 'red' }}>*</span>
           </Typography>
           <TextField
+            required
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
             id="outlined-password-input"
@@ -144,6 +145,7 @@ const FormRegister: FC = () => {
             Password <span style={{ color: 'red' }}>*</span>
           </Typography>
           <TextField
+            required
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
             label="Password"
@@ -154,6 +156,7 @@ const FormRegister: FC = () => {
             Confirmed password <span style={{ color: 'red' }}>*</span>
           </Typography>
           <TextField
+            required
             onChange={(e) => setConfirmPassword(e.target.value)}
             fullWidth
             label="Confirmed password"
@@ -164,6 +167,7 @@ const FormRegister: FC = () => {
             Name <span style={{ color: 'red' }}>*</span>
           </Typography>
           <TextField
+            required
             onChange={(e) => srtNameDisplay(e.target.value)}
             fullWidth
             label="name"

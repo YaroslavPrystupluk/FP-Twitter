@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { MailerService } from 'src/mailer/mailer.service';
+import * as fs from 'fs';
 
 @Injectable()
 export class UserService {
@@ -62,14 +63,32 @@ export class UserService {
   }
 
   async findOne(idOrEmail: string): Promise<User | undefined> {
-    const searchCondition =
-      typeof idOrEmail === 'string' && idOrEmail.includes('@')
-        ? { email: idOrEmail }
-        : { id: idOrEmail };
+    let user: User | undefined;
+    if (!isNaN(Number(idOrEmail))) {
+      user = await this.userRepository.findOne({
+        where: {
+          id: idOrEmail,
+        },
 
-    return await this.userRepository.findOne({
-      where: searchCondition,
-    });
+        relations: {
+          favorites: true,
+          following: true,
+        },
+      });
+    } else {
+      user = await this.userRepository.findOne({
+        where: {
+          email: Like(`%${idOrEmail}%`),
+        },
+        relations: {
+          favorites: true,
+          following: true,
+        },
+      });
+    }
+
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
   async findAll() {
@@ -135,6 +154,15 @@ export class UserService {
     });
     if (!user) throw new NotFoundException('User not found');
 
+    const oldFileName = type === 'avatar' ? user.avatar : user.banner;
+    if (oldFileName) {
+      try {
+        fs.unlinkSync(`./uploads/${oldFileName}`);
+      } catch (error) {
+        console.error(`Error deleting file: ${error}`);
+      }
+    }
+
     if (type === 'avatar') {
       user.avatar = file.filename;
     } else if (type === 'banner') {
@@ -146,5 +174,17 @@ export class UserService {
     const savedUser = await this.userRepository.save(user);
 
     return savedUser;
+  }
+
+  async findUsers(query: string): Promise<User[]> {
+    const users = await this.userRepository.find({
+      where: { email: Like(`%${query}%`) },
+      relations: {
+        favorites: true,
+        following: true,
+      },
+    });
+    if (!users) throw new NotFoundException('No users found');
+    return users;
   }
 }

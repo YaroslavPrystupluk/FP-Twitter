@@ -4,11 +4,11 @@ import type { RootState } from '../store';
 import { IUser } from '../../types/userTypes';
 
 interface IProfileState {
-  user: IUser[];
+  profiles: IUser[];
 }
 
 const initialState: IProfileState = {
-  user: [],
+  profiles: [],
 };
 
 export const profileSlice = createSlice({
@@ -16,34 +16,40 @@ export const profileSlice = createSlice({
 
   initialState,
   reducers: {
+    getAllProfiles: (state, action: PayloadAction<IUser[]>) => {
+      state.profiles = action.payload;
+    }, 
+
     createProfile: (state, action: PayloadAction<IUser>) => {
-      state.user = [...state.user, action.payload];
+      state.profiles = [...state.profiles, action.payload];
     },
 
     editProfile: (state, action: PayloadAction<IUser>) => {
-      state.user = state.user?.map((user) => {
-        if (user.id === action.payload.id) {
+      state.profiles = state.profiles?.map((profile) => {
+        if (profile.id === action.payload.id) {
           return action.payload;
         }
-        return user;
+        return profile;
       });
     },
     deleteProfile: (state, action: PayloadAction<string>) => {
-      state.user = state.user?.filter((user) => user.id !== action.payload);
+      state.profiles = state.profiles?.filter(
+        (profile) => profile.id !== action.payload,
+      );
     },
 
     uploadedFile: (state, action: PayloadAction<IUser>) => {
-      state.user = state.user?.map((user) => {
-        if (user.id === action.payload.id) {
+      state.profiles = state.profiles?.map((profile) => {
+        if (profile.id === action.payload.id) {
           return action.payload;
         }
-        return user;
+        return profile;
       });
     },
   },
 });
 
-export const { createProfile, editProfile, deleteProfile, uploadedFile } =
+export const { getAllProfiles, createProfile, editProfile, deleteProfile, uploadedFile } =
   profileSlice.actions;
-export const selectUser = (state: RootState) => state.profile;
+export const selectProfile = (state: RootState) => state.profile;
 export default profileSlice.reducer;
