@@ -139,12 +139,20 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleLoginCallback(@Req() req: ExpressRequest, @Res() res: Response) {
-    const token = req.user['accessToken'];
-    const { data } = await axios.get(
-      `http://localhost:3001/api/auth/success?token=${token}`,
-    );
+    try {
+      const token = req.user['accessToken'];
+      const { data } = await axios.get(
+        `http://localhost:3001/api/auth/success?token=${token}`,
+      );
 
-    return res.send(data.accessToken);
+      return res.send(data.accessToken);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        return res.status(400).send('Bad Request');
+      }
+
+      return res.status(500).send('Internal Server Error');
+    }
   }
 
   @Get('success')

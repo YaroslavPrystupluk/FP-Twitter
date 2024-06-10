@@ -7,12 +7,14 @@ interface IAuthState {
   user: IUser | null;
   userId: string;
   isAuth: boolean;
+  provider: 'google' | 'email';
 }
 
 const initialState: IAuthState = {
   user: null,
   userId: '',
   isAuth: false,
+  provider: 'email',
 };
 
 export const authSlice = createSlice({

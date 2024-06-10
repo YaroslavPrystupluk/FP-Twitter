@@ -8,6 +8,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn({ name: 'post_id' })

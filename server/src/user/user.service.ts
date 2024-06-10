@@ -63,32 +63,14 @@ export class UserService {
   }
 
   async findOne(idOrEmail: string): Promise<User | undefined> {
-    let user: User | undefined;
-    if (!isNaN(Number(idOrEmail))) {
-      user = await this.userRepository.findOne({
-        where: {
-          id: idOrEmail,
-        },
+    const searchCondition =
+      typeof idOrEmail === 'string' && idOrEmail.includes('@')
+        ? { email: Like(`%${idOrEmail}%`) }
+        : { id: idOrEmail };
 
-        relations: {
-          favorites: true,
-          following: true,
-        },
-      });
-    } else {
-      user = await this.userRepository.findOne({
-        where: {
-          email: Like(`%${idOrEmail}%`),
-        },
-        relations: {
-          favorites: true,
-          following: true,
-        },
-      });
-    }
+    if (!searchCondition) throw new NotFoundException('User not found');
 
-    if (!user) throw new NotFoundException('User not found');
-    return user;
+    return await this.userRepository.findOne({ where: searchCondition });
   }
 
   async findAll() {
@@ -155,6 +137,7 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     const oldFileName = type === 'avatar' ? user.avatar : user.banner;
+    
     if (oldFileName) {
       try {
         fs.unlinkSync(`./uploads/${oldFileName}`);
@@ -182,6 +165,7 @@ export class UserService {
       relations: {
         favorites: true,
         following: true,
+        posts: true,
       },
     });
     if (!users) throw new NotFoundException('No users found');

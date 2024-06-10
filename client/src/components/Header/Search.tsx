@@ -56,7 +56,7 @@ interface UserOption {
   email: string;
 }
 
-const Seaech: FC = () => {
+const SearchComponent: FC = () => {
   const [query, setQuery] = useState<string>('');
   const [options, setOptions] = useState<UserOption[]>([]);
   const navigate = useNavigate();
@@ -66,29 +66,36 @@ const Seaech: FC = () => {
   ) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
-    const data = await searchService.searchUsers(newQuery);
-    
-
-    setOptions(data.map((user: IUser) => ({ id: user.id, email: user.email })));
+    if (newQuery) {
+      const data = await searchService.searchUsers(newQuery);
+      setOptions(
+        data.map((user: IUser) => ({ id: user.id, email: user.email })),
+      );
+    } else {
+      setOptions([]);
+      setQuery('');
+    }
   };
 
-const handleOptionSelect = (event: React.SyntheticEvent, value: string | UserOption) => {
-  if (typeof value === 'string' || value === null) {
-    return;
-  }
-  
-  const selectedUser = options.find((user) => user.email === value.email);
-  
-  if (selectedUser) {
-    navigate(`/user/${selectedUser.id}`);
-  }
-};
+  const handleOptionSelect = (
+    event: React.SyntheticEvent,
+    value: string | UserOption,
+  ) => {
+    if (typeof value === 'string' || value === null) {
+      return;
+    }
+
+    const selectedUser = options.find((user) => user.email === value.email);
+
+    if (selectedUser) {
+      navigate(`/user/${selectedUser.id}`);
+    }
+  };
 
   return (
-    <Stack spacing={2} sx={{ width: 300, px: 1, py: 1}}>
+    <Stack spacing={2} sx={{ width: 300, px: 1, py: 1 }}>
       <Search>
         <Autocomplete
-        
           noOptionsText="Enter the user's email address"
           popupIcon={<SearchIcon sx={{ color: '#ffffff' }} />}
           disableClearable
@@ -117,4 +124,4 @@ const handleOptionSelect = (event: React.SyntheticEvent, value: string | UserOpt
   );
 };
 
-export default Seaech;
+export default SearchComponent;
