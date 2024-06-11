@@ -15,14 +15,14 @@ export const subscriberSlice = createSlice({
   name: 'subscriber',
   initialState,
   reducers: {
-    addSubscribers: (state, action: PayloadAction<ISubscriber[]>) => {
-      state.subscribers = action.payload;
-    },
-
     getAllSubscribers: (state, action: PayloadAction<ISubscriber[]>) => {
       state.subscribers = action.payload;
     },
 
+    addSubscribers: (state, action: PayloadAction<ISubscriber>) => {
+      state.subscribers.push(action.payload);
+    },
+    
     deleteSubscriber: (state, action: PayloadAction<string>) => {
       state.subscribers = state.subscribers?.filter(
         (subscriber) => subscriber.id !== action.payload,

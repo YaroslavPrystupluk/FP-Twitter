@@ -137,7 +137,7 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     const oldFileName = type === 'avatar' ? user.avatar : user.banner;
-    
+
     if (oldFileName) {
       try {
         fs.unlinkSync(`./uploads/${oldFileName}`);

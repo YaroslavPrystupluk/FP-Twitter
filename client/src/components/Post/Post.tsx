@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { IPost } from '../../types/postsType';
 import {
   Card,
@@ -28,6 +28,7 @@ import { Link } from 'react-router-dom';
 import {
   addToFavorites,
   deleteFavorite,
+  getAllFavorites,
   selectFavorites,
 } from '../../store/favorite/favoriteSlice';
 import { toast } from 'react-toastify';
@@ -49,6 +50,19 @@ const Post: FC<IProps> = ({ post }) => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const userFavorites = await favoritesService.getAllFavoritePosts(); 
+        dispatch(getAllFavorites(userFavorites));
+      } catch (error) {
+        toast.error('Failed to load favorites');
+      }
+    };
+
+    fetchFavorites();
+  }, [dispatch]);
 
   const handleDeletePost = async (id: string) => {
     try {

@@ -14,7 +14,7 @@ export const favoritesService = {
     return data;
   },
 
-  async deleteFavoritePost(id: string) {
+  async deleteFavoritePost(id: string): Promise<string> {
     const { data } = await instance.delete<string>(`favorites/${id}`);
     return data;
   },

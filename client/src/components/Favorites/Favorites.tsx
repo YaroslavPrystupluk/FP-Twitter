@@ -39,6 +39,8 @@ const Favorites: FC<IProps> = ({ favorite }) => {
     }
   };
 
+  const isFavorite = favorites.some((fav) => fav.post.id === favorite.post.id);
+
   return (
     <Container maxWidth="xl">
       <Card
@@ -55,7 +57,9 @@ const Favorites: FC<IProps> = ({ favorite }) => {
             <Avatar
               sx={{ bgcolor: red[500] }}
               aria-label="recipe"
-              src={`${import.meta.env.VITE_UPLOAD_FILE}/${favorite.user.avatar}`}
+              src={`${import.meta.env.VITE_UPLOAD_FILE}/${
+                favorite.user.avatar
+              }`}
             ></Avatar>
           }
           title={favorite.user.displayname}
@@ -67,7 +71,7 @@ const Favorites: FC<IProps> = ({ favorite }) => {
             sx={{ paddingTop: '10px' }}
             component="img"
             image={`http://localhost:3001/api/uploads/${image}`}
-            alt="Paella dish"
+            alt={favorite.user.displayname}
           />
         ))}
         <CardContent>
@@ -76,11 +80,7 @@ const Favorites: FC<IProps> = ({ favorite }) => {
         <CardActions disableSpacing>
           <IconButton
             onClick={() => handleDeleteFavorite(favorite.post.id)}
-            color={
-              favorites.some((fav) => fav.post.id === favorite.post.id)
-                ? 'error'
-                : 'default'
-            }
+            color={isFavorite ? 'error' : 'default'}
             aria-label="add to favorites"
           >
             <FavoriteIcon />

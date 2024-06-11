@@ -40,6 +40,10 @@ export class SubscriptionService {
   async unsubscribe(followerId: string, followingId: string): Promise<void> {
     const subscription = await this.subscriptionRepository.findOne({
       where: { follower: { id: followerId }, following: { id: followingId } },
+      relations: {
+        follower: true,
+        following: true,
+      },
     });
 
     if (!subscription) {
@@ -74,5 +78,20 @@ export class SubscriptionService {
       where: { following: { id: followingId } },
       relations: { following: true },
     });
+  }
+
+  async findAll(id: string) {
+    const posts = await this.subscriptionRepository.find({
+      where: {
+        following: {
+          id,
+        },
+      },
+      relations: {
+        follower: true,
+      },
+    });
+    if (!posts) throw new NotFoundException('Subscription not found');
+    return posts;
   }
 }

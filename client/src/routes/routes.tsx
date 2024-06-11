@@ -16,6 +16,7 @@ import {
   Register,
   ChangePassword,
   EditProfileUser,
+  UserProfile,
 } from '../pages';
 import ForgotPassword from '../pages/ForgotPassword';
 import ProtectedRoute from '../hoc/ProtectedRoute';
@@ -24,7 +25,6 @@ import {
   FormUploadAvatar,
   FormUploadBanner,
   Profile,
- UserProfile
 } from '../components';
 
 const router = createBrowserRouter(
@@ -84,7 +84,7 @@ const router = createBrowserRouter(
       />
 
       <Route
-        path="user/:email"
+        path="user/:id"
         element={
           <ProtectedRoute>
             <UserProfile />

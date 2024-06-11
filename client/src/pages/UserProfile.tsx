@@ -1,6 +1,5 @@
 import {
   Avatar,
-  AvatarGroup,
   Box,
   Button,
   CardMedia,
@@ -8,20 +7,29 @@ import {
   Typography,
 } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
+import SendIcon from '@mui/icons-material/Send';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { toast } from 'react-toastify';
 import { Link, useParams } from 'react-router-dom';
-import { IUser } from '../../types/userTypes';
-import { profileService } from '../../services/profile.service';
- 
+import { IUser } from '../types/userTypes';
+import { profileService } from '../services/profile.service';
+import { Subscribers } from '../components';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { subscriberService } from '../services/subscribers.service';
+import { addSubscribers, deleteSubscriber } from '../store/subscriber/subscriberSlice';
 
 const UserProfile: FC = () => {
+    const subscribers = useAppSelector((state) => state.subscriber.subscribers);
   const [userData, setUserData] = useState<IUser | null>(null);
-  const { email } = useParams();
+
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const profile = await profileService.getOneProfile(email);
+        const profile = await profileService.getOneProfile(id);
         if (profile) {
           setUserData(profile);
         }
@@ -32,9 +40,34 @@ const UserProfile: FC = () => {
       }
     };
     fetchUserProfile();
-  }, [email]);
+  }, [id]);
 
- 
+  const handleToggleSubscribe = async (followingId: string) => {
+    try {
+      const isSubscribed = subscribers.some(
+        (subscriber) => subscriber.following.id === followingId,
+      );
+      if (isSubscribed) {
+        const data = await subscriberService.deleteSubscriber(followingId);
+        console.log(data);
+        
+        dispatch(deleteSubscriber(data));
+        toast.success('Subscription removed!');
+      } else {
+        const newSubscriber = await subscriberService.addSubscriber(
+          followingId,
+        );
+        dispatch(addSubscribers(newSubscriber));
+        toast.success('Subscription added!');
+      }
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
+      const error = err.response?.data.message;
+
+      toast.error(error.toString());
+    }
+  };
+
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>
       <Box component="section">
@@ -81,28 +114,7 @@ const UserProfile: FC = () => {
           <Typography variant="h5" paragraph>
             {userData?.email}
           </Typography>
-
-          <Typography variant="h6" paragraph>
-            Subscriber 70
-          </Typography>
-          <AvatarGroup
-            component="section"
-            sx={{ justifyContent: 'start' }}
-            max={8}
-          >
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-          </AvatarGroup>
+          <Subscribers />
         </Box>
         <Box
           sx={{
@@ -112,22 +124,33 @@ const UserProfile: FC = () => {
             justifyContent: 'end',
           }}
         >
-          <Link to="/upload-banner">
+          <Button
+            onClick={() => handleToggleSubscribe(id as string)}
+            fullWidth
+            variant="contained"
+            sx={{ marginTop: 2, textTransform: 'none' }}
+            // endIcon={
+            //   subscribers.some((sub) => sub.following.id === id) ? (
+            //     <PersonRemoveIcon />
+            //   ) : (
+            //     <PersonAddIcon />
+            //   )
+            // }
+            
+          >
+            {/* {subscribers.some((sub) => sub.following.id === id as string)
+              ? 'Unsubscribe'
+              : 'Subscribe'} */}
+          </Button>
+
+          <Link to="/message">
             <Button
               fullWidth
               variant="contained"
               sx={{ marginTop: 2, textTransform: 'none' }}
+              endIcon={<SendIcon />}
             >
-              Change banner
-            </Button>
-          </Link>
-          <Link to="/upload-avatar">
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ marginTop: 2, textTransform: 'none' }}
-            >
-              Change avatar
+              Message
             </Button>
           </Link>
         </Box>

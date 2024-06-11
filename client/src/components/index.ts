@@ -14,7 +14,8 @@ import UploadButton from './UploadButton/UploadButton';
 import FormEditUser from './FormEditUser/FormEditUser';
 import FormUploadAvatar from './FormUploadAvatar/FormUploadAvatar';
 import FormUploadBanner from './FormUploadBanner/UploadBanner';
-import UserProfile from './UserProfile/UserProfile';
+import Subscribers from './Subscribers/Subscribers';
+
 
 export {
   Header,
@@ -33,5 +34,5 @@ export {
   FormEditUser,
   FormUploadAvatar,
   FormUploadBanner,
-  UserProfile,
+  Subscribers
 };

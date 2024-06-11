@@ -11,6 +11,7 @@ import Profile from './Profile';
 import EditProfileUser from './EditProfileUser';
 import ActivatedPage from './ActivatedPage';
 import ChangePassword from './ChangePassword';
+import UserProfile from './UserProfile';
 
 export {
   Home,
@@ -26,4 +27,5 @@ export {
   EditProfileUser,
   ActivatedPage,
   ChangePassword,
+  UserProfile,
 };

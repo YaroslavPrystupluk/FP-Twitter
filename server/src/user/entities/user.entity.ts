@@ -12,7 +12,7 @@ import { Favorite } from 'src/favorites/entities/favorite.entity';
 import { Subscription } from 'src/subscription/entities/subscription.entity';
 import { Message } from 'src/message/entities/message.entity';
 
-@Entity({ name: 'users' })
+@Entity()
 export class User {
   @PrimaryGeneratedColumn({ name: 'user_id' })
   id: string;

@@ -1,6 +1,5 @@
 import {
   Avatar,
-  AvatarGroup,
   Box,
   Button,
   CardMedia,
@@ -13,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { authService } from '../services/auth.service';
 import { login } from '../store/auth/authSlice';
 import { Link } from 'react-router-dom';
+import { Subscribers } from '../components';
 
 const Profile: FC = () => {
   const dispatch = useAppDispatch();
@@ -85,27 +85,7 @@ const Profile: FC = () => {
             {userData?.email}
           </Typography>
 
-          <Typography variant="h6" paragraph>
-            Subscriber 70
-          </Typography>
-          <AvatarGroup
-            component="section"
-            sx={{ justifyContent: 'start' }}
-            max={8}
-          >
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-          </AvatarGroup>
+          <Subscribers />
         </Box>
         <Box
           sx={{

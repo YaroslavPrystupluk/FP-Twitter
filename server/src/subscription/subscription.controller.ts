@@ -15,7 +15,7 @@ import { SubscriptionService } from './subscription.service';
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @Post('create/:followingId')
+  @Post(':followingId')
   @UsePipes(new ValidationPipe())
   async subscribe(@Param('followingId') followingId: string, @Req() req) {
     const followerId = String(req.user.id);
@@ -48,5 +48,11 @@ export class SubscriptionController {
   async unsubscribe(@Param('followingId') followingId: string, @Req() req) {
     const followerId = req.user.id;
     return this.subscriptionService.unsubscribe(followerId, followingId);
+  }
+
+  @Get()
+  @UsePipes(new ValidationPipe())
+  async findAllFavorite(@Req() req) {
+    return await this.subscriptionService.findAll(req.user.id);
   }
 }
