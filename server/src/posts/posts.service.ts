@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import * as fs from 'fs';
 import { CreatePostDto } from './dto/create-posts.dto';
 import { UpdatePostDto } from './dto/update-posts.dto';
-import { Like, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { Post } from './entities/posts.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -56,7 +56,7 @@ export class PostService {
   }
 
   async findAll(id: string) {
-    const posts = await this.postsRepository.find({
+        const posts = await this.postsRepository.find({
       where: {
         user: {
           id,
@@ -71,8 +71,7 @@ export class PostService {
         user: true,
       },
     });
-    if (!posts || posts.length === 0)
-      throw new NotFoundException('Posts not found');
+    console.log('posts', posts);
     return posts;
   }
 
@@ -193,5 +192,29 @@ export class PostService {
     }
 
     return imageName;
+  }
+
+  async getPostsFromFollowing(userId: string): Promise<Post[]> {
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const followingIds = user.following.map((follow) => follow.id);
+
+    const posts = await this.postsRepository.find({
+      where: {
+        user: {
+          id: In(followingIds),
+        },
+      },
+      relations: ['user'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return posts;
   }
 }

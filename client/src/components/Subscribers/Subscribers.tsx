@@ -1,5 +1,5 @@
-import { AvatarGroup, Avatar, Typography } from '@mui/material';
-import { FC, useEffect } from 'react'
+import { Avatar, AvatarGroup, Typography } from '@mui/material';
+import { FC, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { subscriberService } from '../../services/subscribers.service';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -7,32 +7,32 @@ import { getAllSubscribers } from '../../store/subscriber/subscriberSlice';
 import { useParams } from 'react-router-dom';
 
 const Subscribers: FC = () => {
-   const dispatch = useAppDispatch();
-   const subscribers = useAppSelector((state) => state.subscriber.subscribers);
-   const { id } = useParams();
-   console.log(id);
-   
-   
-   
+  const dispatch = useAppDispatch();
+  const subscribers = useAppSelector((state) => state.subscriber.subscribers);
+  const { id } = useParams();
+  console.log('subsct', id);
+  console.log('subscribers', subscribers);
 
-useEffect(() => {
-  const fetchFollowers = async () => {
-    try {
-      const fetchedSubscribers = await subscriberService.getAllSubscribers(id as string);
-      if (fetchedSubscribers) {
-        dispatch(getAllSubscribers(fetchedSubscribers));
+  useEffect(() => {
+    const fetchFollowers = async () => {
+      try {
+        const fetchedSubscribers = await subscriberService.getAllSubscribers(id as string);
+        console.log('fetchedSubscribers', fetchedSubscribers);
+
+        if (fetchedSubscribers) {
+          dispatch(getAllSubscribers(fetchedSubscribers));
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        const error = err.response?.data.message;
+        toast.error(error.toString());
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      const error = err.response?.data.message;
-      toast.error(error.toString());
-    }
-  };
+    };
 
-  if (subscribers.length === 0) {
-    fetchFollowers();
-  }
-}, [dispatch, id, subscribers.length]);
+    if (subscribers.length === 0) {
+      fetchFollowers();
+    }
+  }, [dispatch, id, subscribers.length]);
 
   return (
     <>
@@ -52,6 +52,6 @@ useEffect(() => {
       </AvatarGroup>
     </>
   );
-}
+};
 
-export default Subscribers
+export default Subscribers;

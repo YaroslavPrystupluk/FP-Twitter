@@ -3,12 +3,8 @@ import { ISubscriber } from '../types/subscriberType';
 
 
 export const subscriberService = {
-  async getAllSubscribers(id: string): Promise<ISubscriber[]> {
-    const { data } = await instance.get<ISubscriber[]>('subscription', {
-      params: {
-        followingId: id, 
-      },
-    });
+  async getAllSubscribers(): Promise<ISubscriber[]> {
+    const { data } = await instance.get<ISubscriber[]>('subscription')
     return data;
   },
 

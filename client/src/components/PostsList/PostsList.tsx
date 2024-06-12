@@ -8,14 +8,15 @@ import { Box, Typography } from '@mui/material';
 const PostsList: FC = () => {
   const dispatch = useAppDispatch();
   const posts = useAppSelector(selectPosts);
-  const userId = useAppSelector((state) => state.auth.userId)
-  console.log('userId', userId);
-  
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const postsData = await postsService.getAllPosts();
+        console.log('postsData', postsData);
+        
+        // const postsFromFollowing = await postsService.getFololowingPosts();
+        // postsData.push(...postsFromFollowing);
 
         dispatch(getAllPosts(postsData));
       } catch (error) {
@@ -28,16 +29,17 @@ const PostsList: FC = () => {
 
   return (
     <Box component="section">
-      {posts.length === 0 && (
+      {posts.length === 0 ? (
         <Typography variant="h5" sx={{ textAlign: 'center', my: 10 }}>
           No posts yet
         </Typography>
+      ) : (
+        posts.map((post) => (
+          <div key={post.createdAt}>
+            <Post post={post} />
+          </div>
+        ))
       )}
-      {posts.map((post) => (
-        <div key={post.createdAt}>
-          <Post post={post} />
-        </div>
-      ))}
     </Box>
   );
 };

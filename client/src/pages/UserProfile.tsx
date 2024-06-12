@@ -22,6 +22,7 @@ import { addSubscribers, deleteSubscriber } from '../store/subscriber/subscriber
 const UserProfile: FC = () => {
     const subscribers = useAppSelector((state) => state.subscriber.subscribers);
   const [userData, setUserData] = useState<IUser | null>(null);
+  
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -44,12 +45,11 @@ const UserProfile: FC = () => {
 
   const handleToggleSubscribe = async (followingId: string) => {
     try {
-      const isSubscribed = subscribers.some(
-        (subscriber) => subscriber.following.id === followingId,
-      );
+       const isSubscribed: boolean = subscribers.some(
+         (subscriber) => String(subscriber.following.id) === id,
+       );
       if (isSubscribed) {
         const data = await subscriberService.deleteSubscriber(followingId);
-        console.log(data);
         
         dispatch(deleteSubscriber(data));
         toast.success('Subscription removed!');
@@ -67,6 +67,10 @@ const UserProfile: FC = () => {
       toast.error(error.toString());
     }
   };
+
+  const isSubscribed = subscribers.some(
+    (subscriber) => String(subscriber.following.id) === id,
+  );
 
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>
@@ -129,18 +133,18 @@ const UserProfile: FC = () => {
             fullWidth
             variant="contained"
             sx={{ marginTop: 2, textTransform: 'none' }}
-            // endIcon={
-            //   subscribers.some((sub) => sub.following.id === id) ? (
-            //     <PersonRemoveIcon />
-            //   ) : (
-            //     <PersonAddIcon />
-            //   )
-            // }
+            endIcon={ isSubscribed 
+               ? (
+                <PersonRemoveIcon />
+              ) : (
+                <PersonAddIcon />
+              )
+            }
             
           >
-            {/* {subscribers.some((sub) => sub.following.id === id as string)
+            {isSubscribed
               ? 'Unsubscribe'
-              : 'Subscribe'} */}
+              : 'Subscribe'}
           </Button>
 
           <Link to="/message">

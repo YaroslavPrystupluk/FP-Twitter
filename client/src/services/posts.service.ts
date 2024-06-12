@@ -7,6 +7,7 @@ export const postsService = {
 
     return data;
   },
+  
   async createPost(
     postDataCreate: FormData,
   ): Promise<IPost> {

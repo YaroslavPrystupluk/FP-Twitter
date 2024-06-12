@@ -68,9 +68,10 @@ export class UserService {
         ? { email: Like(`%${idOrEmail}%`) }
         : { id: idOrEmail };
 
-    if (!searchCondition) throw new NotFoundException('User not found');
-
-    return await this.userRepository.findOne({ where: searchCondition });
+    return await this.userRepository.findOne({
+      where: searchCondition,
+      relations: ['posts', 'favorites', 'following', 'followers'],
+    });
   }
 
   async findAll() {

@@ -95,7 +95,9 @@ export class AuthService {
 
   async refreshTokens(refreshToken: string, agent: string) {
     const tokens = await this.tokenRepository.findOne({
-      relations: ['user'],
+      relations: {
+        user: true,
+      },
       where: {
         refreshToken,
       },
@@ -201,6 +203,7 @@ export class AuthService {
   }
 
   async getProfile(id: string) {
-    return await this.usersService.findOne(id);
+    const userId = await this.usersService.findOne(id);
+    return userId;
   }
 }

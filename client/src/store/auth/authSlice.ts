@@ -5,14 +5,12 @@ import { IUser } from '../../types/userTypes';
 
 interface IAuthState {
   user: IUser | null;
-  userId: string;
   isAuth: boolean;
   provider: 'google' | 'email';
 }
 
 const initialState: IAuthState = {
   user: null,
-  userId: '',
   isAuth: false,
   provider: 'email',
 };
@@ -23,7 +21,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUserId(state, action: PayloadAction<string>) {
-      state.userId = action.payload;
+      state.user!.id = action.payload;
     },
     login: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;

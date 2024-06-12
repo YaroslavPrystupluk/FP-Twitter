@@ -37,12 +37,19 @@ export class SubscriptionService {
     return this.subscriptionRepository.save(subscription);
   }
 
-  async unsubscribe(followerId: string, followingId: string): Promise<void> {
+  async unsubscribe(followerId: string, followingId: string): Promise<string> {
     const subscription = await this.subscriptionRepository.findOne({
-      where: { follower: { id: followerId }, following: { id: followingId } },
+      where: {
+        following: {
+          id: followingId,
+        },
+        follower: {
+          id: followerId,
+        },
+      },
       relations: {
-        follower: true,
         following: true,
+        follower: true,
       },
     });
 
@@ -50,7 +57,9 @@ export class SubscriptionService {
       throw new NotFoundException('Subscription not found');
     }
 
-    await this.subscriptionRepository.remove(subscription);
+    await this.subscriptionRepository.delete(subscription.id);
+
+    return subscription.id;
   }
 
   async findAllWhithPagination(id: string, page: number, limit: number) {
@@ -65,6 +74,7 @@ export class SubscriptionService {
       },
       relations: {
         follower: true,
+        following: true,
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -76,7 +86,7 @@ export class SubscriptionService {
   async findOne(followingId: string) {
     return await this.subscriptionRepository.findOne({
       where: { following: { id: followingId } },
-      relations: { following: true },
+      relations: { following: true, follower: true },
     });
   }
 
@@ -89,6 +99,7 @@ export class SubscriptionService {
       },
       relations: {
         follower: true,
+        following: true,
       },
     });
     if (!posts) throw new NotFoundException('Subscription not found');
