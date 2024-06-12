@@ -22,10 +22,6 @@ import { addSubscribers, deleteSubscriber } from '../store/subscriber/subscriber
 const UserProfile: FC = () => {
     const subscribers = useAppSelector((state) => state.subscriber.subscribers);
   const [userData, setUserData] = useState<IUser | null>(null);
-  console.log('subscribers', subscribers);
-  
-  
-
   const dispatch = useAppDispatch();
   const { id } = useParams();
   
@@ -48,9 +44,13 @@ const UserProfile: FC = () => {
 
   const handleToggleSubscribe = async (followingId: string) => {
     try {
+      console.log('followingId', followingId);
+      
        const isSubscribed: boolean = subscribers.some(
          (subscriber) => String(subscriber.following.id) === id,
        );
+       console.log('isSubscribed', isSubscribed);
+       
       if (isSubscribed) {
         const data = await subscriberService.deleteSubscriber(followingId);
         console.log('subDelete', data);
@@ -72,7 +72,7 @@ const UserProfile: FC = () => {
     }
   };
 
-  const isSubscribed = subscribers.some(
+  const isSub = subscribers.some(
     (subscriber) => String(subscriber.following.id) === id,
   );
 
@@ -137,18 +137,9 @@ const UserProfile: FC = () => {
             fullWidth
             variant="contained"
             sx={{ marginTop: 2, textTransform: 'none' }}
-            endIcon={ isSubscribed 
-               ? (
-                <PersonRemoveIcon />
-              ) : (
-                <PersonAddIcon />
-              )
-            }
-            
+            endIcon={isSub ? <PersonRemoveIcon /> : <PersonAddIcon />}
           >
-            {isSubscribed
-              ? 'Unsubscribe'
-              : 'Subscribe'}
+            {isSub ? 'Unsubscribe' : 'Subscribe'}
           </Button>
 
           <Link to="/message">

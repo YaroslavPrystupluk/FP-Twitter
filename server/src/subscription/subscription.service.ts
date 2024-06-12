@@ -112,7 +112,6 @@ export class SubscriptionService {
       where: { follower: { id: followerId } },
       relations: ['following'],
     });
-    console.log('subscriptions', subscriptions);
 
     const allPosts = [];
 
@@ -120,11 +119,8 @@ export class SubscriptionService {
       const posts = await this.postService.getPostsFromFollowing(
         subscription.following.id,
       );
-      console.log('postsFollowing', posts);
-
       allPosts.push(...posts);
     }
-
     return allPosts;
   }
 }

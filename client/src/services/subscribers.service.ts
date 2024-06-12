@@ -12,6 +12,7 @@ export const subscriberService = {
     const { data } = await instance.post<ISubscriber>(
       `subscription/${followingId}`,
     );
+        console.log('addSubscriber', data);
     return data;
   },
 
@@ -19,13 +20,13 @@ export const subscriberService = {
     const { data } = await instance.delete<string>(
       `subscription/${followingId}`,
     );
+        console.log('deleteSubscriber', data);
     return data;
   },
 
   async getSubscriberPost(){
     const { data } = await instance.get('subscription/following-posts');
-    console.log(data);
-    
+
     return data;
   }
 }

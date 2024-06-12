@@ -24,7 +24,7 @@ const Subscribers: FC = () => {
       }
     };
       fetchFollowers();
-  }, [dispatch, subscribers.length]);
+  }, [dispatch]);
 
   return (
     <>
