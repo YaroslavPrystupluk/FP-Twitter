@@ -56,7 +56,7 @@ export class PostService {
   }
 
   async findAll(id: string) {
-        const posts = await this.postsRepository.find({
+    const posts = await this.postsRepository.find({
       where: {
         user: {
           id,
