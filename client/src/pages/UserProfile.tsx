@@ -22,10 +22,13 @@ import { addSubscribers, deleteSubscriber } from '../store/subscriber/subscriber
 const UserProfile: FC = () => {
     const subscribers = useAppSelector((state) => state.subscriber.subscribers);
   const [userData, setUserData] = useState<IUser | null>(null);
+  console.log('subscribers', subscribers);
+  
   
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
+  
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -50,6 +53,7 @@ const UserProfile: FC = () => {
        );
       if (isSubscribed) {
         const data = await subscriberService.deleteSubscriber(followingId);
+        console.log('subDelete', data);
         
         dispatch(deleteSubscriber(data));
         toast.success('Subscription removed!');

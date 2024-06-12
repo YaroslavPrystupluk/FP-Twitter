@@ -21,4 +21,11 @@ export const subscriberService = {
     );
     return data;
   },
-};
+
+  async getSubscriberPost(){
+    const { data } = await instance.get('subscription/following-posts');
+    console.log(data);
+    
+    return data;
+  }
+}

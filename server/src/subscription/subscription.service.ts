@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Subscription } from './entities/subscription.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
+import { PostService } from 'src/posts/posts.service';
 
 @Injectable()
 export class SubscriptionService {
@@ -14,6 +15,7 @@ export class SubscriptionService {
     @InjectRepository(Subscription)
     private readonly subscriptionRepository: Repository<Subscription>,
     private readonly userService: UserService,
+    private readonly postService: PostService,
   ) {}
 
   async subscribe(
@@ -83,15 +85,15 @@ export class SubscriptionService {
     if (!followings) throw new NotFoundException('Followers not found');
     return followings;
   }
-  async findOne(followingId: string) {
-    return await this.subscriptionRepository.findOne({
-      where: { following: { id: followingId } },
-      relations: { following: true, follower: true },
-    });
-  }
+  // async findOne(followingId: string) {
+  //   return await this.subscriptionRepository.findOne({
+  //     where: { following: { id: followingId } },
+  //     relations: { following: true, follower: true },
+  //   });
+  // }
 
   async findAll(id: string) {
-    const posts = await this.subscriptionRepository.find({
+    const subscribe = await this.subscriptionRepository.find({
       where: {
         following: {
           id,
@@ -102,7 +104,27 @@ export class SubscriptionService {
         following: true,
       },
     });
-    if (!posts) throw new NotFoundException('Subscription not found');
-    return posts;
+    return subscribe;
+  }
+
+  async getFollowingPosts(followerId: string) {
+    const subscriptions = await this.subscriptionRepository.find({
+      where: { follower: { id: followerId } },
+      relations: ['following'],
+    });
+    console.log('subscriptions', subscriptions);
+
+    const allPosts = [];
+
+    for (const subscription of subscriptions) {
+      const posts = await this.postService.getPostsFromFollowing(
+        subscription.following.id,
+      );
+      console.log('postsFollowing', posts);
+
+      allPosts.push(...posts);
+    }
+
+    return allPosts;
   }
 }

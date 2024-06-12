@@ -37,11 +37,11 @@ export class SubscriptionController {
     );
   }
 
-  @Get(':followingId')
-  @UsePipes(new ValidationPipe())
-  async findOne(@Param('followingId') followingId: string) {
-    return await this.subscriptionService.findOne(followingId);
-  }
+  // @Get(':followingId')
+  // @UsePipes(new ValidationPipe())
+  // async findOne(@Param('followingId') followingId: string) {
+  //   return await this.subscriptionService.findOne(followingId);
+  // }
 
   @Delete(':followingId')
   @UsePipes(new ValidationPipe())
@@ -54,5 +54,10 @@ export class SubscriptionController {
   @UsePipes(new ValidationPipe())
   async findAllFavorite(@Req() req) {
     return await this.subscriptionService.findAll(req.user.id);
+  }
+
+  @Get('following-posts')
+  async getFololowingPosts(@Req() req) {
+    return await this.subscriptionService.getFollowingPosts(req.user.id);
   }
 }

@@ -4,20 +4,15 @@ import { toast } from 'react-toastify';
 import { subscriberService } from '../../services/subscribers.service';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getAllSubscribers } from '../../store/subscriber/subscriberSlice';
-import { useParams } from 'react-router-dom';
 
 const Subscribers: FC = () => {
   const dispatch = useAppDispatch();
   const subscribers = useAppSelector((state) => state.subscriber.subscribers);
-  const { id } = useParams();
-  console.log('subsct', id);
-  console.log('subscribers', subscribers);
 
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
-        const fetchedSubscribers = await subscriberService.getAllSubscribers(id as string);
-        console.log('fetchedSubscribers', fetchedSubscribers);
+        const fetchedSubscribers = await subscriberService.getAllSubscribers();
 
         if (fetchedSubscribers) {
           dispatch(getAllSubscribers(fetchedSubscribers));
@@ -28,11 +23,8 @@ const Subscribers: FC = () => {
         toast.error(error.toString());
       }
     };
-
-    if (subscribers.length === 0) {
       fetchFollowers();
-    }
-  }, [dispatch, id, subscribers.length]);
+  }, [dispatch, subscribers.length]);
 
   return (
     <>

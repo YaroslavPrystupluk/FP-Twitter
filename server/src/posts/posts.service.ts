@@ -71,7 +71,6 @@ export class PostService {
         user: true,
       },
     });
-    console.log('posts', posts);
     return posts;
   }
 
@@ -196,12 +195,14 @@ export class PostService {
 
   async getPostsFromFollowing(userId: string): Promise<Post[]> {
     const user = await this.userService.findOne(userId);
+    // console.log('user', user);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     const followingIds = user.following.map((follow) => follow.id);
+    console.log('followingIds', followingIds);
 
     const posts = await this.postsRepository.find({
       where: {
@@ -214,6 +215,11 @@ export class PostService {
         createdAt: 'DESC',
       },
     });
+
+    if (posts.length === 0) {
+      console.log('No posts found from following users.');
+    }
+    console.log('followingIds', posts);
 
     return posts;
   }

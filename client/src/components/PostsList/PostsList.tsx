@@ -4,6 +4,7 @@ import { getAllPosts, selectPosts } from '../../store/posts/postSlice';
 import { postsService } from '../../services/posts.service';
 import { Post } from '../../components';
 import { Box, Typography } from '@mui/material';
+import { subscriberService } from '../../services/subscribers.service';
 
 const PostsList: FC = () => {
   const dispatch = useAppDispatch();
@@ -13,10 +14,11 @@ const PostsList: FC = () => {
     const fetchPosts = async () => {
       try {
         const postsData = await postsService.getAllPosts();
-        console.log('postsData', postsData);
+
+        const postsFromFollowing = await subscriberService.getSubscriberPost();
+        console.log('postsFromFollowing', postsFromFollowing);
         
-        // const postsFromFollowing = await postsService.getFololowingPosts();
-        // postsData.push(...postsFromFollowing);
+        postsData.push(...postsFromFollowing);
 
         dispatch(getAllPosts(postsData));
       } catch (error) {
@@ -34,8 +36,8 @@ const PostsList: FC = () => {
           No posts yet
         </Typography>
       ) : (
-        posts.map((post) => (
-          <div key={post.createdAt}>
+        posts.map((post, index) => (
+          <div key={index}>
             <Post post={post} />
           </div>
         ))

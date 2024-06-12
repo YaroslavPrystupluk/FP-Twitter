@@ -1,3 +1,5 @@
+import { IPost } from './postsType';
+
 export interface IUser {
   id: string;
   email: string;
@@ -10,6 +12,7 @@ export interface IUser {
   refreshToken: string;
   fololowers: IUser[];
   following: IUser[];
+  posts: IPost[];
 }
 
 export interface IUserDataRegister {
