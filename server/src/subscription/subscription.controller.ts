@@ -50,14 +50,14 @@ export class SubscriptionController {
     return this.subscriptionService.unsubscribe(followerId, followingId);
   }
 
-  @Get()
+  @Get(':folowingId')
   @UsePipes(new ValidationPipe())
-  async findAllFavorite(@Req() req) {
-    return await this.subscriptionService.findAll(req.user.id);
+  async findAllFavorite(@Param('folowingId') folowingId: string) {
+    return await this.subscriptionService.findAll(folowingId);
   }
 
-  @Get('following-posts')
-  async getFololowingPosts(@Req() req) {
-    return await this.subscriptionService.getFollowingPosts(req.user.id);
+  @Get('following-posts/:followingId')
+  async getFololowingPosts(@Param('followingId') followingId: string) {
+    return await this.subscriptionService.getFollowingPosts(followingId);
   }
 }

@@ -30,6 +30,7 @@ const UserProfile: FC = () => {
     const fetchUserProfile = async () => {
       try {
         const profile = await profileService.getOneProfile(id);
+        
         if (profile) {
           setUserData(profile);
         }
@@ -44,16 +45,14 @@ const UserProfile: FC = () => {
 
   const handleToggleSubscribe = async (followingId: string) => {
     try {
-      console.log('followingId', followingId);
-      
        const isSubscribed: boolean = subscribers.some(
-         (subscriber) => String(subscriber.following.id) === id,
+         (subscriber) => String(subscriber.following.id) === followingId,
        );
-       console.log('isSubscribed', isSubscribed);
        
       if (isSubscribed) {
         const data = await subscriberService.deleteSubscriber(followingId);
-        console.log('subDelete', data);
+        console.log('data', data);
+        
         
         dispatch(deleteSubscriber(data));
         toast.success('Subscription removed!');
@@ -75,6 +74,7 @@ const UserProfile: FC = () => {
   const isSub = subscribers.some(
     (subscriber) => String(subscriber.following.id) === id,
   );
+  // const isSub = false
 
   return (
     <Container maxWidth="xl" component="article" sx={{ mt: 0 }}>

@@ -17,7 +17,7 @@ const PostsList: FC = () => {
 
         const postsFromFollowing = await subscriberService.getSubscriberPost();
         console.log('postsFromFollowing', postsFromFollowing);
-        
+
         postsData.push(...postsFromFollowing);
 
         dispatch(getAllPosts(postsData));

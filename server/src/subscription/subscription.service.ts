@@ -42,16 +42,12 @@ export class SubscriptionService {
   async unsubscribe(followerId: string, followingId: string): Promise<string> {
     const subscription = await this.subscriptionRepository.findOne({
       where: {
-        following: {
-          id: followingId,
-        },
         follower: {
           id: followerId,
         },
-      },
-      relations: {
-        following: true,
-        follower: true,
+        following: {
+          id: followingId,
+        },
       },
     });
 
@@ -59,9 +55,16 @@ export class SubscriptionService {
       throw new NotFoundException('Subscription not found');
     }
 
-    await this.subscriptionRepository.delete(subscription.id);
+    await this.subscriptionRepository.delete({
+      follower: {
+        id: followerId,
+      },
+      following: {
+        id: followingId,
+      },
+    });
 
-    return subscription.id;
+    return followingId;
   }
 
   async findAllWhithPagination(id: string, page: number, limit: number) {
@@ -71,9 +74,7 @@ export class SubscriptionService {
           id,
         },
       },
-      order: {
-        createdAt: 'DESC',
-      },
+
       relations: {
         follower: true,
         following: true,
@@ -92,29 +93,25 @@ export class SubscriptionService {
   //   });
   // }
 
-  async findAll(id: string) {
+  async findAll(followingId: string) {
+    console.log('followingId', followingId);
+
     const subscribe = await this.subscriptionRepository.find({
-      where: {
-        following: {
-          id,
-        },
-      },
-      relations: {
-        follower: true,
-        following: true,
-      },
+      where: { followingId },
+      relations: { following: true, follower: true },
     });
+    console.log('subscribe', subscribe);
+
     return subscribe;
   }
 
-  async getFollowingPosts(followerId: string) {
+  async getFollowingPosts(followingId: string) {
     const subscriptions = await this.subscriptionRepository.find({
-      where: { follower: { id: followerId } },
-      relations: ['following'],
+      where: { followingId },
+      relations: { follower: true },
     });
 
     const allPosts = [];
-
     for (const subscription of subscriptions) {
       const posts = await this.postService.getPostsFromFollowing(
         subscription.following.id,

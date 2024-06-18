@@ -14,29 +14,27 @@ export class UserResponse implements User {
 
   @Exclude()
   password: string;
-
+  @Exclude()
   isActivated: boolean;
-
+  @Exclude()
   isRememberMe: boolean;
-
+  @Exclude()
   provider: Provider;
-
+  @Exclude()
+  tokens: Token[];
   @Exclude()
   activateLink: string;
+  @Exclude()
+  createdAt: Date;
 
   posts: Post[];
-  tokens: Token[];
   favorites: Favorite[];
   avatar: string;
   banner: string;
-
   followers: Subscription[];
   following: Subscription[];
   sentMessages: Message[];
   receivedMessages: Message[];
-
-  @Exclude()
-  createdAt: Date;
 
   constructor(user: User | User[]) {
     Object.assign(this, user);

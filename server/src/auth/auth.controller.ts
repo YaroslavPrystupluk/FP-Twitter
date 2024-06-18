@@ -141,11 +141,13 @@ export class AuthController {
   async googleLoginCallback(@Req() req: ExpressRequest, @Res() res: Response) {
     try {
       const token = req.user['accessToken'];
-      const { data } = await axios.get(
-        `http://localhost:3001/api/auth/success?token=${token}`,
-      );
+      // const { data } = await axios.get(
+      //   `http://localhost:3001/api/auth/success?token=${token}`,
+      // );
+      res.set('Authorization', `${token}`);
+      res.json(req.user);
 
-      return res.send(data.accessToken);
+      // return res.send(data.accessToken);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         return res.status(400).send('Bad Request');

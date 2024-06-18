@@ -25,7 +25,7 @@ export const subscriberSlice = createSlice({
     
     deleteSubscriber: (state, action: PayloadAction<string>) => {
       state.subscribers = state.subscribers?.filter(
-        (subscriber) => subscriber.id !== action.payload,
+        (subscriber) => subscriber.following.id !== action.payload,
       );
     },
   },

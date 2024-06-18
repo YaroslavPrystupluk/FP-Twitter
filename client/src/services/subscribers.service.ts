@@ -3,8 +3,10 @@ import { ISubscriber } from '../types/subscriberType';
 
 
 export const subscriberService = {
-  async getAllSubscribers(): Promise<ISubscriber[]> {
-    const { data } = await instance.get<ISubscriber[]>('subscription')
+  async getAllSubscribers(foloverId: string): Promise<ISubscriber[]> {
+    const { data } = await instance.get<ISubscriber[]>(
+      `subscription/${foloverId}`,
+    );
     return data;
   },
 
@@ -12,20 +14,21 @@ export const subscriberService = {
     const { data } = await instance.post<ISubscriber>(
       `subscription/${followingId}`,
     );
-        console.log('addSubscriber', data);
     return data;
   },
 
   async deleteSubscriber(followingId: string): Promise<string> {
     const { data } = await instance.delete<string>(
       `subscription/${followingId}`,
-    );
-        console.log('deleteSubscriber', data);
+);
+    
     return data;
   },
 
-  async getSubscriberPost(){
+  async getSubscriberPost() {
     const { data } = await instance.get('subscription/following-posts');
+    console.log('datagetSubscriberPost', data);
+    
 
     return data;
   }

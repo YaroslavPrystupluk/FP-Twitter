@@ -4,16 +4,17 @@ import { toast } from 'react-toastify';
 import { subscriberService } from '../../services/subscribers.service';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getAllSubscribers } from '../../store/subscriber/subscriberSlice';
+import { useParams } from 'react-router-dom';
 
 const Subscribers: FC = () => {
   const dispatch = useAppDispatch();
   const subscribers = useAppSelector((state) => state.subscriber.subscribers);
+  const {id } = useParams();
 
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
-        const fetchedSubscribers = await subscriberService.getAllSubscribers();
-
+        const fetchedSubscribers = await subscriberService.getAllSubscribers(id as string);
         if (fetchedSubscribers) {
           dispatch(getAllSubscribers(fetchedSubscribers));
         }
@@ -24,7 +25,7 @@ const Subscribers: FC = () => {
       }
     };
       fetchFollowers();
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <>
@@ -34,14 +35,14 @@ const Subscribers: FC = () => {
       <AvatarGroup component="section" sx={{ justifyContent: 'start' }} max={8}>
         {subscribers.map((subscriber) => (
           <Avatar
-            key={subscriber.id}
-            alt={subscriber?.follower.displayname}
+            key={subscriber.follower.id}
+            alt={subscriber.follower.displayname}
             src={`${import.meta.env.VITE_UPLOAD_FILE}/${
               subscriber?.follower.avatar
             }`}
           />
         ))}
-      </AvatarGroup>
+      </AvatarGroup> 
     </>
   );
 };
