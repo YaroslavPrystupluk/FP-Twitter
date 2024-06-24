@@ -12,6 +12,7 @@ import { User } from 'src/user/entities/user.entity';
 import { Token } from './entities/token.entity';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { HttpModule } from '@nestjs/axios';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { HttpModule } from '@nestjs/axios';
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Token]),
     HttpModule,
+    TasksModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],

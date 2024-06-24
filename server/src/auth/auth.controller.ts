@@ -51,12 +51,6 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerUserDto: RegisterUserDto) {
     const user = await this.authService.register(registerUserDto);
-    setTimeout(
-      async () => {
-        await this.authService.removeUnconfirmedUsers();
-      },
-      15 * 60 * 1000,
-    );
 
     return new UserResponse(user);
   }

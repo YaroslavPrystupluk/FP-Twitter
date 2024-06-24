@@ -186,22 +186,6 @@ export class AuthService {
     return await this.generateTokens(user, agent);
   }
 
-  async removeUnconfirmedUsers() {
-    const TIME = 15 * 60 * 1000;
-    const unconfirmedUsers = await this.userRepository.find({
-      where: {
-        isActivated: false,
-      },
-    });
-
-    const currentTime = new Date();
-    unconfirmedUsers.forEach(async (user) => {
-      if (currentTime.getTime() - user.createdAt.getTime() > TIME) {
-        await this.userRepository.remove(user);
-      }
-    });
-  }
-
   async getProfile(id: string) {
     const userId = await this.usersService.findOne(id);
     return userId;

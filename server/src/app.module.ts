@@ -11,6 +11,7 @@ import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { MessageModule } from './message/message.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MessageModule } from './message/message.module';
     FavoritesModule,
     SubscriptionModule,
     MessageModule,
+    ScheduleModule.forRoot()
   ],
 
   providers: [
